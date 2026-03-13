@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp -r /c/laragon/www/aseanapol-docs-backup /c/laragon/www/aseanapol/docs && cp -r /c/laragon/www/aseanapol-claude-backup /c/laragon/www/aseanapol/.claude)",
+      "Bash(php -r \"echo PHP_VERSION;\" 2>/dev/null && php artisan --version)",
+      "Bash(mysql -u root -e \"CREATE DATABASE IF NOT EXISTS aseanapol CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\" 2>&1)",
+      "Bash(php artisan:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://aseanapol.test/ 2>/dev/null || echo \"Trying artisan serve...\")",
+      "Bash(curl -s http://127.0.0.1:8000/ 2>&1 | head -5)",
+      "Bash(curl -s http://127.0.0.1:8000/ 2>&1 | grep -i \"ASEANAPOL\\\\|error\\\\|exception\" | head -10)",
+      "Bash(curl -s http://127.0.0.1:8000/ 2>&1 | wc -l)",
+      "Bash(curl -s http://127.0.0.1:8000/ 2>&1 | head -30)",
+      "Bash(tasklist 2>/dev/null | grep -i php | head -5; netstat -ano 2>/dev/null | grep 8000 | head -3)",
+      "Bash(grep -E \"contact|email|phone|fax|telephone|secretariat|address|@\" /c/laragon/www/aseanapol/docs/reference/example_*.txt | grep -v \"material-symbols\\\\|placeholder\\\\|@import\\\\|@media\\\\|font-\\\\|class=\" | head -50)",
+      "Bash(grep -E \"\\\\+[0-9]|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-z]{2,}\" /c/laragon/www/aseanapol/docs/reference/example_*.txt)",
+      "Bash(grep -iE \"Bangkok|Jakarta|Kuala Lumpur|Malaysia|Persiaran|Tower|Level\" /c/laragon/www/aseanapol/docs/reference/example_*.txt)",
+      "WebFetch(domain:www.aseanapol.org)",
+      "Bash(find C:/laragon/www/aseanapol/docs -iname \"*logo*diagram*\" -o -iname \"*logogram*\" -o -iname \"*logo_desc*\" -o -iname \"*logo_arrow*\" 2>/dev/null; find C:/laragon/www/aseanapol/docs -path \"*/images/*\" -iname \"*.jpg\" -o -path \"*/images/*\" -iname \"*.png\" 2>/dev/null | grep -iv \"sitefinity\\\\|themes\\\\|mco\" | head -30)",
+      "Bash(find C:/laragon/www/aseanapol/docs -path \"*/Storage/*\" -iname \"*.jpg\" -o -path \"*/Storage/*\" -iname \"*.png\" -o -path \"*/Storage/*\" -iname \"*.gif\" 2>/dev/null | head -30)",
+      "Bash(find C:/laragon/www/aseanapol/docs -iname \"*.jpg\" -o -iname \"*.png\" 2>/dev/null | grep -i \"logo\\\\|emblem\\\\|gram\\\\|annot\\\\|diagram\\\\|arrow\\\\|about\\\\|asean\" | head -20)",
+      "Bash(find C:/laragon/www/aseanapol/docs -iname \"*.jpg\" -o -iname \"*.png\" -o -iname \"*.gif\" -o -iname \"*.jpeg\" 2>/dev/null | wc -l && find C:/laragon/www/aseanapol/docs -iname \"*.jpg\" -o -iname \"*.png\" -o -iname \"*.gif\" -o -iname \"*.jpeg\" 2>/dev/null | grep -v \"Sitefinity\\\\|MCO\\\\|nivo\\\\|weldork\\\\|iis\")"
+    ]
+  }
+}
