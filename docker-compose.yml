@@ -1,0 +1,59 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aseanapol_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html          # ← code is live-mounted; no rebuild needed
+    networks:
+      - aseanapol
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: aseanapol_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - aseanapol
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    container_name: aseanapol_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-aseanapol}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
+      MYSQL_USER: ${DB_USERNAME:-aseanapol}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"       # remove this line if you don't need external DB access
+    networks:
+      - aseanapol
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootsecret}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  aseanapol:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
