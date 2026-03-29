@@ -2,11 +2,12 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'Publication',
+    'title'    => 'Publications',
     'subtitle' => 'The official ASEANAPOL Bulletin and Magazine editions.',
     'breadcrumbs' => [
-        ['label' => 'Home',        'url' => route('landing', ['locale' => app()->getLocale()])],
-        ['label' => 'Publication', 'url' => ''],
+        ['label' => 'Home',            'url' => route('landing',                ['locale' => app()->getLocale()])],
+        ['label' => 'Data & Resources','url' => route('data-resources.index',   ['locale' => app()->getLocale()])],
+        ['label' => 'Publications',    'url' => ''],
     ],
 ])
 @endsection

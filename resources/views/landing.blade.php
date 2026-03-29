@@ -48,7 +48,7 @@
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                 @php
                     $stats = [
-                        ['value' => '10', 'label' => __('landing.stats_members'), 'icon' => 'public'],
+                        ['value' => '11', 'label' => __('landing.stats_members'), 'icon' => 'public'],
                         ['value' => '6', 'label' => __('landing.stats_partners'), 'icon' => 'handshake'],
                         ['value' => '44+', 'label' => __('landing.stats_conferences'), 'icon' => 'groups'],
                         ['value' => '1981', 'label' => __('landing.stats_established'), 'icon' => 'calendar_month'],
@@ -82,90 +82,55 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @php
-                $news = [
-                    [
-                        'category' => __('landing.news_1_cat'),
-                        'date' => __('landing.news_1_date'),
-                        'title' => __('landing.news_1_title'),
-                        'excerpt' => __('landing.news_1_excerpt'),
-                        'gradient' => 'from-primary via-primary-400 to-accent/40',
-                        'icon' => 'school',
-                    ],
-                    [
-                        'category' => __('landing.news_2_cat'),
-                        'date' => __('landing.news_2_date'),
-                        'title' => __('landing.news_2_title'),
-                        'excerpt' => __('landing.news_2_excerpt'),
-                        'gradient' => 'from-primary-700 via-primary to-primary-300',
-                        'icon' => 'handshake',
-                    ],
-                    [
-                        'category' => __('landing.news_3_cat'),
-                        'date' => __('landing.news_3_date'),
-                        'title' => __('landing.news_3_title'),
-                        'excerpt' => __('landing.news_3_excerpt'),
-                        'gradient' => 'from-accent-700 via-primary to-primary-700',
-                        'icon' => 'groups',
-                    ],
-                    [
-                        'category' => __('landing.news_4_cat'),
-                        'date' => __('landing.news_4_date'),
-                        'title' => __('landing.news_4_title'),
-                        'excerpt' => __('landing.news_4_excerpt'),
-                        'gradient' => 'from-primary-800 via-primary-600 to-accent/30',
-                        'icon' => 'security',
-                    ],
-                    [
-                        'category' => __('landing.news_5_cat'),
-                        'date' => __('landing.news_5_date'),
-                        'title' => __('landing.news_5_title'),
-                        'excerpt' => __('landing.news_5_excerpt'),
-                        'gradient' => 'from-primary via-accent/40 to-primary-700',
-                        'icon' => 'hub',
-                    ],
-                    [
-                        'category' => __('landing.news_6_cat'),
-                        'date' => __('landing.news_6_date'),
-                        'title' => __('landing.news_6_title'),
-                        'excerpt' => __('landing.news_6_excerpt'),
-                        'gradient' => 'from-primary-600 via-primary to-accent/50',
-                        'icon' => 'diversity_3',
-                    ],
-                ];
-            @endphp
-            @foreach($news as $item)
-                <article class="relative rounded-xl overflow-hidden shadow-sm dark:shadow-black/20 border border-gray-100 dark:border-gray-700/50 group h-72 cursor-pointer">
-                    {{-- Background gradient --}}
-                    <div class="absolute inset-0 bg-gradient-to-br {{ $item['gradient'] }} flex items-center justify-center">
-                        <span class="material-symbols-outlined text-white/20 text-8xl">{{ $item['icon'] }}</span>
+            @foreach($latestNews as $item)
+                <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $item->slug]) }}"
+                   class="relative rounded-xl overflow-hidden shadow-sm dark:shadow-black/20 border border-gray-100 dark:border-gray-700/50 group h-72 block">
+                    {{-- Background: real thumbnail or gradient fallback --}}
+                    @if($item->thumbnail)
+                    <img src="{{ asset($item->thumbnail) }}" alt="{{ $item->title }}"
+                         class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+                    @else
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-400 to-accent/40 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white/20 text-8xl">newspaper</span>
                     </div>
+                    @endif
 
-                    {{-- Category badge --}}
+                    {{-- Date badge --}}
                     <div class="absolute top-3 left-3 z-10 group-hover:opacity-0 transition-opacity duration-300">
-                        <span class="bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full">{{ $item['category'] }}</span>
+                        <span class="bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full">
+                            {{ \Carbon\Carbon::parse($item->published_at)->format('d M Y') }}
+                        </span>
                     </div>
 
-                    {{-- Default: title at bottom with dark gradient --}}
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/75 via-black/30 to-transparent z-10 group-hover:opacity-0 transition-opacity duration-300">
-                        <h3 class="font-bold text-white text-sm leading-snug">{{ $item['title'] }}</h3>
+                    {{-- Default: title at bottom --}}
+                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 group-hover:opacity-0 transition-opacity duration-300">
+                        <h3 class="font-bold text-white text-sm leading-snug line-clamp-2">{{ $item->title }}</h3>
                     </div>
 
-                    {{-- Hover overlay: slides up from bottom --}}
+                    {{-- Hover overlay --}}
                     <div class="absolute inset-0 z-20 bg-primary/92 dark:bg-primary-900/97 flex flex-col justify-start p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
                         <div class="flex items-center gap-1.5 text-xs text-white/60 mb-1.5">
                             <span class="material-symbols-outlined text-sm">calendar_today</span>
-                            {{ $item['date'] }}
+                            {{ \Carbon\Carbon::parse($item->published_at)->format('d M Y') }}
                         </div>
-                        <h3 class="font-bold text-white text-sm leading-snug mb-2">{{ $item['title'] }}</h3>
-                        <p class="text-white/75 text-xs leading-relaxed mb-3 line-clamp-4">{{ $item['excerpt'] }}</p>
-                        <a href="#" class="inline-flex items-center gap-1 text-accent font-semibold text-sm hover:gap-2 transition-all mt-auto">
+                        <h3 class="font-bold text-white text-sm leading-snug mb-2">{{ $item->title }}</h3>
+                        @if($item->summary)
+                        <p class="text-white/75 text-xs leading-relaxed mb-3 line-clamp-4">{{ $item->summary }}</p>
+                        @endif
+                        <span class="inline-flex items-center gap-1 text-accent font-semibold text-sm mt-auto">
                             {{ __('landing.news_read_more') }}
                             <span class="material-symbols-outlined text-base">arrow_forward</span>
-                        </a>
+                        </span>
                     </div>
-                </article>
+                </a>
             @endforeach
+        </div>
+        <div class="text-center mt-10">
+            <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center gap-2 border border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 py-3 rounded-xl transition-colors dark:border-accent dark:text-accent dark:hover:bg-accent dark:hover:text-primary">
+                <span class="material-symbols-outlined">newspaper</span>
+                View All News
+            </a>
         </div>
     </div>
 </section>
@@ -185,17 +150,19 @@
 
         @php
             $events = [
-                ['month' => 'JUL', 'day' => '30', 'title' => __('landing.event_1_title'), 'location' => __('landing.event_1_location')],
-                ['month' => 'JUN', 'day' => '30', 'title' => __('landing.event_2_title'), 'location' => __('landing.event_2_location')],
-                ['month' => 'AUG', 'day' => '12', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
+                ['month' => 'SEP', 'day' => '18', 'year' => '2013', 'title' => __('landing.event_1_title'), 'location' => __('landing.event_1_location')],
+                ['month' => 'AUG', 'day' => '01', 'year' => '2013', 'title' => __('landing.event_2_title'), 'location' => __('landing.event_2_location')],
+                ['month' => 'FEB', 'day' => '19', 'year' => '2013', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
             ];
         @endphp
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @php $loc = ['locale' => app()->getLocale()]; @endphp
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             @foreach($events as $event)
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-6 border border-gray-100 dark:border-gray-700/50 shadow-sm dark:shadow-black/20 flex gap-5 items-start card-hover">
                     <div class="flex-shrink-0 w-16 h-16 bg-primary rounded-xl flex flex-col items-center justify-center text-white shadow-lg shadow-primary/30">
                         <span class="text-[10px] font-bold uppercase tracking-wider leading-none">{{ $event['month'] }}</span>
                         <span class="text-2xl font-extrabold leading-none mt-0.5">{{ $event['day'] }}</span>
+                        <span class="text-[9px] text-white/60 leading-none mt-0.5">{{ $event['year'] }}</span>
                     </div>
                     <div>
                         <h3 class="font-bold text-primary dark:text-white text-base leading-snug mb-2">{{ $event['title'] }}</h3>
@@ -206,6 +173,12 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+        <div class="text-center">
+            <a href="{{ route('events-training.calendar', $loc) }}" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined">calendar_month</span>
+                View All Events
+            </a>
         </div>
     </div>
 </section>
@@ -289,7 +262,8 @@
                 ['code' => 'ph', 'name' => 'Philippines'],
                 ['code' => 'sg', 'name' => 'Singapore'],
                 ['code' => 'th', 'name' => 'Thailand'],
-                ['code' => 'vn', 'name' => 'Vietnam'],
+                ['code' => 'vn', 'name' => 'Viet Nam'],
+                ['code' => 'tl', 'name' => 'Timor-Leste'],
             ];
         @endphp
 
@@ -374,7 +348,8 @@
                                 ['code' => 'ph', 'country' => 'Philippines', 'org' => 'Philippine National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '—', 'email' => 'laiad.dpl@pnp.gov.ph'],
                                 ['code' => 'sg', 'country' => 'Singapore', 'org' => 'Singapore Police Force (SPF)', 'tel' => '1800 358 000', 'fax' => '+65 6256 1296', 'email' => 'www.police.gov.sg/e-services'],
                                 ['code' => 'th', 'country' => 'Thailand', 'org' => 'Royal Thai Police', 'tel' => '+6622053001', 'fax' => '+6622533856', 'email' => 'aseanapol.th@gmail.com'],
-                                ['code' => 'vn', 'country' => 'Vietnam', 'org' => 'Ministry of Public Security', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
+                                ['code' => 'vn', 'country' => 'Viet Nam', 'org' => 'Ministry of Public Security', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
+                                ['code' => 'tl', 'country' => 'Timor-Leste', 'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => '—'],
                             ];
                         @endphp
                         @foreach($directory as $entry)

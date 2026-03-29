@@ -2,11 +2,11 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'International Collaboration',
+    'title'    => 'International Cooperation',
     'subtitle' => 'ASEANAPOL\'s network of international partner organisations working together to combat transnational crime.',
     'breadcrumbs' => [
-        ['label' => 'Home',                       'url' => route('landing', ['locale' => app()->getLocale()])],
-        ['label' => 'International Collaboration', 'url' => ''],
+        ['label' => 'Home',                      'url' => route('landing', ['locale' => app()->getLocale()])],
+        ['label' => 'International Cooperation', 'url' => ''],
     ],
 ])
 @endsection
@@ -14,11 +14,33 @@
 @section('content')
 <section class="py-16 bg-background dark:bg-dark-surface">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mb-12">
+        <div class="max-w-3xl mb-8">
             <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
                 ASEANAPOL maintains active collaborative relationships with a broad range of international organisations across law enforcement, crime prevention, wildlife protection, and financial security. These partnerships strengthen ASEANAPOL's capacity to address complex transnational threats.
             </p>
         </div>
+
+        {{-- Sub-section links --}}
+        @php
+        $subsections = [
+            ['icon' => 'shield',   'title' => 'INTERPOL',      'route' => 'international-cooperation.interpol'],
+            ['icon' => 'public',   'title' => 'Europol',       'route' => 'international-cooperation.europol'],
+            ['icon' => 'balance',  'title' => 'UNODC',         'route' => 'international-cooperation.unodc'],
+            ['icon' => 'handshake','title' => 'Joint Projects', 'route' => 'international-cooperation.joint-projects'],
+        ];
+        @endphp
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+            @foreach($subsections as $sub)
+            <a href="{{ route($sub['route'], ['locale' => app()->getLocale()]) }}"
+               class="group bg-white dark:bg-dark-card rounded-xl p-4 border border-gray-100 dark:border-gray-700 flex flex-col items-center text-center gap-2 hover:border-primary/30 hover:shadow-md transition-all">
+                <span class="material-symbols-outlined text-primary dark:text-accent group-hover:text-accent text-2xl transition-colors">{{ $sub['icon'] }}</span>
+                <span class="text-sm font-semibold text-gray-700 dark:text-gray-200 group-hover:text-primary dark:group-hover:text-accent transition-colors">{{ $sub['title'] }}</span>
+                <span class="material-symbols-outlined text-xs text-gray-300 dark:text-gray-600 group-hover:text-primary dark:group-hover:text-accent transition-colors">arrow_forward</span>
+            </a>
+            @endforeach
+        </div>
+
+        <h2 class="text-xl font-bold text-primary dark:text-white mb-6">Partner Organisations</h2>
 
         @php
         $partners = [

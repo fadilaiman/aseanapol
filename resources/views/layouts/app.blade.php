@@ -128,6 +128,37 @@
             opacity: 1;
             pointer-events: auto;
         }
+        /* Nav dropdowns — desktop hover */
+        .nav-group:hover > .nav-drop,
+        .nav-group:focus-within > .nav-drop {
+            display: block;
+        }
+        .nav-drop {
+            display: none;
+        }
+        /* Mobile accordion */
+        .mob-sub {
+            display: none;
+        }
+        .mob-sub.open {
+            display: block;
+        }
+        /* Coming soon badge */
+        .badge-soon {
+            font-size: 0.6rem;
+            line-height: 1;
+            padding: 2px 5px;
+            border-radius: 4px;
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .dark .badge-soon {
+            background: rgba(217,119,6,0.2);
+            color: #fcd34d;
+        }
     </style>
 </head>
 <body class="font-sans bg-background dark:bg-dark text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300">
@@ -146,13 +177,96 @@
                 </a>
 
                 {{-- Desktop Nav --}}
-                <nav class="hidden xl:flex items-center gap-1">
-                    <a href="{{ route('landing', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_home') }}</a>
-                    <a href="{{ route('about.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_about') }}</a>
-                    <a href="{{ route('information.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_information') }}</a>
-                    <a href="{{ route('international-collaboration', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_collaboration') }}</a>
-                    <a href="{{ route('guidelines.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_guidelines') }}</a>
-                    <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_news') }}</a>
+                @php $loc = ['locale' => app()->getLocale()]; @endphp
+                <nav class="hidden xl:flex items-center gap-0.5">
+
+                    {{-- About ASEANAPOL --}}
+                    <div class="nav-group relative">
+                        <a href="{{ route('about.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            About ASEANAPOL <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        </a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 w-56 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            <a href="{{ route('about.chronology', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">History</a>
+                            <a href="{{ route('about.permanent-secretariat', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Permanent Secretariat</a>
+                            <a href="{{ route('about.governance', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Governance</a>
+                            <a href="{{ route('about.vision-mission', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Vision &amp; Mission</a>
+                            <a href="{{ route('about.leadership', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Leadership</a>
+                            <div class="my-1 border-t border-gray-100 dark:border-gray-700"></div>
+                            <a href="{{ route('about.member-countries', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Member Countries</a>
+                            <a href="{{ route('about.dialogue-partners', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Dialogue Partners</a>
+                            <a href="{{ route('about.observers', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Observers</a>
+                            <a href="{{ route('about.ob-lme', $loc) }}" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">OB / LME <span class="badge-soon">Soon</span></a>
+                        </div>
+                    </div>
+
+                    {{-- News & Media --}}
+                    <div class="nav-group relative">
+                        <a href="{{ route('news-media.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            News &amp; Media <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        </a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 w-52 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            <a href="{{ route('news.index', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">News</a>
+                            <a href="{{ route('news-media.press-releases', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Press Releases</a>
+                            <a href="{{ route('news-media.gallery', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Photo Gallery</a>
+                            <a href="{{ route('news-media.video-gallery', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Video Gallery</a>
+                            <a href="{{ route('news-media.newsletters', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Newsletters</a>
+                        </div>
+                    </div>
+
+                    {{-- Data & Resources --}}
+                    <div class="nav-group relative">
+                        <a href="{{ route('data-resources.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            Data &amp; Resources <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        </a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 w-56 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Crime Statistics</a>
+                            <a href="{{ route('data-resources.publications', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Publications</a>
+                            <a href="{{ route('data-resources.digital-library', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Digital Library</a>
+                        </div>
+                    </div>
+
+                    {{-- International Cooperation --}}
+                    <div class="nav-group relative">
+                        <a href="{{ route('international-cooperation', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            Intl. Cooperation <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        </a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 w-48 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            <a href="{{ route('international-cooperation.interpol', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">INTERPOL</a>
+                            <a href="{{ route('international-cooperation.europol', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Europol</a>
+                            <a href="{{ route('international-cooperation.unodc', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">UNODC</a>
+                            <a href="{{ route('international-cooperation.joint-projects', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Joint Projects</a>
+                        </div>
+                    </div>
+
+                    {{-- Events & Training --}}
+                    <div class="nav-group relative">
+                        <a href="{{ route('events-training.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            Events <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        </a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 w-48 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            <a href="{{ route('events-training.calendar', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Event Calendar</a>
+                            <a href="{{ route('events-training.conferences', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Conferences</a>
+                            <a href="{{ route('events-training.training-programs', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Training Programs</a>
+                        </div>
+                    </div>
+
+                    {{-- Careers --}}
+                    <div class="nav-group relative">
+                        <a href="{{ route('careers.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            Careers <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        </a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 w-48 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            <a href="{{ route('careers.vacancies', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Vacancies</a>
+                            <a href="{{ route('careers.internships', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Internships</a>
+                            <a href="{{ route('careers.exchange-programs', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Exchange Programs</a>
+                        </div>
+                    </div>
+
+                    {{-- Contact Us --}}
+                    <a href="{{ route('contact-us', $loc) }}" class="text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                        Contact Us
+                    </a>
+
                 </nav>
 
                 {{-- Right actions --}}
@@ -195,8 +309,8 @@
                         <input type="text" placeholder="{{ __('landing.nav_search') }}" class="bg-transparent border-none outline-none text-white text-sm placeholder-white/50 w-28">
                     </div>
 
-                    {{-- Publication --}}
-                    <a href="{{ route('publication.index', ['locale' => app()->getLocale()]) }}" class="hidden md:inline-flex items-center gap-2 bg-accent hover:bg-accent-600 text-primary font-semibold text-sm px-4 py-2 rounded-lg transition-colors">
+                    {{-- Publications CTA --}}
+                    <a href="{{ route('data-resources.publications', ['locale' => app()->getLocale()]) }}" class="hidden md:inline-flex items-center gap-2 bg-accent hover:bg-accent-600 text-primary font-semibold text-sm px-4 py-2 rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-lg">menu_book</span>
                         {{ __('landing.nav_publication') }}
                     </a>
@@ -209,16 +323,96 @@
             </div>
 
             {{-- Mobile menu --}}
+            @php $loc = ['locale' => app()->getLocale()]; @endphp
             <div id="mobile-menu" class="mobile-menu xl:hidden pb-4">
-                <nav class="flex flex-col gap-1 border-t border-white/10 pt-4">
-                    <a href="{{ route('landing', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_home') }}</a>
-                    <a href="{{ route('about.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_about') }}</a>
-                    <a href="{{ route('information.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_information') }}</a>
-                    <a href="{{ route('international-collaboration', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_collaboration') }}</a>
-                    <a href="{{ route('guidelines.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_guidelines') }}</a>
-                    <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ __('landing.nav_news') }}</a>
+                <nav class="flex flex-col gap-0.5 border-t border-white/10 pt-3">
 
-                    {{-- Mobile language switcher --}}
+                    <a href="{{ route('landing', $loc) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">Home</a>
+
+                    {{-- About --}}
+                    <div>
+                        <button onclick="toggleMobSub('mob-about')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            About ASEANAPOL <span class="material-symbols-outlined text-base">expand_more</span>
+                        </button>
+                        <div id="mob-about" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            <a href="{{ route('about.chronology', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">History</a>
+                            <a href="{{ route('about.permanent-secretariat', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Permanent Secretariat</a>
+                            <a href="{{ route('about.governance', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Governance</a>
+                            <a href="{{ route('about.vision-mission', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Vision &amp; Mission</a>
+                            <a href="{{ route('about.leadership', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Leadership</a>
+                            <a href="{{ route('about.member-countries', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Member Countries</a>
+                            <a href="{{ route('about.dialogue-partners', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Dialogue Partners</a>
+                            <a href="{{ route('about.observers', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Observers</a>
+                            <a href="{{ route('about.ob-lme', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">OB / LME</a>
+                        </div>
+                    </div>
+
+                    {{-- News & Media --}}
+                    <div>
+                        <button onclick="toggleMobSub('mob-news')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            News &amp; Media <span class="material-symbols-outlined text-base">expand_more</span>
+                        </button>
+                        <div id="mob-news" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            <a href="{{ route('news.index', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">News</a>
+                            <a href="{{ route('news-media.press-releases', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Press Releases</a>
+                            <a href="{{ route('news-media.gallery', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Photo Gallery</a>
+                            <a href="{{ route('news-media.video-gallery', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Video Gallery</a>
+                            <a href="{{ route('news-media.newsletters', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Newsletters</a>
+                        </div>
+                    </div>
+
+                    {{-- Data & Resources --}}
+                    <div>
+                        <button onclick="toggleMobSub('mob-data')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            Data &amp; Resources <span class="material-symbols-outlined text-base">expand_more</span>
+                        </button>
+                        <div id="mob-data" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Crime Statistics</a>
+                            <a href="{{ route('data-resources.publications', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Publications</a>
+                            <a href="{{ route('data-resources.digital-library', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Digital Library</a>
+                        </div>
+                    </div>
+
+                    {{-- International Cooperation --}}
+                    <div>
+                        <button onclick="toggleMobSub('mob-intl')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            International Cooperation <span class="material-symbols-outlined text-base">expand_more</span>
+                        </button>
+                        <div id="mob-intl" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            <a href="{{ route('international-cooperation.interpol', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">INTERPOL</a>
+                            <a href="{{ route('international-cooperation.europol', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Europol</a>
+                            <a href="{{ route('international-cooperation.unodc', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">UNODC</a>
+                            <a href="{{ route('international-cooperation.joint-projects', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Joint Projects</a>
+                        </div>
+                    </div>
+
+                    {{-- Events & Training --}}
+                    <div>
+                        <button onclick="toggleMobSub('mob-events')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            Events &amp; Training <span class="material-symbols-outlined text-base">expand_more</span>
+                        </button>
+                        <div id="mob-events" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            <a href="{{ route('events-training.calendar', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Event Calendar</a>
+                            <a href="{{ route('events-training.conferences', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Conferences</a>
+                            <a href="{{ route('events-training.training-programs', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Training Programs</a>
+                        </div>
+                    </div>
+
+                    {{-- Careers --}}
+                    <div>
+                        <button onclick="toggleMobSub('mob-careers')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            Careers &amp; Opportunities <span class="material-symbols-outlined text-base">expand_more</span>
+                        </button>
+                        <div id="mob-careers" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            <a href="{{ route('careers.vacancies', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Vacancies</a>
+                            <a href="{{ route('careers.internships', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Internships</a>
+                            <a href="{{ route('careers.exchange-programs', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Exchange Programs</a>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('contact-us', $loc) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">Contact Us</a>
+
+                    {{-- Language switcher --}}
                     <div class="flex items-center gap-2 px-3 py-2 mt-2 border-t border-white/10 pt-3">
                         @foreach($languages as $code => $lang)
                             <a href="{{ route('landing', ['locale' => $code]) }}"
@@ -228,11 +422,6 @@
                             </a>
                         @endforeach
                     </div>
-
-                    <a href="{{ route('publication.index', ['locale' => app()->getLocale()]) }}" class="mt-2 inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-600 text-primary font-semibold text-sm px-4 py-2 rounded-lg transition-colors">
-                        <span class="material-symbols-outlined text-lg">menu_book</span>
-                        {{ __('landing.nav_publication') }}
-                    </a>
                 </nav>
             </div>
         </div>
@@ -283,14 +472,14 @@
                         <li><a href="{{ route('about.index', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> About ASEANAPOL</a></li>
                         <li><a href="{{ route('about.permanent-secretariat', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Permanent Secretariat</a></li>
                         <li><a href="{{ route('about.governance', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Governance</a></li>
-                        <li><a href="{{ route('about.chronology', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Chronology</a></li>
+                        <li><a href="{{ route('about.chronology', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> History</a></li>
                         <li><a href="{{ route('about.vision-mission', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Vision &amp; Mission</a></li>
-                        <li><a href="{{ route('information.index', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Member Countries</a></li>
-                        <li><a href="{{ route('information.dialogue-partners', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Dialogue Partners</a></li>
-                        <li><a href="{{ route('international-collaboration', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> International Collaboration</a></li>
-                        <li><a href="{{ route('guidelines.index', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Guidelines</a></li>
+                        <li><a href="{{ route('about.member-countries', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Member Countries</a></li>
+                        <li><a href="{{ route('about.dialogue-partners', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Dialogue Partners</a></li>
+                        <li><a href="{{ route('international-cooperation', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> International Cooperation</a></li>
                         <li><a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> News</a></li>
-                        <li><a href="{{ route('publication.index', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Publications</a></li>
+                        <li><a href="{{ route('data-resources.publications', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Publications</a></li>
+                        <li><a href="{{ route('contact-us', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Contact Us</a></li>
                     </ul>
                 </div>
 
@@ -390,6 +579,12 @@
             icon.textContent = menu.classList.contains('open') ? 'close' : 'menu';
         }
 
+        // Mobile accordion sub-menus
+        function toggleMobSub(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('open');
+        }
+
         // Dropdown toggle
         function toggleDropdown(id) {
             const el = document.getElementById(id);
@@ -417,5 +612,6 @@
         }
         updateThemeIcon();
     </script>
+    @stack('scripts')
 </body>
 </html>

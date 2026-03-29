@@ -5,9 +5,10 @@
     'title'    => $title,
     'subtitle' => 'Official ASEANAPOL ' . $type,
     'breadcrumbs' => [
-        ['label' => 'Home',        'url' => route('landing', ['locale' => app()->getLocale()])],
-        ['label' => 'Publication', 'url' => route('publication.index', ['locale' => app()->getLocale()])],
-        ['label' => $title,        'url' => ''],
+        ['label' => 'Home',             'url' => route('landing',                  ['locale' => app()->getLocale()])],
+        ['label' => 'Data & Resources', 'url' => route('data-resources.index',     ['locale' => app()->getLocale()])],
+        ['label' => 'Publications',     'url' => route('data-resources.publications',['locale' => app()->getLocale()])],
+        ['label' => $title,             'url' => ''],
     ],
 ])
 @endsection
@@ -15,12 +16,12 @@
 @section('content')
 @php
 $editionData = [
-    '8th'  => ['year' => '2015', 'theme' => 'Regional Police Cooperation in the New Millennium',   'color' => 'from-blue-700 to-blue-900'],
-    '9th'  => ['year' => '2016', 'theme' => 'Combating Transnational Crime Together',              'color' => 'from-primary to-primary/70'],
-    '10th' => ['year' => '2017', 'theme' => 'Strengthening Partnerships for Regional Security',    'color' => 'from-indigo-700 to-indigo-900'],
-    '11th' => ['year' => '2018', 'theme' => 'Building Resilient Police Forces',                    'color' => 'from-teal-700 to-teal-900'],
-    '12th' => ['year' => '2019', 'theme' => 'ASEANAPOL: Four Decades of Cooperation',              'color' => 'from-primary/90 to-primary'],
-    '13th' => ['year' => '2023', 'theme' => 'Toward a Safer ASEAN: Cooperation, Innovation, Impact', 'color' => 'from-amber-700 to-amber-900'],
+    '8th'  => ['year' => '2015', 'theme' => 'Regional Police Cooperation in the New Millennium',     'color' => 'from-blue-700 to-blue-900',     'pdf' => null],
+    '9th'  => ['year' => '2016', 'theme' => 'Combating Transnational Crime Together',                'color' => 'from-primary to-primary/70',    'pdf' => null],
+    '10th' => ['year' => '2017', 'theme' => 'Strengthening Partnerships for Regional Security',      'color' => 'from-indigo-700 to-indigo-900', 'pdf' => null],
+    '11th' => ['year' => '2018', 'theme' => 'Building Resilient Police Forces',                      'color' => 'from-teal-700 to-teal-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-2018.pdf'],
+    '12th' => ['year' => '2019', 'theme' => 'ASEANAPOL: Four Decades of Cooperation',                'color' => 'from-primary/90 to-primary',    'pdf' => null],
+    '13th' => ['year' => '2023', 'theme' => 'Toward a Safer ASEAN: Cooperation, Innovation, Impact', 'color' => 'from-amber-700 to-amber-900',   'pdf' => null],
 ];
 $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'from-primary to-primary/70'];
 @endphp
@@ -92,6 +93,14 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
                         <span class="material-symbols-outlined text-primary dark:text-accent text-2xl flex-shrink-0">picture_as_pdf</span>
                         <div>
                             <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Download PDF</h4>
+                            @if(!empty($data['pdf']))
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">This edition is available for download.</p>
+                            <a href="{{ asset($data['pdf']) }}" target="_blank" rel="noopener"
+                               class="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
+                                <span class="material-symbols-outlined text-lg">download</span>
+                                Download PDF
+                            </a>
+                            @else
                             <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
                                 To request a copy of this publication, please contact the ASEANAPOL Permanent Secretariat.
                             </p>
@@ -100,6 +109,7 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
                                 <span class="material-symbols-outlined text-lg">mail</span>
                                 Request This Publication
                             </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -107,7 +117,7 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
         </div>
 
         <div class="mt-10">
-            <a href="{{ route('publication.index', ['locale' => app()->getLocale()]) }}"
+            <a href="{{ route('data-resources.publications', ['locale' => app()->getLocale()]) }}"
                class="inline-flex items-center gap-2 text-primary dark:text-accent hover:underline text-sm font-medium">
                 <span class="material-symbols-outlined text-base">arrow_back</span>
                 Back to Publications
