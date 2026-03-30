@@ -85,7 +85,7 @@
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                         @php
                         $directors = [
-                            ['no'=>'8th','name'=>'Pol. Col. David Martinez Vinluan',                              'force'=>'Philippine National Police',        'flag'=>'🇵🇭','term'=>'2024–2025','current'=>true],
+                            ['no'=>'8th','name'=>'Pol. Col. David Martinez Vinluan',                              'force'=>'Philippine National Police',        'flag'=>'🇵🇭','term'=>'2024–2025','current'=>false],
                             ['no'=>'7th','name'=>'Police Brigadier General Zaw Lin Tun',                          'force'=>'Myanmar Police Force',              'flag'=>'🇲🇲','term'=>'2022–2023','current'=>false],
                             ['no'=>'6th','name'=>'DAC Jim Wee',                                                   'force'=>'Singapore Police Force',            'flag'=>'🇸🇬','term'=>'2020–2021','current'=>false],
                             ['no'=>'5th','name'=>'Pol. Col. Kenechanh Phommachack',                               'force'=>'Lao Police Force',                  'flag'=>'🇱🇦','term'=>'2018–2019','current'=>false],
