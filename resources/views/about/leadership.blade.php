@@ -23,7 +23,7 @@
                 <div class="flex flex-col sm:flex-row gap-0">
                     {{-- Photo --}}
                     <div class="sm:w-56 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                        <img src="{{ asset('media/guidelines/guidelines/director.jpg') }}"
+                        <img src="{{ asset('media/guidelines/guidelines/director.png') }}"
                              alt="Executive Director"
                              class="w-full sm:h-full object-cover object-top max-h-64 sm:max-h-none">
                     </div>
@@ -52,7 +52,7 @@
                     </div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Director for Police Services</p>
                     <h3 class="font-bold text-gray-900 dark:text-white">Police Senior Superintendent Huntal Tambunan</h3>
-                    <p class="text-xs text-gray-400 mt-1">Royal Brunei Police Force &nbsp;·&nbsp; 🇧🇳 Brunei Darussalam</p>
+                    <p class="text-xs text-gray-400 mt-1">Indonesia National Police &nbsp;·&nbsp; 🇮🇩 Indonesia</p>
                 </div>
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="w-10 h-10 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center mb-4">
