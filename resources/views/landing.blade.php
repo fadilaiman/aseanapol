@@ -339,17 +339,17 @@
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
                         @php
                             $directory = [
-                                ['code' => 'bn', 'country' => 'Brunei Darussalam', 'org' => 'Royal Brunei Police Force (RBPF)', 'tel' => '+673-2459 500', 'fax' => '—', 'email' => 'rbpf.interpol@police.gov.bn'],
-                                ['code' => 'kh', 'country' => 'Cambodia', 'org' => 'Cambodian National Police (CNP)', 'tel' => '—', 'fax' => '—', 'email' => 'camcontactperson@gmail.com'],
+                                ['code' => 'bn', 'country' => 'Brunei Darussalam', 'org' => 'Royal Brunei Police Force (RBPF)', 'tel' => '+673-2459 500', 'fax' => '+673 245 9527', 'email' => 'rbpf.interpol@police.gov.bn'],
+                                ['code' => 'kh', 'country' => 'Cambodia', 'org' => 'Cambodian National Police (CNP)', 'tel' => '+855 23216585', 'fax' => '+855 2321 6585', 'email' => 'camcontactperson@gmail.com'],
                                 ['code' => 'id', 'country' => 'Indonesia', 'org' => 'Indonesia National Police (INP)', 'tel' => '+021 739 3650', 'fax' => '+021 720 1402', 'email' => 'ncb-jakarta@interpol.go.id'],
                                 ['code' => 'la', 'country' => 'Lao PDR', 'org' => 'Lao Police Force (LPF)', 'tel' => '+85 6213 16323', 'fax' => '+856 2131 6323', 'email' => 'ncbvientiane@gmail.com'],
                                 ['code' => 'my', 'country' => 'Malaysia', 'org' => 'Royal Malaysia Police (RMP)', 'tel' => '+603 2266 2222', 'fax' => '+603 2070 7500', 'email' => 'rmp@rmp.gov.my'],
                                 ['code' => 'mm', 'country' => 'Myanmar', 'org' => 'Myanmar Police Force (MPF)', 'tel' => '+95 6741 2066', 'fax' => '+95 6741 2188', 'email' => 'naypyitaw.ncb@gmail.com'],
-                                ['code' => 'ph', 'country' => 'Philippines', 'org' => 'Philippines National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '—', 'email' => 'laiad.dpl@pnp.gov.ph'],
+                                ['code' => 'ph', 'country' => 'Philippines', 'org' => 'Philippines National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '+632 7218549', 'email' => 'laiad.dpl@pnp.gov.ph'],
                                 ['code' => 'sg', 'country' => 'Singapore', 'org' => 'Singapore Police Force (SPF)', 'tel' => '1800 358 000', 'fax' => '+65 6256 1296', 'email' => 'www.police.gov.sg/e-services'],
                                 ['code' => 'th', 'country' => 'Thailand', 'org' => 'Royal Thai Police (RTP)', 'tel' => '+6622053001', 'fax' => '+6622533856', 'email' => 'aseanapol.th@gmail.com'],
                                 ['code' => 'vn', 'country' => 'Viet Nam', 'org' => 'Vietnam Police Force (VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
-                                ['code' => 'tl', 'country' => 'Timor-Leste', 'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => '—'],
+                                ['code' => 'tl', 'country' => 'Timor-Leste', 'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => null],
                             ];
                         @endphp
                         @foreach($directory as $entry)
@@ -364,7 +364,9 @@
                                 <td class="px-5 py-4 text-gray-500 dark:text-gray-400 hidden md:table-cell">{{ $entry['tel'] }}</td>
                                 <td class="px-5 py-4 text-gray-500 dark:text-gray-400 hidden lg:table-cell">{{ $entry['fax'] }}</td>
                                 <td class="px-5 py-4 hidden sm:table-cell">
-                                    @if(str_starts_with($entry['email'], 'www.'))
+                                    @if(empty($entry['email']))
+                                        <span class="text-gray-400">—</span>
+                                    @elseif(str_starts_with($entry['email'], 'www.'))
                                         <a href="https://{{ $entry['email'] }}" target="_blank" rel="noopener" class="text-accent hover:text-accent-700 font-medium transition-colors">{{ $entry['email'] }}</a>
                                     @else
                                         <a href="mailto:{{ $entry['email'] }}" class="text-accent hover:text-accent-700 font-medium transition-colors">{{ $entry['email'] }}</a>
