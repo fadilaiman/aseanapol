@@ -17,14 +17,14 @@
 $members = [
     ['name' => 'Royal Brunei Police Force',                    'country' => 'Brunei Darussalam', 'iso' => 'bn', 'route' => 'about.member.brunei'],
     ['name' => 'Cambodian National Police',                    'country' => 'Cambodia',          'iso' => 'kh', 'route' => 'about.member.cambodia'],
-    ['name' => 'Indonesian National Police',                   'country' => 'Indonesia',         'iso' => 'id', 'route' => 'about.member.indonesia'],
+    ['name' => 'Indonesia National Police',                    'country' => 'Indonesia',         'iso' => 'id', 'route' => 'about.member.indonesia'],
     ['name' => 'Lao Police Force',                             'country' => 'Lao PDR',           'iso' => 'la', 'route' => 'about.member.lao'],
     ['name' => 'Royal Malaysia Police',                        'country' => 'Malaysia',          'iso' => 'my', 'route' => 'about.member.malaysia'],
     ['name' => 'Myanmar Police Force',                         'country' => 'Myanmar',           'iso' => 'mm', 'route' => 'about.member.myanmar'],
-    ['name' => 'Philippine National Police',                   'country' => 'Philippines',       'iso' => 'ph', 'route' => 'about.member.philippines'],
+    ['name' => 'Philippines National Police',                  'country' => 'Philippines',       'iso' => 'ph', 'route' => 'about.member.philippines'],
     ['name' => 'Singapore Police Force',                       'country' => 'Singapore',         'iso' => 'sg', 'route' => 'about.member.singapore'],
     ['name' => 'Royal Thai Police',                            'country' => 'Thailand',          'iso' => 'th', 'route' => 'about.member.thailand'],
-    ['name' => 'Office of Investigation Police Agency, MPS',   'country' => 'Viet Nam',          'iso' => 'vn', 'route' => 'about.member.vietnam'],
+    ['name' => 'Vietnam Police Force',                         'country' => 'Viet Nam',          'iso' => 'vn', 'route' => 'about.member.vietnam'],
     ['name' => 'National Police of Timor-Leste (PNTL)',        'country' => 'Timor-Leste',       'iso' => 'tl', 'route' => 'about.member.timor-leste', 'new' => true],
 ];
 @endphp

@@ -23,18 +23,18 @@
                 <div class="flex flex-col sm:flex-row gap-0">
                     {{-- Photo --}}
                     <div class="sm:w-56 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                        <img src="{{ asset('media/guidelines/guidelines/director.png') }}"
+                        <img src="{{ asset('media/ed/9.jpg') }}"
                              alt="Executive Director"
                              class="w-full sm:h-full object-cover object-top max-h-64 sm:max-h-none">
                     </div>
                     {{-- Info --}}
                     <div class="p-8 flex flex-col justify-center">
-                        <span class="text-xs font-bold uppercase tracking-widest text-accent mb-2">8th Executive Director · 2024–2025</span>
-                        <h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-1">Pol. Col. David Martinez Vinluan</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Philippine National Police (PNP) &nbsp;·&nbsp; 🇵🇭 Philippines</p>
+                        <span class="text-xs font-bold uppercase tracking-widest text-accent mb-2">9th Executive Director · 2026–2027</span>
+                        <h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-1">Police Senior Colonel Kongkrissada Kittithiraphong</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Royal Thai Police (RTP) &nbsp;·&nbsp; 🇹🇭 Thailand</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                            Police Colonel David Martinez Vinluan serves as the 8th Executive Director of the ASEANAPOL Secretariat,
-                            nominated by the Philippine National Police for the term 2024–2025. He oversees the operations of the
+                            Police Senior Colonel Kongkrissada Kittithiraphong serves as the 9th Executive Director of the ASEANAPOL Secretariat,
+                            nominated by the Royal Thai Police for the term 2026–2027. He oversees the operations of the
                             Secretariat and leads ASEANAPOL's efforts in strengthening regional cooperation to combat transnational crime.
                         </p>
                     </div>
@@ -77,6 +77,7 @@
                     <thead>
                         <tr class="bg-gray-50 dark:bg-gray-800 text-left">
                             <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 w-12">#</th>
+                            <th class="px-3 py-3 font-semibold text-gray-600 dark:text-gray-300 w-16"></th>
                             <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Name &amp; Rank</th>
                             <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">Country</th>
                             <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">Term</th>
@@ -85,28 +86,29 @@
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                         @php
                         $directors = [
-                            ['no'=>'8th','name'=>'Pol. Col. David Martinez Vinluan',                              'force'=>'Philippine National Police',        'flag'=>'🇵🇭','term'=>'2024–2025','current'=>false],
-                            ['no'=>'7th','name'=>'Police Brigadier General Zaw Lin Tun',                          'force'=>'Myanmar Police Force',              'flag'=>'🇲🇲','term'=>'2022–2023','current'=>false],
-                            ['no'=>'6th','name'=>'DAC Jim Wee',                                                   'force'=>'Singapore Police Force',            'flag'=>'🇸🇬','term'=>'2020–2021','current'=>false],
-                            ['no'=>'5th','name'=>'Pol. Col. Kenechanh Phommachack',                               'force'=>'Lao Police Force',                  'flag'=>'🇱🇦','term'=>'2018–2019','current'=>false],
-                            ['no'=>'4th','name'=>'Police Inspector General Yohanes Agus Mulyono',                  'force'=>'Indonesian National Police',        'flag'=>'🇮🇩','term'=>'2016–2017','current'=>false],
-                            ['no'=>'3rd','name'=>'SAC Pengiran Dato\' Paduka Hj Abdul Wahab bin Pengiran Hj Omar', 'force'=>'Royal Brunei Police Force',         'flag'=>'🇧🇳','term'=>'2014–2015','current'=>false],
-                            ['no'=>'2nd','name'=>'Lt. Gen. Sar Moline',                                           'force'=>'Cambodian National Police',         'flag'=>'🇰🇭','term'=>'2012–2013','current'=>false],
-                            ['no'=>'1st','name'=>'ACP Mohd Nadzri b. Zainal Abidin',                             'force'=>'Royal Malaysia Police',             'flag'=>'🇲🇾','term'=>'2010–2011','current'=>false],
+                            ['no'=>'9th','name'=>'Police Senior Colonel Kongkrissada Kittithiraphong',             'force'=>'Royal Thai Police (RTP)',           'flag'=>'🇹🇭','term'=>'2026–2027','photo'=>asset('media/ed/9.jpg')],
+                            ['no'=>'8th','name'=>'Pol. Col. David Martinez Vinluan',                              'force'=>'Philippines National Police (PNP)', 'flag'=>'🇵🇭','term'=>'2024–2025','photo'=>asset('media/ed/8.jpg')],
+                            ['no'=>'7th','name'=>'Police Brigadier General Zaw Lin Tun',                          'force'=>'Myanmar Police Force (MPF)',         'flag'=>'🇲🇲','term'=>'2022–2023','photo'=>asset('media/ed/7.jpg')],
+                            ['no'=>'6th','name'=>'DAC Jim Wee',                                                   'force'=>'Singapore Police Force (SPF)',       'flag'=>'🇸🇬','term'=>'2020–2021','photo'=>asset('media/ed/6.jpg')],
+                            ['no'=>'5th','name'=>'Pol. Col. Kenechanh Phommachack',                               'force'=>'Lao Police Force (LPF)',             'flag'=>'🇱🇦','term'=>'2018–2019','photo'=>asset('media/ed/5.jpg')],
+                            ['no'=>'4th','name'=>'Police Inspector General Yohanes Agus Mulyono',                  'force'=>'Indonesia National Police (INP)',    'flag'=>'🇮🇩','term'=>'2016–2017','photo'=>asset('media/ed/4.jpg')],
+                            ['no'=>'3rd','name'=>'SAC Pengiran Dato\' Paduka Hj Abdul Wahab bin Pengiran Hj Omar', 'force'=>'Royal Brunei Police Force (RBPF)',   'flag'=>'🇧🇳','term'=>'2014–2015','photo'=>asset('media/ed/3.png')],
+                            ['no'=>'2nd','name'=>'Lt. Gen. Sar Moline',                                           'force'=>'Cambodian National Police (CNP)',    'flag'=>'🇰🇭','term'=>'2012–2013','photo'=>asset('media/ed/2.jpg')],
+                            ['no'=>'1st','name'=>'ACP Mohd Nadzri b. Zainal Abidin',                             'force'=>'Royal Malaysia Police (RMP)',        'flag'=>'🇲🇾','term'=>'2010–2011','photo'=>asset('media/ed/1.jpg')],
                         ];
                         @endphp
                         @foreach($directors as $d)
-                        <tr class="{{ $d['current'] ? 'bg-primary/5 dark:bg-primary/10' : 'hover:bg-gray-50 dark:hover:bg-dark-surface' }} transition-colors">
-                            <td class="px-5 py-4 font-bold text-primary dark:text-accent">{{ $d['no'] }}</td>
-                            <td class="px-5 py-4">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-dark-surface transition-colors">
+                            <td class="px-5 py-3 font-bold text-primary dark:text-accent">{{ $d['no'] }}</td>
+                            <td class="px-3 py-3">
+                                <img src="{{ $d['photo'] }}" alt="{{ $d['name'] }}" class="w-10 h-12 object-cover object-top rounded-lg shadow-sm">
+                            </td>
+                            <td class="px-5 py-3">
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $d['name'] }}</span>
-                                @if($d['current'])
-                                <span class="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary text-white">Current</span>
-                                @endif
                                 <div class="text-xs text-gray-400 mt-0.5">{{ $d['force'] }}</div>
                             </td>
-                            <td class="px-5 py-4 text-gray-600 dark:text-gray-300">{{ $d['flag'] }}</td>
-                            <td class="px-5 py-4 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $d['term'] }}</td>
+                            <td class="px-5 py-3 text-gray-600 dark:text-gray-300">{{ $d['flag'] }}</td>
+                            <td class="px-5 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $d['term'] }}</td>
                         </tr>
                         @endforeach
                     </tbody>

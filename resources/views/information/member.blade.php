@@ -71,9 +71,27 @@
 
                 <h3 class="text-xl font-bold text-primary dark:text-white pt-2">Detailed Information</h3>
 
+                {{-- Chief of Police --}}
+                @isset($chief_name)
+                <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="flex flex-col sm:flex-row gap-0">
+                        <div class="sm:w-40 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            <img src="{{ asset($chief_photo) }}"
+                                 alt="{{ $chief_name }}"
+                                 class="w-full sm:h-full object-cover object-top max-h-52 sm:max-h-none">
+                        </div>
+                        <div class="p-6 flex flex-col justify-center">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Chief of Police</span>
+                            <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-0.5">{{ $chief_name }}</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">{{ $chief_rank }}</p>
+                            <p class="text-xs font-semibold text-primary dark:text-accent uppercase tracking-wide">{{ $chief_designation }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endisset
+
                 @php
                     $stubs = [
-                        ['icon' => 'person_pin',        'title' => 'Chief of Police',        'desc' => 'Name, rank and profile of the current Chief of Police / Inspector General.'],
                         ['icon' => 'account_tree',      'title' => 'Police Structure',       'desc' => 'Organisational chart and key divisions of the national police force.'],
                         ['icon' => 'military_tech',     'title' => 'Rank & Uniforms',        'desc' => 'Police rank hierarchy, insignia and uniform regulations.'],
                         ['icon' => 'folder_special',    'title' => 'ED / DPP / DPS',         'desc' => 'ASEANAPOL-designated focal points: Executive Director, Deputy Programme Points and Deputy Support contacts.'],

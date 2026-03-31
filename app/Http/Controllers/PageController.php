@@ -52,6 +52,10 @@ class PageController extends Controller
             'website'     => 'https://www.police.gov.bn',
             'route'       => 'about.member.brunei',
             'description' => 'The Royal Brunei Police Force (RBPF) is the national police force of Brunei Darussalam, responsible for maintaining law and order, preventing and detecting crime, and safeguarding the peace and security of the nation.',
+            'chief_name'        => 'Dato Seri Pahlawan Sulaiman bin Alidin',
+            'chief_rank'        => 'Commissioner of Police',
+            'chief_designation' => 'Commissioner of Police',
+            'chief_photo'       => 'media/chiefs/brunei.jpg',
         ]);
     }
 
@@ -68,6 +72,10 @@ class PageController extends Controller
             'website'     => null,
             'route'       => 'about.member.cambodia',
             'description' => 'The Cambodian National Police (CNP) is the national police organisation of the Kingdom of Cambodia under the Ministry of Interior, responsible for maintaining public order, combating crime, and ensuring national security.',
+            'chief_name'        => 'Sar Theth',
+            'chief_rank'        => 'Police General',
+            'chief_designation' => 'Commissioner General',
+            'chief_photo'       => 'media/chiefs/cambodia.jpg',
         ]);
     }
 
@@ -76,14 +84,18 @@ class PageController extends Controller
         return $this->memberPage([
             'country'     => 'Indonesia',
             'force'       => 'Indonesian National Police',
-            'abbreviation'=> 'POLRI',
+            'abbreviation'=> 'INP',
             'iso'         => 'id',
             'tel'         => ['+021 739 3650', '+021 721 8467'],
             'fax'         => '+021 720 1402',
             'email'       => 'ncb-jakarta@interpol.go.id',
             'website'     => 'https://www.polri.go.id',
             'route'       => 'about.member.indonesia',
-            'description' => 'The Indonesian National Police (POLRI) is the national police force of the Republic of Indonesia, responsible for law enforcement, maintaining public order, and combating crime throughout the archipelago.',
+            'description' => 'The Indonesian National Police (INP) is the national police force of the Republic of Indonesia, responsible for law enforcement, maintaining public order, and combating crime throughout the archipelago.',
+            'chief_name'        => 'Drs. Listyo Sigit Prabowo, M.Si',
+            'chief_rank'        => 'Police General',
+            'chief_designation' => 'Chief of Police',
+            'chief_photo'       => 'media/chiefs/indonesia.jpg',
         ]);
     }
 
@@ -100,6 +112,10 @@ class PageController extends Controller
             'website'     => null,
             'route'       => 'about.member.lao',
             'description' => 'The Lao Police Force is the national law enforcement agency of the Lao People\'s Democratic Republic, operating under the Ministry of Public Security to maintain peace, order, and national security.',
+            'chief_name'        => 'Kongsavat Bounlieng',
+            'chief_rank'        => 'Police Brigadier General',
+            'chief_designation' => 'Chief of Police',
+            'chief_photo'       => 'media/chiefs/lao.jpg',
         ]);
     }
 
@@ -108,7 +124,7 @@ class PageController extends Controller
         return $this->memberPage([
             'country'     => 'Malaysia',
             'force'       => 'Royal Malaysia Police',
-            'abbreviation'=> 'PDRM',
+            'abbreviation'=> 'RMP',
             'iso'         => 'my',
             'tel'         => ['+603 2266 2222'],
             'fax'         => '+603 2070 7500',
@@ -116,6 +132,10 @@ class PageController extends Controller
             'website'     => 'https://www.rmp.gov.my',
             'route'       => 'about.member.malaysia',
             'description' => 'The Royal Malaysia Police (RMP) or Polis DiRaja Malaysia (PDRM) is the national police force of Malaysia, host of the ASEANAPOL Permanent Secretariat, and one of the founding members of ASEANAPOL.',
+            'chief_name'        => "Dato' Sri Hj. Mohd Khalid Hj. Ismail",
+            'chief_rank'        => 'Inspector General',
+            'chief_designation' => 'Inspector General of Police',
+            'chief_photo'       => 'media/chiefs/malaysia.jpg',
         ]);
     }
 
@@ -132,6 +152,10 @@ class PageController extends Controller
             'website'     => null,
             'route'       => 'about.member.myanmar',
             'description' => 'The Myanmar Police Force is the national police organisation of the Republic of the Union of Myanmar, responsible for maintaining law and order, preventing crime, and ensuring public safety.',
+            'chief_name'        => 'Win Zaw Moe',
+            'chief_rank'        => 'Police Lieutenant General',
+            'chief_designation' => 'Chief of Police',
+            'chief_photo'       => 'media/chiefs/myanmar.jpg',
         ]);
     }
 
@@ -148,6 +172,10 @@ class PageController extends Controller
             'website'     => 'https://www.pnp.gov.ph',
             'route'       => 'about.member.philippines',
             'description' => 'The Philippine National Police (PNP) is the national police force of the Philippines, mandated to enforce the law, prevent and control crimes, maintain peace and order, and ensure public safety.',
+            'chief_name'        => 'Jose Melencio C. Nartatez Jr.',
+            'chief_rank'        => 'Police General',
+            'chief_designation' => 'Chief of Police',
+            'chief_photo'       => 'media/chiefs/philippines.jpg',
         ]);
     }
 
@@ -164,6 +192,10 @@ class PageController extends Controller
             'website'     => 'https://www.police.gov.sg',
             'route'       => 'about.member.singapore',
             'description' => 'The Singapore Police Force (SPF) is the national police force of the Republic of Singapore, responsible for maintaining law and order, preventing crime, and ensuring the safety and security of Singapore.',
+            'chief_name'        => 'How Kwang Hwee',
+            'chief_rank'        => 'Commissioner of Police',
+            'chief_designation' => 'Commissioner of Police',
+            'chief_photo'       => 'media/chiefs/singapore.jpg',
         ]);
     }
 
@@ -180,6 +212,10 @@ class PageController extends Controller
             'website'     => 'https://www.royalthaipolice.go.th',
             'route'       => 'about.member.thailand',
             'description' => 'The Royal Thai Police is the national police service of the Kingdom of Thailand, responsible for law enforcement, crime prevention and suppression, immigration control, and maintaining public order.',
+            'chief_name'        => 'Kittharath Punpetch',
+            'chief_rank'        => 'Police General',
+            'chief_designation' => 'Commissioner General',
+            'chief_photo'       => 'media/chiefs/thailand.jpg',
         ]);
     }
 
@@ -187,15 +223,19 @@ class PageController extends Controller
     {
         return $this->memberPage([
             'country'     => 'Viet Nam',
-            'force'       => 'Office of Investigation Police Agency, Ministry of Public Security',
-            'abbreviation'=> 'MPS',
+            'force'       => 'Vietnam Police Force',
+            'abbreviation'=> 'VPF',
             'iso'         => 'vn',
             'tel'         => ['+8424 3938 7173'],
             'fax'         => '+8424 3938 7176',
             'email'       => 'division6@dfir.gov.vn',
             'website'     => null,
             'route'       => 'about.member.vietnam',
-            'description' => 'The Office of Investigation Police Agency under Vietnam\'s Ministry of Public Security is the designated ASEANAPOL contact body for the Socialist Republic of Viet Nam, responsible for criminal investigation cooperation and transnational crime enforcement.',
+            'description' => 'The Vietnam Police Force (VPF) is the designated ASEANAPOL contact body for the Socialist Republic of Viet Nam, responsible for criminal investigation cooperation and transnational crime enforcement.',
+            'chief_name'        => 'Tran Minh Tien',
+            'chief_rank'        => 'Police Major General',
+            'chief_designation' => 'Chief of Police',
+            'chief_photo'       => 'media/chiefs/vietnam.jpg',
         ]);
     }
 
