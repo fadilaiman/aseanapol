@@ -59,8 +59,8 @@
                         <span class="material-symbols-outlined text-primary dark:text-accent text-xl">analytics</span>
                     </div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Director for Plans and Programmes</p>
-                    <h3 class="font-bold text-gray-900 dark:text-white">Senior Lieutenant Colonel Nguyen Huu Ngoc</h3>
-                    <p class="text-xs text-gray-400 mt-1">Ministry of Public Security &nbsp;·&nbsp; 🇻🇳 Viet Nam</p>
+                    <h3 class="font-bold text-gray-900 dark:text-white">Police Colonel Jean Mary A. Mangahis</h3>
+                    <p class="text-xs text-gray-400 mt-1">Philippines National Police &nbsp;·&nbsp; 🇵🇭 Philippines</p>
                 </div>
             </div>
         </div>
