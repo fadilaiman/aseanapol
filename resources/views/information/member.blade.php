@@ -25,6 +25,11 @@
                     <img src="https://flagcdn.com/w160/{{ $iso }}.png"
                          alt="{{ $country }} flag"
                          class="w-24 h-auto rounded-md shadow-md flex-shrink-0">
+                    @isset($logo)
+                    <img src="{{ asset($logo) }}"
+                         alt="{{ $force }} crest"
+                         class="w-16 h-16 object-contain flex-shrink-0">
+                    @endisset
                     <div>
                         <div class="text-sm font-semibold text-accent uppercase tracking-wider mb-1">
                             @isset($observer_note)
@@ -54,6 +59,21 @@
                     <h3 class="text-xl font-bold text-primary dark:text-white mb-4">Overview</h3>
                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ $description }}</p>
                 </div>
+
+                {{-- History Timeline --}}
+                @isset($history)
+                <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-xl font-bold text-primary dark:text-white mb-6">History</h3>
+                    <div class="space-y-5">
+                        @foreach($history as $entry)
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-24 text-sm font-bold text-accent pt-0.5">{{ $entry['year'] }}</div>
+                            <div class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed border-l-2 border-gray-100 dark:border-gray-700 pl-4">{{ $entry['text'] }}</div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endisset
 
                 {{-- ASEANAPOL Membership Note --}}
                 <div class="bg-primary/5 dark:bg-primary/15 rounded-2xl p-6 border border-primary/10 dark:border-primary/30">

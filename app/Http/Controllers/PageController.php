@@ -56,6 +56,15 @@ class PageController extends Controller
             'chief_rank'        => 'Commissioner of Police',
             'chief_designation' => 'Commissioner of Police',
             'chief_photo'       => 'media/chiefs/brunei.jpg',
+            'logo'              => 'media/police-logo/police-logo/brunei.png',
+            'history'           => [
+                ['year' => '1906', 'text' => 'The signing of the 1906 treaty between Brunei Darussalam and the United Kingdom laid the foundation of a new government with the formal introduction of the British Resident. The first officers to police Brunei comprised one Pathan and one Sikh, later supplemented by Sikhs seconded from the Straits Settlement government in Labuan, who were eventually replaced by local Malays.'],
+                ['year' => '1909', 'text' => 'Sergeant Crummy was appointed as the first Chief Police Officer of Brunei Darussalam.'],
+                ['year' => '1917', 'text' => 'The Brunei Police Force was founded under G McAfee, who also continued as Chief Police Officer for Labuan. Chief Inspector McAfee was appointed as the Brunei CPO in 1917.'],
+                ['year' => '1921', 'text' => 'The Brunei Police was officially formed on January 1, 1921 immediately after the 1920 Police Enactment was passed. The local force took over all responsibilities from the Police Force of the Straits Settlement.'],
+                ['year' => '1950', 'text' => 'The Police headquarters was moved to Kuala Belait and the CPO became answerable to the CP of Sarawak.'],
+                ['year' => '1959', 'text' => "With the introduction of Brunei's own Constitution, the sultanate established its own Commissioner of Police, no longer required to report to the CP of Sarawak."],
+            ],
         ]);
     }
 
@@ -69,13 +78,26 @@ class PageController extends Controller
             'tel'         => null,
             'fax'         => null,
             'email'       => 'camcontactperson@gmail.com',
-            'website'     => null,
+            'website'     => 'https://www.police.gov.kh',
             'route'       => 'about.member.cambodia',
             'description' => 'The Cambodian National Police (CNP) is the national police organisation of the Kingdom of Cambodia under the Ministry of Interior, responsible for maintaining public order, combating crime, and ensuring national security.',
             'chief_name'        => 'Sar Theth',
             'chief_rank'        => 'Police General',
             'chief_designation' => 'Commissioner General',
             'chief_photo'       => 'media/chiefs/cambodia.jpg',
+            'logo'              => 'media/default-album/default-album/cambodian.png',
+            'history'           => [
+                ['year' => '1884', 'text' => 'The Phnom Penh police force was fully equipped with arms.'],
+                ['year' => '1885', 'text' => 'Port police was established for ship inspection.'],
+                ['year' => '1903', 'text' => 'Administrative and Judicial Police were organised.'],
+                ['year' => '1905', 'text' => 'Maritime Police was established.'],
+                ['year' => '1925', 'text' => '"Commune Patrols" or Rural Police were established.'],
+                ['year' => '1945', 'text' => 'The National Police was officially established by Royal Decree (Royal Krom No. 35), with May 16, 1945 designated as the official founding date.'],
+                ['year' => '1953', 'text' => 'France transferred the police institution to the Royal Government following the Franco-Khmer Treaty recognising Cambodia\'s independence.'],
+                ['year' => '1979', 'text' => 'The Cambodian People\'s Police Force was re-established following the end of the Khmer Rouge period, with 45 personnel at ministry level.'],
+                ['year' => '1992–1993', 'text' => 'During UNTAC operations, the police provided security for 360,000 repatriated refugees and ensured election security.'],
+                ['year' => '2007', 'text' => 'Verification process completed; the actual force numbered approximately 52,000 officers nationwide.'],
+            ],
         ]);
     }
 
@@ -96,6 +118,14 @@ class PageController extends Controller
             'chief_rank'        => 'Police General',
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/indonesia.jpg',
+            'logo'              => 'media/default-album/default-album/indonesia.png',
+            'history'           => [
+                ['year' => '1946', 'text' => 'The Indonesian police was established following independence. Police units fought in the National Revolution against Dutch colonial forces and helped suppress the communist revolt in Madiun.'],
+                ['year' => '1960s', 'text' => 'The police were brought under the control of the Armed Forces Chief during this period.'],
+                ['year' => '1999', 'text' => 'Following major political reforms, the Indonesian National Police formally separated from the military in April 1999.'],
+                ['year' => '2000', 'text' => 'The separation from the military was formally completed, establishing the INP as a fully independent law enforcement agency headquartered in Kebayoran Baru, South Jakarta.'],
+                ['year' => '2001', 'text' => 'The force transitioned to British-style ranks in subsequent organisational reforms.'],
+            ],
         ]);
     }
 
@@ -116,6 +146,7 @@ class PageController extends Controller
             'chief_rank'        => 'Police Brigadier General',
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/lao.jpg',
+            'logo'              => 'media/police-logo/police-logo/lpf.jpg',
         ]);
     }
 
@@ -136,6 +167,15 @@ class PageController extends Controller
             'chief_rank'        => 'Inspector General',
             'chief_designation' => 'Inspector General of Police',
             'chief_photo'       => 'media/chiefs/malaysia.jpg',
+            'logo'              => 'media/police-logo/police-logo/malaysia.png',
+            'history'           => [
+                ['year' => '1807', 'text' => 'The modern police organisation in Malaysia began after the Charter of Justice in Penang was granted.'],
+                ['year' => '1940s', 'text' => 'Following World War II, a single centralised police organisation was established, known as the Civil Affairs Police Force, led by H. B. Longworthy.'],
+                ['year' => '1958', 'text' => 'On July 24, the Malaysian King granted the Royal title to the Malayan Federation\'s Police Forces.'],
+                ['year' => '1963', 'text' => 'The Royal Federation of Malayan Police (RFMP), the North Borneo Armed Constabulary and Sarawak Constabulary were merged to form the Royal Malaysian Police.'],
+                ['year' => '1963–1965', 'text' => 'Police and military forces were engaged during the Malaysia–Indonesia Confrontation, defending against infiltrations in Johor and Sabah.'],
+                ['year' => '2005', 'text' => 'The Rakan Cop community outreach programme was launched on August 9.'],
+            ],
         ]);
     }
 
@@ -156,6 +196,13 @@ class PageController extends Controller
             'chief_rank'        => 'Police Lieutenant General',
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/myanmar.jpg',
+            'logo'              => 'media/police-logo/police-logo/myanmar-new-crest-1.png',
+            'history'           => [
+                ['year' => '1885', 'text' => 'The British policing system was introduced when Myanmar became a British Colony. The force was known as the Burma Police.'],
+                ['year' => '1964', 'text' => 'The Burma Police was reorganised as the People\'s Police Force following independence.'],
+                ['year' => '1994', 'text' => 'On January 28, the Committee for Reorganisation of the Police Administration System was formed, presided over by the Secretary of the State Peace and Development Council.'],
+                ['year' => '1995', 'text' => 'On October 1, the force was reorganised and established under its current name, the Myanmar Police Force.'],
+            ],
         ]);
     }
 
@@ -176,6 +223,10 @@ class PageController extends Controller
             'chief_rank'        => 'Police General',
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/philippines.jpg',
+            'logo'              => 'media/default-album/default-album/philippines.gif',
+            'history'           => [
+                ['year' => '1991', 'text' => 'The Philippine National Police was activated on January 29, 1991 through the merger of the Philippine Constabulary and the Integrated National Police, pursuant to Republic Act 6975. Headquarters are located at Camp Crame, Quezon City.'],
+            ],
         ]);
     }
 
@@ -196,6 +247,22 @@ class PageController extends Controller
             'chief_rank'        => 'Commissioner of Police',
             'chief_designation' => 'Commissioner of Police',
             'chief_photo'       => 'media/chiefs/singapore.jpg',
+            'logo'              => 'media/default-album/default-album/singapore.png',
+            'history'           => [
+                ['year' => '1819', 'text' => 'With the establishment of Singapore as a trading post, the first police team comprised one jemadar (Asian Sergeant), 12 peons (patrolmen) and a jailor.'],
+                ['year' => '1826', 'text' => 'Singapore merged with Malacca and Penang to form the Straits Settlements; the SPF became part of the Straits Settlements Police Force.'],
+                ['year' => '1856', 'text' => 'The Police Act was passed and Thomas Dunman became the first full-time Commissioner of Police.'],
+                ['year' => '1862', 'text' => 'The Detective Branch was established as a precursor to the Criminal Investigation Department, to investigate secret societies and violent crimes.'],
+                ['year' => '1866', 'text' => 'The Marine Police was established to address piracy.'],
+                ['year' => '1918', 'text' => 'The Criminal Intelligence Department was created to counter seditious activities; the Traffic Police was also started this year.'],
+                ['year' => '1949', 'text' => 'The Gurkha Contingent was established; the first batch of 10 female constables was recruited.'],
+                ['year' => '1969', 'text' => 'Academy status was granted to the Police Training School.'],
+                ['year' => '1975', 'text' => 'Full-time Police National Service was introduced and the Scene of Crime Unit was established.'],
+                ['year' => '1983', 'text' => 'The Neighbourhood Police Post system was implemented, bringing policing closer to the community.'],
+                ['year' => '1996', 'text' => 'The Neighbourhood Police Centre concept was launched, providing 24-hour, one-stop police service.'],
+                ['year' => '2002', 'text' => 'The Singapore Police Force received the Singapore Quality Award (SQA).'],
+                ['year' => '2007', 'text' => 'The SPF was awarded the Singapore Quality Award with Special Commendation on October 9.'],
+            ],
         ]);
     }
 
@@ -216,6 +283,11 @@ class PageController extends Controller
             'chief_rank'        => 'Police General',
             'chief_designation' => 'Commissioner General',
             'chief_photo'       => 'media/chiefs/thailand.jpg',
+            'logo'              => 'media/default-album/default-album/emblem_of_royal_thai_police_new.jpg',
+            'history'           => [
+                ['year' => '1455', 'text' => 'The Royal Thai Police first came into existence over 500 years ago.'],
+                ['year' => '19th Century', 'text' => 'Modernisation of the police occurred during the reign of King Rama IV, when an English sea captain named Joseph Byrd Ames designed the modern policing system and became the first uniform police commander appointed by the king.'],
+            ],
         ]);
     }
 
@@ -236,6 +308,19 @@ class PageController extends Controller
             'chief_rank'        => 'Police Major General',
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/vietnam.jpg',
+            'logo'              => 'media/police-logo/police-logo/vietnam.png',
+            'history'           => [
+                ['year' => '1930', 'text' => 'The Communist Party of Viet Nam was founded, and \'Red Safeguard\' teams emerged as predecessors to the People\'s Police Force (PPF).'],
+                ['year' => '1945', 'text' => 'On August 15, the first organisation of the PPF was formed after the success of the August Revolution. On September 2, the Democratic Republic of Vietnam\'s Independence Day was protected by the new security forces.'],
+                ['year' => '1946', 'text' => 'On February 21, President Ho Chi Minh signed Decree 23, merging Police Departments into the Vietnam Public Security Service (VNPSS).'],
+                ['year' => '1953', 'text' => 'The Sub-Ministry of Public Security was elevated to a full Ministry of Public Security in August.'],
+                ['year' => '1956', 'text' => 'The Central Committee issued Directive 30, formally establishing the People\'s Police Force.'],
+                ['year' => '1995', 'text' => 'The Vietnam Interpol Office was created.'],
+                ['year' => '1997', 'text' => 'The Department of Drug Crime Investigation was founded.'],
+                ['year' => '2003', 'text' => 'The force received the Gold Star Order; the Truong Van Cam organised crime case was successfully investigated.'],
+                ['year' => '2007', 'text' => 'The Hero of People\'s Armed Forces honour was awarded; the Department of Environmental Police was created.'],
+                ['year' => '2010', 'text' => 'Departments of High-Tech Crime Investigation and Fugitive Pursuit were established.'],
+            ],
         ]);
     }
 
