@@ -19,7 +19,7 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-2 tracking-tight uppercase">Organisational Structure of ASEANAPOL</h2>
         <div class="w-16 h-1 bg-accent mx-auto rounded mb-8"></div>
-        <img src="{{ asset('media/governance/governance/organisational-chart-current.jpg') }}"
+        <img src="{{ asset('media/governance/governance/organisational-chart-2025.jpg') }}"
              alt="Organisational Structure of ASEANAPOL"
              class="mx-auto w-full max-w-4xl rounded-lg shadow">
     </div>
