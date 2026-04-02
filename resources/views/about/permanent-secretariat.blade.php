@@ -131,7 +131,7 @@
         <div class="w-16 h-1 bg-accent mx-auto rounded mb-10"></div>
 
         @php
-        $dirPoliceServices = [
+        $dirPoliceServices = array_reverse([
             ['name' => 'DACP Lim Kim Tak',                         'force' => 'SPF', 'flag' => '🇸🇬', 'term' => '2010–2012'],
             ['name' => 'ACP Mohamad Anil Shah bin Abdullah',        'force' => 'RMP', 'flag' => '🇲🇾', 'term' => '2013–2015'],
             ['name' => 'PSSUPT. Ferdinand R.P. Bartolome',          'force' => 'PNP', 'flag' => '🇵🇭', 'term' => '2016–2017'],
@@ -139,8 +139,8 @@
             ['name' => 'Pol. Snr. Supt. Joni Getamala',            'force' => 'INP', 'flag' => '🇮🇩', 'term' => '2020–2022'],
             ['name' => 'ACP Dr. Bakri Haji Zainal Abidin',         'force' => 'RMP', 'flag' => '🇲🇾', 'term' => '2023–2024'],
             ['name' => 'Pol. Snr. Supt. Huntal Tambunan',          'force' => 'INP', 'flag' => '🇮🇩', 'term' => '2024–present'],
-        ];
-        $dirExecutive = [
+        ]);
+        $dirExecutive = array_reverse([
             ['name' => 'ACP Mohd Nadzri bin Zainal Abidin',                              'force' => 'RMP',  'flag' => '🇲🇾', 'term' => '2010–2011'],
             ['name' => 'Lt. General Sar Moline',                                          'force' => 'CNP',  'flag' => '🇰🇭', 'term' => '2012–2013'],
             ['name' => "SAC Pengiran Dato' Paduka Hj. Abdul Wahab bin Pengiran Hj. Omar", 'force' => 'RBPF', 'flag' => '🇧🇳', 'term' => '2014–2015'],
@@ -149,15 +149,15 @@
             ['name' => 'DAC Jim Wee',                                                     'force' => 'SPF',  'flag' => '🇸🇬', 'term' => '2020–2021'],
             ['name' => 'Pol. Brigadier General Zaw Lin Tun',                              'force' => 'MPF',  'flag' => '🇲🇲', 'term' => '2022–2023'],
             ['name' => 'Pol. Colonel David Martinez Vinluan',                             'force' => 'PNP',  'flag' => '🇵🇭', 'term' => '2024–present'],
-        ];
-        $dirPlans = [
+        ]);
+        $dirPlans = array_reverse([
             ['name' => 'Supt. Desy Adriani',                  'force' => 'INP',          'flag' => '🇮🇩', 'term' => '2010–2012'],
             ['name' => 'Supt. Reinhard Hutagaol',             'force' => 'INP',          'flag' => '🇮🇩', 'term' => '2013–2014'],
             ['name' => 'Supt. Yuli Cahyanti',                 'force' => 'INP',          'flag' => '🇮🇩', 'term' => '2015–2016'],
             ['name' => 'ACP Aidah binti Othman',              'force' => 'RMP',          'flag' => '🇲🇾', 'term' => '2017–2019'],
             ['name' => 'Supt. Tang Yik Tung',                 'force' => 'RBPF',         'flag' => '🇧🇳', 'term' => '2020–2022'],
             ['name' => 'Pol. Snr. Lt. Col. Nguyen Huu Ngoc', 'force' => 'OIPA Vietnam', 'flag' => '🇻🇳', 'term' => '2023–present'],
-        ];
+        ]);
         @endphp
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
