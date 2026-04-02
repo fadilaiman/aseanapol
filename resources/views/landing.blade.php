@@ -253,17 +253,17 @@
 
         @php
             $countries = [
-                ['code' => 'bn', 'name' => 'Brunei Darussalam'],
-                ['code' => 'kh', 'name' => 'Cambodia'],
-                ['code' => 'id', 'name' => 'Indonesia'],
-                ['code' => 'la', 'name' => 'Lao PDR'],
-                ['code' => 'my', 'name' => 'Malaysia'],
-                ['code' => 'mm', 'name' => 'Myanmar'],
-                ['code' => 'ph', 'name' => 'Philippines'],
-                ['code' => 'sg', 'name' => 'Singapore'],
-                ['code' => 'th', 'name' => 'Thailand'],
-                ['code' => 'vn', 'name' => 'Viet Nam'],
-                ['code' => 'tl', 'name' => 'Timor-Leste'],
+                ['code' => 'bn', 'name' => 'Brunei Darussalam', 'logo' => 'brunei-rbpf.png',       'short' => 'RBPF'],
+                ['code' => 'kh', 'name' => 'Cambodia',          'logo' => 'cambodia-cnp.png',       'short' => 'CNP'],
+                ['code' => 'id', 'name' => 'Indonesia',         'logo' => 'indonesia-polri.png',    'short' => 'INP'],
+                ['code' => 'la', 'name' => 'Lao PDR',           'logo' => 'laos-lpp.png',           'short' => 'LPF'],
+                ['code' => 'my', 'name' => 'Malaysia',          'logo' => 'malaysia-pdrm.png',      'short' => 'RMP'],
+                ['code' => 'mm', 'name' => 'Myanmar',           'logo' => 'myanmar-mpf.png',        'short' => 'MPF'],
+                ['code' => 'ph', 'name' => 'Philippines',       'logo' => 'philippines-pnp.png',    'short' => 'PNP'],
+                ['code' => 'sg', 'name' => 'Singapore',         'logo' => 'singapore-spf.png',      'short' => 'SPF'],
+                ['code' => 'th', 'name' => 'Thailand',          'logo' => 'thailand-rtp.png',       'short' => 'RTP'],
+                ['code' => 'vn', 'name' => 'Viet Nam',          'logo' => 'vietnam-mps.png',        'short' => 'VPF'],
+                ['code' => 'tl', 'name' => 'Timor-Leste',       'logo' => 'timorleste-pntl.png',    'short' => 'PNTL'],
             ];
         @endphp
 
@@ -273,23 +273,35 @@
                 {{-- Original set --}}
                 @foreach($countries as $country)
                     <div class="bg-white dark:bg-dark-card rounded-xl p-5 text-center shadow-sm dark:shadow-black/20 group cursor-default border border-transparent dark:border-gray-700/50 flex-shrink-0 w-44 hover:-translate-y-1 transition-transform duration-300">
-                        <div class="w-20 h-14 mx-auto mb-3 rounded-lg overflow-hidden shadow-md">
-                            <img src="https://flagcdn.com/w160/{{ $country['code'] }}.png"
-                                 alt="{{ $country['name'] }}"
-                                 class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:scale-105">
+                        <div class="w-16 h-16 mx-auto mb-3">
+                            <img src="/media/police-logo/{{ $country['logo'] }}"
+                                 alt="{{ $country['name'] }} police logo"
+                                 class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
-                        <h4 class="text-sm font-semibold text-primary dark:text-white">{{ $country['name'] }}</h4>
+                        <div class="flex items-center justify-center gap-1.5 mb-2">
+                            <img src="https://flagcdn.com/w40/{{ $country['code'] }}.png"
+                                 alt="{{ $country['name'] }}"
+                                 class="h-4 w-auto rounded-sm shadow-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                            <span class="text-xs font-bold text-accent">{{ $country['short'] }}</span>
+                        </div>
+                        <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                     </div>
                 @endforeach
                 {{-- Duplicate set for seamless loop --}}
                 @foreach($countries as $country)
                     <div class="bg-white dark:bg-dark-card rounded-xl p-5 text-center shadow-sm dark:shadow-black/20 group cursor-default border border-transparent dark:border-gray-700/50 flex-shrink-0 w-44 hover:-translate-y-1 transition-transform duration-300" aria-hidden="true">
-                        <div class="w-20 h-14 mx-auto mb-3 rounded-lg overflow-hidden shadow-md">
-                            <img src="https://flagcdn.com/w160/{{ $country['code'] }}.png"
+                        <div class="w-16 h-16 mx-auto mb-3">
+                            <img src="/media/police-logo/{{ $country['logo'] }}"
                                  alt=""
-                                 class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:scale-105">
+                                 class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
-                        <h4 class="text-sm font-semibold text-primary dark:text-white">{{ $country['name'] }}</h4>
+                        <div class="flex items-center justify-center gap-1.5 mb-2">
+                            <img src="https://flagcdn.com/w40/{{ $country['code'] }}.png"
+                                 alt=""
+                                 class="h-4 w-auto rounded-sm shadow-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                            <span class="text-xs font-bold text-accent">{{ $country['short'] }}</span>
+                        </div>
+                        <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                     </div>
                 @endforeach
             </div>
@@ -339,17 +351,17 @@
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
                         @php
                             $directory = [
-                                ['code' => 'bn', 'country' => 'Brunei Darussalam', 'org' => 'Royal Brunei Police Force (RBPF)', 'tel' => '+673-2459 500', 'fax' => '+673 245 9527', 'email' => 'rbpf.interpol@police.gov.bn'],
-                                ['code' => 'kh', 'country' => 'Cambodia', 'org' => 'Cambodian National Police (CNP)', 'tel' => '+855 23216585', 'fax' => '+855 2321 6585', 'email' => 'camcontactperson@gmail.com'],
-                                ['code' => 'id', 'country' => 'Indonesia', 'org' => 'Indonesia National Police (INP)', 'tel' => '+021 739 3650', 'fax' => '+021 720 1402', 'email' => 'ncb-jakarta@interpol.go.id'],
-                                ['code' => 'la', 'country' => 'Lao PDR', 'org' => 'Lao Police Force (LPF)', 'tel' => '+85 6213 16323', 'fax' => '+856 2131 6323', 'email' => 'ncbvientiane@gmail.com'],
-                                ['code' => 'my', 'country' => 'Malaysia', 'org' => 'Royal Malaysia Police (RMP)', 'tel' => '+603 2266 2222', 'fax' => '+603 2070 7500', 'email' => 'rmp@rmp.gov.my'],
-                                ['code' => 'mm', 'country' => 'Myanmar', 'org' => 'Myanmar Police Force (MPF)', 'tel' => '+95 6741 2066', 'fax' => '+95 6741 2188', 'email' => 'naypyitaw.ncb@gmail.com'],
-                                ['code' => 'ph', 'country' => 'Philippines', 'org' => 'Philippines National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '+632 7218549', 'email' => 'laiad.dpl@pnp.gov.ph'],
-                                ['code' => 'sg', 'country' => 'Singapore', 'org' => 'Singapore Police Force (SPF)', 'tel' => '1800 358 000', 'fax' => '+65 6256 1296', 'email' => 'www.police.gov.sg/e-services'],
-                                ['code' => 'th', 'country' => 'Thailand', 'org' => 'Royal Thai Police (RTP)', 'tel' => '+6622053001', 'fax' => '+6622533856', 'email' => 'aseanapol.th@gmail.com'],
-                                ['code' => 'vn', 'country' => 'Viet Nam', 'org' => 'Vietnam Police Force (VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
-                                ['code' => 'tl', 'country' => 'Timor-Leste', 'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => null],
+                                ['code' => 'bn', 'logo' => 'brunei-rbpf.png',    'country' => 'Brunei Darussalam', 'org' => 'Royal Brunei Police Force (RBPF)', 'tel' => '+673-2459 500', 'fax' => '+673 245 9527', 'email' => 'rbpf.interpol@police.gov.bn'],
+                                ['code' => 'kh', 'logo' => 'cambodia-cnp.png',   'country' => 'Cambodia',          'org' => 'Cambodian National Police (CNP)', 'tel' => '+855 23216585', 'fax' => '+855 2321 6585', 'email' => 'camcontactperson@gmail.com'],
+                                ['code' => 'id', 'logo' => 'indonesia-polri.png','country' => 'Indonesia',         'org' => 'Indonesia National Police (INP)', 'tel' => '+021 739 3650', 'fax' => '+021 720 1402', 'email' => 'ncb-jakarta@interpol.go.id'],
+                                ['code' => 'la', 'logo' => 'laos-lpp.png',       'country' => 'Lao PDR',           'org' => 'Lao Police Force (LPF)', 'tel' => '+85 6213 16323', 'fax' => '+856 2131 6323', 'email' => 'ncbvientiane@gmail.com'],
+                                ['code' => 'my', 'logo' => 'malaysia-pdrm.png',  'country' => 'Malaysia',          'org' => 'Royal Malaysia Police (RMP)', 'tel' => '+603 2266 2222', 'fax' => '+603 2070 7500', 'email' => 'rmp@rmp.gov.my'],
+                                ['code' => 'mm', 'logo' => 'myanmar-mpf.png',    'country' => 'Myanmar',           'org' => 'Myanmar Police Force (MPF)', 'tel' => '+95 6741 2066', 'fax' => '+95 6741 2188', 'email' => 'naypyitaw.ncb@gmail.com'],
+                                ['code' => 'ph', 'logo' => 'philippines-pnp.png','country' => 'Philippines',       'org' => 'Philippines National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '+632 7218549', 'email' => 'laiad.dpl@pnp.gov.ph'],
+                                ['code' => 'sg', 'logo' => 'singapore-spf.png',  'country' => 'Singapore',         'org' => 'Singapore Police Force (SPF)', 'tel' => '1800 358 000', 'fax' => '+65 6256 1296', 'email' => 'www.police.gov.sg/e-services'],
+                                ['code' => 'th', 'logo' => 'thailand-rtp.png',   'country' => 'Thailand',          'org' => 'Royal Thai Police (RTP)', 'tel' => '+6622053001', 'fax' => '+6622533856', 'email' => 'aseanapol.th@gmail.com'],
+                                ['code' => 'vn', 'logo' => 'vietnam-mps.png',    'country' => 'Viet Nam',          'org' => 'Vietnam Police Force (VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
+                                ['code' => 'tl', 'logo' => 'timorleste-pntl.png','country' => 'Timor-Leste',       'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => null],
                             ];
                         @endphp
                         @foreach($directory as $entry)
@@ -360,7 +372,12 @@
                                         <span class="font-medium text-primary dark:text-white">{{ $entry['country'] }}</span>
                                     </div>
                                 </td>
-                                <td class="px-5 py-4 text-gray-600 dark:text-gray-300">{{ $entry['org'] }}</td>
+                                <td class="px-5 py-4 text-gray-600 dark:text-gray-300">
+                                    <div class="flex items-center gap-2">
+                                        <img src="/media/police-logo/{{ $entry['logo'] }}" alt="" class="w-6 h-6 object-contain flex-shrink-0">
+                                        {{ $entry['org'] }}
+                                    </div>
+                                </td>
                                 <td class="px-5 py-4 text-gray-500 dark:text-gray-400 hidden md:table-cell">{{ $entry['tel'] }}</td>
                                 <td class="px-5 py-4 text-gray-500 dark:text-gray-400 hidden lg:table-cell">{{ $entry['fax'] }}</td>
                                 <td class="px-5 py-4 hidden sm:table-cell">
