@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,25 @@
     <title>{{ config('app.name', 'ASEANAPOL') }} - ASEAN Chiefs of Police</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
+    {{-- Google Translate: set cookie early so translation applies on first paint --}}
+    @if(app()->getLocale() !== 'en')
+    <script>
+        (function(){
+            var l='{{ app()->getLocale() }}',v='/en/'+l,y=new Date();
+            y.setFullYear(y.getFullYear()+1);
+            var e='; expires='+y.toUTCString()+'; path=/';
+            document.cookie='googtrans='+v+e;
+            document.cookie='googtrans='+v+e+'; domain=.'+location.hostname;
+        })();
+    </script>
+    @endif
+    {{-- Hide Google Translate banner bar --}}
+    <style>
+        .goog-te-banner-frame, .goog-te-gadget, #google_translate_element { display:none!important; }
+        body { top:0!important; }
+        .skiptranslate { display:none!important; }
+    </style>
 
     {{-- Google Fonts: Inter --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -296,6 +315,7 @@
                             @endphp
                             @foreach($languages as $code => $lang)
                                 <a href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $code])) }}"
+                                   onclick="setGTLocale('{{ $code }}')"
                                    class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-dark-surface transition-colors {{ app()->getLocale() === $code ? 'text-accent font-semibold' : 'text-gray-700 dark:text-gray-300' }}">
                                     <img src="https://flagcdn.com/w40/{{ $lang['flag'] }}.png" alt="{{ $lang['label'] }}" class="w-6 h-auto rounded-sm">
                                     {{ $lang['label'] }}
@@ -425,6 +445,7 @@
                     <div class="flex items-center gap-2 px-3 py-2 mt-2 border-t border-white/10 pt-3">
                         @foreach($languages as $code => $lang)
                             <a href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $code])) }}"
+                               onclick="setGTLocale('{{ $code }}')"
                                class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm {{ app()->getLocale() === $code ? 'bg-accent text-primary font-semibold' : 'bg-white/10 text-white/80' }} transition-colors">
                                 <img src="https://flagcdn.com/w40/{{ $lang['flag'] }}.png" alt="" class="w-5 h-auto rounded-sm">
                                 {{ strtoupper($code) }}
@@ -620,7 +641,36 @@
             }
         }
         updateThemeIcon();
+
+        // Set googtrans cookie then let normal href navigation proceed
+        function setGTLocale(code) {
+            var exp = new Date();
+            exp.setFullYear(exp.getFullYear() + 1);
+            var e = '; expires=' + exp.toUTCString() + '; path=/';
+            if (code === 'en') {
+                var clr = '; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+                document.cookie = 'googtrans=' + clr;
+                document.cookie = 'googtrans=' + clr + '; domain=.' + location.hostname;
+            } else {
+                var v = '/en/' + code;
+                document.cookie = 'googtrans=' + v + e;
+                document.cookie = 'googtrans=' + v + e + '; domain=.' + location.hostname;
+            }
+        }
     </script>
     @stack('scripts')
+
+    {{-- Protect Material Icons from Google Translate (must run before GT script) --}}
+    <script>
+        document.querySelectorAll('.material-symbols-outlined,.material-icons').forEach(function(el){
+            el.setAttribute('translate','no');
+            el.classList.add('notranslate');
+        });
+    </script>
+
+    {{-- Google Translate widget (hidden — we drive it via URL locale + cookie) --}}
+    <div id="google_translate_element"></div>
+    <script>function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');}</script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
