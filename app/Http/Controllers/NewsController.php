@@ -3,13 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewsItem;
+use App\Services\TranslationService;
 
 class NewsController extends Controller
 {
     public function index()
     {
-        $articles = NewsItem::orderBy('published_at', 'desc')
-            ->paginate(12);
+        $articles = NewsItem::orderBy('published_at', 'desc')->paginate(12);
+
+        $locale = app()->getLocale();
+        if ($locale !== 'en') {
+            $translator = app(TranslationService::class);
+            $articles->getCollection()->transform(function (NewsItem $item) use ($translator, $locale) {
+                $item->title   = $translator->translate($item->title, $locale);
+                $item->summary = $item->summary ? $translator->translate($item->summary, $locale) : null;
+                return $item;
+            });
+        }
 
         return view('news.index', compact('articles'));
     }

@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // Nav
     'nav_home' => 'Utama',
     'nav_about' => 'Mengenai ASEANAPOL',
     'nav_information' => 'Maklumat',
@@ -10,22 +9,16 @@ return [
     'nav_guidelines' => 'Garis Panduan',
     'nav_publication' => 'Penerbitan',
     'nav_search' => 'Cari...',
-
-    // Hero
     'hero_badge' => 'Portal Rasmi',
     'hero_title_1' => 'BERSAMA KITA MENJAGA',
     'hero_title_2' => 'KESELAMATAN RANTAU INI',
     'hero_subtitle' => 'Persatuan Ketua-Ketua Polis Negara-Negara Asia Tenggara — mempromosikan profesionalisme polis dan kerjasama serantau dalam memerangi jenayah rentas sempadan.',
     'hero_mission_btn' => 'Misi Kami',
     'hero_reports_btn' => 'Laporan Terkini',
-
-    // Stats
     'stats_members' => 'Negara Anggota',
     'stats_partners' => 'Rakan Dialog',
     'stats_conferences' => 'Persidangan Tahunan',
     'stats_established' => 'Ditubuhkan',
-
-    // Vision & Mission
     'about_badge' => 'Mengenai ASEANAPOL',
     'about_title' => 'Visi & Misi Kami',
     'vision' => 'Visi',
@@ -36,13 +29,9 @@ return [
     'mission_2' => 'Memperkukuh kapasiti institusi dan standard profesional pasukan polis ASEAN',
     'mission_3' => 'Memudahkan perkongsian risikan dan operasi bersama di kalangan negara anggota',
     'mission_4' => 'Membina perkongsian strategik dengan organisasi penguatkuasaan undang-undang antarabangsa',
-
-    // Member Countries
     'members_badge' => 'Ahli Kami',
     'members_title' => 'Negara Anggota',
     'members_subtitle' => 'Sepuluh negara anggota ASEAN bersatu dalam mempromosikan profesionalisme polis dan kerjasama keselamatan serantau.',
-
-    // News
     'news_badge' => 'Kekal Bermaklumat',
     'news_title' => 'Berita & Acara Terkini',
     'news_read_more' => 'Baca Lagi',
@@ -70,8 +59,6 @@ return [
     'news_6_date' => '27 Jun 2025',
     'news_6_title' => 'ASEANAPOL Reaffirms Commitment to ASEAN Vision 2045 at the 9th Forum of Entities',
     'news_6_excerpt' => 'Sekretariat ASEANAPOL menyertai Perhimpunan Forum Entiti ke-9 menyokong agenda Wawasan ASEAN 2045 berkaitan keselamatan dan kerjasama serantau.',
-
-    // Sidebar
     'upcoming_events' => 'Sorotan Acara',
     'event_1_title' => 'Latihan Menembak Tahunan Sekretariat ASEANAPOL',
     'event_1_location' => 'Pusat Latihan Menembak PDRM, Malaysia',
@@ -86,8 +73,6 @@ return [
     'res_annual' => 'Laporan Tahunan 2025',
     'res_constitution' => 'Perlembagaan ASEANAPOL',
     'res_media' => 'Galeri Media',
-
-    // Directory
     'dir_badge' => 'Direktori',
     'dir_title' => 'Direktori Anggota',
     'dir_subtitle' => 'Maklumat hubungan untuk semua pasukan polis negara anggota ASEANAPOL.',
@@ -97,8 +82,6 @@ return [
     'dir_fax' => 'Faks',
     'dir_email' => 'E-mel',
     'dir_download' => 'Muat Turun Direktori Penuh (PDF)',
-
-    // Footer
     'footer_desc' => 'ASEANAPOL ialah persatuan pasukan polis kebangsaan sebelas negara anggota ASEAN, bekerjasama untuk meningkatkan keselamatan serantau dan memerangi jenayah rentas sempadan.',
     'footer_quick_links' => 'Pautan Pantas',
     'footer_history' => 'Sejarah',
@@ -114,11 +97,7 @@ return [
     'footer_privacy' => 'Dasar Privasi',
     'footer_terms' => 'Terma Penggunaan',
     'footer_sitemap' => 'Peta Laman',
-
-    // Dark mode
     'theme_light' => 'Mod cerah',
     'theme_dark' => 'Mod gelap',
-
-    // Language
     'lang_label' => 'Bahasa',
 ];

@@ -281,12 +281,21 @@
                         <div id="lang-dropdown" class="dropdown-menu absolute right-0 top-full mt-2 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 min-w-[160px] z-50">
                             @php
                                 $languages = [
-                                    'en' => ['label' => 'English', 'flag' => 'gb'],
-                                    'ms' => ['label' => 'Bahasa Melayu', 'flag' => 'my'],
+                                    'en' => ['label' => 'English',      'flag' => 'gb'],
+                                    'ms' => ['label' => 'Melayu',       'flag' => 'my'],
+                                    'id' => ['label' => 'Indonesia',    'flag' => 'id'],
+                                    'th' => ['label' => 'ภาษาไทย',      'flag' => 'th'],
+                                    'vi' => ['label' => 'Tiếng Việt',   'flag' => 'vn'],
+                                    'km' => ['label' => 'ភាសាខ្មែរ',   'flag' => 'kh'],
+                                    'lo' => ['label' => 'ພາສາລາວ',      'flag' => 'la'],
+                                    'my' => ['label' => 'မြန်မာ',       'flag' => 'mm'],
+                                    'tl' => ['label' => 'Filipino',     'flag' => 'ph'],
                                 ];
+                                $currentRouteName   = \Illuminate\Support\Facades\Route::currentRouteName() ?? 'landing';
+                                $currentRouteParams = \Illuminate\Support\Facades\Route::current()?->parameters() ?? [];
                             @endphp
                             @foreach($languages as $code => $lang)
-                                <a href="{{ route('landing', ['locale' => $code]) }}"
+                                <a href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $code])) }}"
                                    class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-dark-surface transition-colors {{ app()->getLocale() === $code ? 'text-accent font-semibold' : 'text-gray-700 dark:text-gray-300' }}">
                                     <img src="https://flagcdn.com/w40/{{ $lang['flag'] }}.png" alt="{{ $lang['label'] }}" class="w-6 h-auto rounded-sm">
                                     {{ $lang['label'] }}
@@ -415,7 +424,7 @@
                     {{-- Language switcher --}}
                     <div class="flex items-center gap-2 px-3 py-2 mt-2 border-t border-white/10 pt-3">
                         @foreach($languages as $code => $lang)
-                            <a href="{{ route('landing', ['locale' => $code]) }}"
+                            <a href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $code])) }}"
                                class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm {{ app()->getLocale() === $code ? 'bg-accent text-primary font-semibold' : 'bg-white/10 text-white/80' }} transition-colors">
                                 <img src="https://flagcdn.com/w40/{{ $lang['flag'] }}.png" alt="" class="w-5 h-auto rounded-sm">
                                 {{ strtoupper($code) }}
