@@ -85,10 +85,10 @@ $subpages = [
         'status' => 'active',
     ],
     [
-        'title'  => 'OB / LME',
+        'title'  => 'Like-Minded Entities',
         'icon'   => 'folder_special',
         'route'  => 'about.ob-lme',
-        'desc'   => 'International organisations and law enforcement agencies with Observer Organisation (OB) status in ASEANAPOL.',
+        'desc'   => 'International organisations that collaborate with ASEANAPOL as Like-Minded Entities (LME).',
         'status' => 'active',
     ],
 ];

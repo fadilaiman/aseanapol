@@ -195,7 +195,7 @@
                             <a href="{{ route('about.member-countries', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Member Countries</a>
                             <a href="{{ route('about.dialogue-partners', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Dialogue Partners</a>
                             <a href="{{ route('about.observers', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Observers</a>
-                            <a href="{{ route('about.ob-lme', $loc) }}" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">OB / LME <span class="badge-soon">Soon</span></a>
+                            <a href="{{ route('about.ob-lme', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Like-Minded Entities (LME)</a>
                         </div>
                     </div>
 
@@ -343,7 +343,7 @@
                             <a href="{{ route('about.member-countries', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Member Countries</a>
                             <a href="{{ route('about.dialogue-partners', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Dialogue Partners</a>
                             <a href="{{ route('about.observers', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Observers</a>
-                            <a href="{{ route('about.ob-lme', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">OB / LME</a>
+                            <a href="{{ route('about.ob-lme', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Like-Minded Entities (LME)</a>
                         </div>
                     </div>
 
