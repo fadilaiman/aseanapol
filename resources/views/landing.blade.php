@@ -278,13 +278,13 @@
                                  alt="{{ $country['name'] }} police logo"
                                  class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
-                        <div class="flex items-center justify-center gap-1.5 mb-2">
+                        <span class="text-xs font-bold text-accent block mb-1">{{ $country['short'] }}</span>
+                        <div class="flex items-center justify-center gap-1.5">
                             <img src="https://flagcdn.com/w40/{{ $country['code'] }}.png"
                                  alt="{{ $country['name'] }}"
                                  class="h-4 w-auto rounded-sm shadow-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                            <span class="text-xs font-bold text-accent">{{ $country['short'] }}</span>
+                            <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                         </div>
-                        <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                     </div>
                 @endforeach
                 {{-- Duplicate set for seamless loop --}}
@@ -295,13 +295,13 @@
                                  alt=""
                                  class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
-                        <div class="flex items-center justify-center gap-1.5 mb-2">
+                        <span class="text-xs font-bold text-accent block mb-1">{{ $country['short'] }}</span>
+                        <div class="flex items-center justify-center gap-1.5">
                             <img src="https://flagcdn.com/w40/{{ $country['code'] }}.png"
                                  alt=""
                                  class="h-4 w-auto rounded-sm shadow-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                            <span class="text-xs font-bold text-accent">{{ $country['short'] }}</span>
+                            <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                         </div>
-                        <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                     </div>
                 @endforeach
             </div>
