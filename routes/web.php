@@ -33,7 +33,7 @@ Route::middleware(SetLocale::class)
         Route::get('/about-aseanapol/leadership', [PageController::class, 'aboutLeadership'])->name('about.leadership');
         Route::get('/about-aseanapol/leadership/director-for-police-services', [PageController::class, 'aboutLeadershipDps'])->name('about.leadership.dps');
         Route::get('/about-aseanapol/leadership/director-for-plans-and-programmes', [PageController::class, 'aboutLeadershipDpp'])->name('about.leadership.dpp');
-        Route::get('/about-aseanapol/ob-lme', [PageController::class, 'aboutObLme'])->name('about.ob-lme');
+        Route::get('/about-aseanapol/lme', [PageController::class, 'aboutObLme'])->name('about.ob-lme');
 
         // =====================================================
         // MEMBER COUNTRIES  (canonical under /about-aseanapol)
