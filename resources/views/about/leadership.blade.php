@@ -46,22 +46,26 @@
         <div>
             <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-8">Secretariat Directors</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <a href="{{ route('about.leadership.dps', ['locale' => app()->getLocale()]) }}"
+                   class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-primary/40 hover:shadow-md transition-all group">
                     <div class="w-10 h-10 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center mb-4">
                         <span class="material-symbols-outlined text-primary dark:text-accent text-xl">shield_person</span>
                     </div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Director for Police Services</p>
-                    <h3 class="font-bold text-gray-900 dark:text-white">Police Senior Superintendent Huntal Tambunan</h3>
-                    <p class="text-xs text-gray-400 mt-1">Indonesia National Police &nbsp;·&nbsp; 🇮🇩 Indonesia</p>
-                </div>
-                <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <h3 class="font-bold text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-accent transition-colors">Police Senior Superintendent Huntal Tambunan</h3>
+                    <p class="text-xs text-gray-400 mt-1">Indonesian National Police &nbsp;·&nbsp; 🇮🇩 Indonesia</p>
+                    <p class="text-xs text-primary dark:text-accent mt-3 font-medium">View all directors →</p>
+                </a>
+                <a href="{{ route('about.leadership.dpp', ['locale' => app()->getLocale()]) }}"
+                   class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-primary/40 hover:shadow-md transition-all group">
                     <div class="w-10 h-10 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center mb-4">
                         <span class="material-symbols-outlined text-primary dark:text-accent text-xl">analytics</span>
                     </div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Director for Plans and Programmes</p>
-                    <h3 class="font-bold text-gray-900 dark:text-white">Police Colonel Jean Mary A. Mangahis</h3>
-                    <p class="text-xs text-gray-400 mt-1">Philippines National Police &nbsp;·&nbsp; 🇵🇭 Philippines</p>
-                </div>
+                    <h3 class="font-bold text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-accent transition-colors">Police Colonel Jean Mary A. Mangahis</h3>
+                    <p class="text-xs text-gray-400 mt-1">Philippine National Police &nbsp;·&nbsp; 🇵🇭 Philippines</p>
+                    <p class="text-xs text-primary dark:text-accent mt-3 font-medium">View all directors →</p>
+                </a>
             </div>
         </div>
 

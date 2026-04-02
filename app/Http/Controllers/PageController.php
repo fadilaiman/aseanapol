@@ -25,6 +25,16 @@ class PageController extends Controller
         return view('about.leadership');
     }
 
+    public function aboutLeadershipDps()
+    {
+        return view('about.leadership-dps');
+    }
+
+    public function aboutLeadershipDpp()
+    {
+        return view('about.leadership-dpp');
+    }
+
     public function aboutObLme()
     {
         return view('about.ob-lme');
