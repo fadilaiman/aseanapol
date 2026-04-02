@@ -33,6 +33,11 @@
         @php
         $lmes = [
             [
+                'name'  => 'International Association for Forensic Institutes',
+                'short' => 'IAFI',
+                'logo'  => 'iafi.png',
+            ],
+            [
                 'name'  => 'International Association of Police Academies',
                 'short' => 'INTERPA',
                 'logo'  => 'interpa.png',
@@ -70,7 +75,7 @@
             [
                 'name'  => 'Pacific Islands Chiefs of Police Secretariat',
                 'short' => 'PICP',
-                'logo'  => 'picp.jpg',
+                'logo'  => 'picp.png',
             ],
             [
                 'name'  => 'European Association for Secure Transactions',
