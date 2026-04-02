@@ -28,11 +28,16 @@ class NewsController extends Controller
     {
         $decoded = rawurldecode($slug);
 
-        // Try exact slug first; fall back to ASCII-transliterated version so
-        // articles whose original Sitefinity slug contained accented characters
-        // (é, ó, ş, ᵗʰ …) are still found after the slugs are normalised.
         $article = NewsItem::where('slug', $decoded)->first()
             ?? NewsItem::where('slug', $this->asciiSlug($decoded))->firstOrFail();
+
+        if ($locale !== 'en') {
+            $translator = app(TranslationService::class);
+            $article->title   = $translator->translate($article->title, $locale);
+            $article->content = $article->content
+                ? $translator->translateHtml($article->content, $locale)
+                : null;
+        }
 
         return view('news.show', compact('article'));
     }

@@ -53,6 +53,87 @@ class TranslationService
         return $result;
     }
 
+    /**
+     * Translate an HTML string, splitting at block-level boundaries so long
+     * articles never exceed the API character limit.  Each chunk is cached
+     * independently so re-renders are instant.
+     */
+    public function translateHtml(string $html, string $targetLocale, string $sourceLocale = 'en'): string
+    {
+        if ($sourceLocale === $targetLocale || trim($html) === '') {
+            return $html;
+        }
+
+        // Short content → single request
+        if (mb_strlen($html) < 3500) {
+            return $this->translate($html, $targetLocale, $sourceLocale);
+        }
+
+        // Split BEFORE each block-level opening tag so every chunk is a
+        // self-contained, balanced block (e.g. full <p>…</p>).
+        $chunks = preg_split(
+            '/(?=<(?:p|h[1-6]|li|ul|ol|blockquote|table|thead|tbody|tr|div|section|article)\b)/i',
+            $html,
+            flags: PREG_SPLIT_NO_EMPTY
+        );
+
+        return implode('', array_map(
+            fn(string $c) => $this->translate(trim($c), $targetLocale, $sourceLocale),
+            array_filter($chunks, fn($c) => trim($c) !== '')
+        ));
+    }
+
+    /**
+     * Translate a rendered HTML page by walking text nodes only.
+     * Skips <script>, <style>, <code>, <pre> blocks.
+     * Only translates nodes that still contain Latin characters
+     * (so content already translated via __() is left untouched).
+     * Whole-page result is NOT cached here — callers should cache it.
+     */
+    public function translatePage(string $html, string $targetLocale, string $sourceLocale = 'en'): string
+    {
+        if ($sourceLocale === $targetLocale) {
+            return $html;
+        }
+
+        $skipTags  = 'script|style|code|pre|noscript|textarea';
+        $skipDepth = 0;
+        $parts     = preg_split('/(<[^>]*>)/s', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $result    = '';
+
+        foreach ($parts as $part) {
+            // Opening skip tag
+            if (preg_match('/^<(' . $skipTags . ')[\s>\/]/i', $part)) {
+                $skipDepth++;
+                $result .= $part;
+                continue;
+            }
+            // Closing skip tag
+            if (preg_match('/^<\/(' . $skipTags . ')>/i', $part)) {
+                if ($skipDepth > 0) $skipDepth--;
+                $result .= $part;
+                continue;
+            }
+            // Inside skip block or it's a tag
+            if ($skipDepth > 0 || str_starts_with($part, '<')) {
+                $result .= $part;
+                continue;
+            }
+            // Text node: only translate if it has Latin letters (still English)
+            $trimmed = trim($part);
+            if (mb_strlen($trimmed) > 2 && preg_match('/[a-zA-Z]{3,}/', $trimmed)) {
+                $translated = $this->translate($trimmed, $targetLocale, $sourceLocale);
+                // Preserve surrounding whitespace
+                preg_match('/^(\s*)(.*?)(\s*)$/su', $part, $m);
+                $result .= ($m[1] ?? '') . $translated . ($m[3] ?? '');
+            } else {
+                $result .= $part;
+            }
+        }
+
+        return $result;
+    }
+
     public function flush(): void
     {
         if ($this->dirty) {

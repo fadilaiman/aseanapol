@@ -4,6 +4,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\TranslatePage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,7 +14,7 @@ Route::get('/', function () {
     return redirect('/' . session('locale', $locale));
 });
 
-Route::middleware(SetLocale::class)
+Route::middleware([SetLocale::class, TranslatePage::class])
     ->prefix('{locale}')
     ->where(['locale' => 'en|ms|id|th|vi|km|lo|my|tl'])
     ->group(function () {
