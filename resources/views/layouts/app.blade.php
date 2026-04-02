@@ -180,7 +180,7 @@
         }
     </style>
 </head>
-<body class="font-sans bg-background dark:bg-dark text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300">
+<body class="font-sans bg-background dark:bg-dark text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300{{ \Illuminate\Support\Facades\Route::currentRouteName() === 'landing' ? ' notranslate' : '' }}">
 
     {{-- Header --}}
     <header id="main-header" class="glass-nav fixed top-0 left-0 right-0 z-50 transition-shadow duration-300">
