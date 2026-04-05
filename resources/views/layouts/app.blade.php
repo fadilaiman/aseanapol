@@ -670,7 +670,15 @@
 
     {{-- Google Translate widget (hidden — we drive it via URL locale + cookie) --}}
     <div id="google_translate_element"></div>
-    <script>function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');}</script>
+    <script>
+    function googleTranslateElementInit(){
+        new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
+        @if(app()->getLocale() !== 'en')
+        var _l='{{ app()->getLocale() }}';
+        setTimeout(function(){try{doGTranslate('en|'+_l);}catch(e){}},1);
+        @endif
+    }
+    </script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
