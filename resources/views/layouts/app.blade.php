@@ -679,7 +679,15 @@
     function googleTranslateElementInit(){
         var _l='{{ app()->getLocale() }}';
         new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
-        setTimeout(function(){try{doGTranslate('en|'+_l);}catch(e){}},1);
+        // Poll for .goog-te-combo and force the correct language
+        // (doGTranslate is undefined in this GT version; cross-domain state can override the cookie)
+        var _t=0,_i=setInterval(function(){
+            var sel=document.querySelector('.goog-te-combo');
+            if(sel&&sel.options&&sel.options.length>5){
+                clearInterval(_i);
+                if(sel.value!==_l){sel.value=_l;sel.dispatchEvent(new Event('change'));}
+            }else if(++_t>50){clearInterval(_i);}
+        },100);
     }
     </script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
