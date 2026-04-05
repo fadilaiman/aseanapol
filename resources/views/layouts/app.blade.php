@@ -8,18 +8,22 @@
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
-    {{-- Google Translate: set cookie early so translation applies on first paint --}}
-    @if(app()->getLocale() !== 'en')
+    {{-- Google Translate: set/clear cookie early so translation applies on first paint --}}
     <script>
         (function(){
+            @if(app()->getLocale() !== 'en')
             var l='{{ app()->getLocale() }}',v='/en/'+l,y=new Date();
             y.setFullYear(y.getFullYear()+1);
             var e='; expires='+y.toUTCString()+'; path=/';
             document.cookie='googtrans='+v+e;
             document.cookie='googtrans='+v+e+'; domain=.'+location.hostname;
+            @else
+            var clr='; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+            document.cookie='googtrans='+clr;
+            document.cookie='googtrans='+clr+'; domain=.'+location.hostname;
+            @endif
         })();
     </script>
-    @endif
     {{-- Hide Google Translate banner bar --}}
     <style>
         .goog-te-banner-frame, .goog-te-gadget, #google_translate_element { display:none!important; }
@@ -668,17 +672,17 @@
         });
     </script>
 
-    {{-- Google Translate widget (hidden — we drive it via URL locale + cookie) --}}
+    @if(app()->getLocale() !== 'en')
+    {{-- Google Translate widget (hidden — only load on non-English pages) --}}
     <div id="google_translate_element"></div>
     <script>
     function googleTranslateElementInit(){
-        new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
-        @if(app()->getLocale() !== 'en')
         var _l='{{ app()->getLocale() }}';
+        new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
         setTimeout(function(){try{doGTranslate('en|'+_l);}catch(e){}},1);
-        @endif
     }
     </script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    @endif
 </body>
 </html>
