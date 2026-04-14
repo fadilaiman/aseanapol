@@ -87,71 +87,18 @@ $members = [
                 </div>
             </div>
 
-            {{-- 9.3 — Inquiry Form --}}
+            {{-- Google Maps --}}
             <div class="lg:col-span-3">
-                <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
-                    <h2 class="text-xl font-bold text-primary dark:text-white mb-1">Send an Inquiry</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">We aim to respond within 2–3 business days.</p>
-
-                    @if(session('contact_success'))
-                    <div class="flex items-start gap-3 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-xl p-4 mb-6">
-                        <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-xl flex-shrink-0">check_circle</span>
-                        <p class="text-sm text-teal-700 dark:text-teal-300 font-medium">{{ session('contact_success') }}</p>
-                    </div>
-                    @endif
-
-                    @if($errors->any())
-                    <div class="flex items-start gap-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-xl p-4 mb-6">
-                        <span class="material-symbols-outlined text-red-500 text-xl flex-shrink-0">error</span>
-                        <ul class="text-sm text-red-700 dark:text-red-300 list-disc list-inside space-y-0.5">
-                            @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-
-                    <form action="{{ route('contact-us.submit', ['locale' => app()->getLocale()]) }}" method="POST" class="space-y-5">
-                        @csrf
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                            <div>
-                                <label for="contact_name" class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">Full Name <span class="text-red-400">*</span></label>
-                                <input type="text" id="contact_name" name="name" value="{{ old('name') }}" required
-                                    class="w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-dark-surface text-gray-800 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
-                                    placeholder="Your full name">
-                            </div>
-                            <div>
-                                <label for="contact_email" class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">Email Address <span class="text-red-400">*</span></label>
-                                <input type="email" id="contact_email" name="email" value="{{ old('email') }}" required
-                                    class="w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-dark-surface text-gray-800 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
-                                    placeholder="your@email.com">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="contact_subject" class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">Subject <span class="text-red-400">*</span></label>
-                            <input type="text" id="contact_subject" name="subject" value="{{ old('subject') }}" required
-                                class="w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-dark-surface text-gray-800 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
-                                placeholder="Brief subject of your inquiry">
-                        </div>
-
-                        <div>
-                            <label for="contact_message" class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">Message <span class="text-red-400">*</span></label>
-                            <textarea id="contact_message" name="message" rows="6" required
-                                class="w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-dark-surface text-gray-800 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition resize-none"
-                                placeholder="Please describe your inquiry in detail...">{{ old('message') }}</textarea>
-                        </div>
-
-                        <div class="flex items-center justify-between pt-1">
-                            <p class="text-xs text-gray-400">Fields marked <span class="text-red-400">*</span> are required.</p>
-                            <button type="submit"
-                                class="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">
-                                <span class="material-symbols-outlined text-base">send</span>
-                                Send Message
-                            </button>
-                        </div>
-                    </form>
+                <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden h-full min-h-[420px]">
+                    <iframe
+                        src="https://maps.google.com/maps?q=Menara+Kembar+Bank+Rakyat,+33+Jalan+Rakyat,+Kuala+Lumpur&output=embed&z=17"
+                        width="100%"
+                        height="100%"
+                        style="min-height: 420px; border: 0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
                 </div>
             </div>
         </div>

@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $preferred = substr(request()->server('HTTP_ACCEPT_LANGUAGE', 'en'), 0, 2);
-    $supported = ['en', 'ms', 'id', 'th', 'vi', 'km', 'lo', 'my', 'tl'];
+    $supported = ['en', 'ms', 'id', 'th', 'vi', 'km', 'lo', 'my', 'tl', 'zh'];
     $locale = in_array($preferred, $supported) ? $preferred : 'en';
     return redirect('/' . session('locale', $locale));
 });
 
 Route::middleware([SetLocale::class])
     ->prefix('{locale}')
-    ->where(['locale' => 'en|ms|id|th|vi|km|lo|my|tl'])
+    ->where(['locale' => 'en|ms|id|th|vi|km|lo|my|tl|zh'])
     ->group(function () {
 
         Route::get('/', [LandingController::class, 'index'])->name('landing');

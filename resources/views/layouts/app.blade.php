@@ -273,8 +273,8 @@
                         </div>
                     </div>
 
-                    {{-- Careers --}}
-                    <div class="nav-group relative">
+                    {{-- Careers (hidden) --}}
+                    {{-- <div class="nav-group relative">
                         <a href="{{ route('careers.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
                             Careers <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
                         </a>
@@ -283,7 +283,7 @@
                             <a href="{{ route('careers.internships', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Internships</a>
                             <a href="{{ route('careers.exchange-programs', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Exchange Programs</a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     {{-- Contact Us --}}
                     <a href="{{ route('contact-us', $loc) }}" class="text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
@@ -313,6 +313,7 @@
                                     'lo' => ['label' => 'ພາສາລາວ',      'flag' => 'la'],
                                     'my' => ['label' => 'မြန်မာ',       'flag' => 'mm'],
                                     'tl' => ['label' => 'Filipino',     'flag' => 'ph'],
+                                    'zh' => ['label' => '中文',          'flag' => 'cn'],
                                 ];
                                 $currentRouteName   = \Illuminate\Support\Facades\Route::currentRouteName() ?? 'landing';
                                 $currentRouteParams = \Illuminate\Support\Facades\Route::current()?->parameters() ?? [];
@@ -431,8 +432,8 @@
                         </div>
                     </div>
 
-                    {{-- Careers --}}
-                    <div>
+                    {{-- Careers (hidden) --}}
+                    {{-- <div>
                         <button onclick="toggleMobSub('mob-careers')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
                             Careers &amp; Opportunities <span class="material-symbols-outlined text-base">expand_more</span>
                         </button>
@@ -441,7 +442,7 @@
                             <a href="{{ route('careers.internships', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Internships</a>
                             <a href="{{ route('careers.exchange-programs', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Exchange Programs</a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <a href="{{ route('contact-us', $loc) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">Contact Us</a>
 
