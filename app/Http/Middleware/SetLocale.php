@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SetLocale
 {
-    protected array $supported = ['en', 'ms', 'id', 'th', 'vi', 'km', 'lo', 'my', 'tl'];
+    protected array $supported = ['en', 'ms', 'id', 'th', 'vi', 'km', 'lo', 'my', 'tl', 'zh'];
 
     public function handle(Request $request, Closure $next)
     {

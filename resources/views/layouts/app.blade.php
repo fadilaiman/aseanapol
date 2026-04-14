@@ -647,6 +647,10 @@
         }
         updateThemeIcon();
 
+        // Map app locale codes → Google Translate locale codes where they differ
+        var _gtLocaleMap = { 'zh': 'zh-CN' };
+        function toGTLocale(code) { return _gtLocaleMap[code] || code; }
+
         // Set googtrans cookie then let normal href navigation proceed
         function setGTLocale(code) {
             var exp = new Date();
@@ -657,7 +661,7 @@
                 document.cookie = 'googtrans=' + clr;
                 document.cookie = 'googtrans=' + clr + '; domain=.' + location.hostname;
             } else {
-                var v = '/en/' + code;
+                var v = '/en/' + toGTLocale(code);
                 document.cookie = 'googtrans=' + v + e;
                 document.cookie = 'googtrans=' + v + e + '; domain=.' + location.hostname;
             }
@@ -678,7 +682,7 @@
     <div id="google_translate_element"></div>
     <script>
     function googleTranslateElementInit(){
-        var _l='{{ app()->getLocale() }}';
+        var _l=toGTLocale('{{ app()->getLocale() }}');
         new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
         // Poll for .goog-te-combo and force the correct language
         // (doGTranslate is undefined in this GT version; cross-domain state can override the cookie)
