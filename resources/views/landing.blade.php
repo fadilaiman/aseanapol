@@ -3,41 +3,111 @@
 @section('content')
 
 {{-- ============================================= --}}
-{{-- SECTION 1: Hero Banner --}}
+{{-- SECTION 1: Hero News Slider --}}
 {{-- ============================================= --}}
-<section id="hero" class="relative min-h-[90vh] flex items-center overflow-hidden" style="background-image: url('{{ asset('images/hero-bg.jpg') }}'); background-size: cover; background-position: center;">
-    <div class="hero-gradient absolute inset-0"></div>
+<section id="hero" class="relative overflow-hidden" style="height: 90vh; min-height: 400px;">
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 w-full">
-        <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 bg-accent/20 border border-accent/30 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-                <span class="material-symbols-outlined text-base">verified</span>
-                {{ __('landing.hero_badge') }}
-            </div>
-
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-                {{ __('landing.hero_title_1') }}<br>
-                <span class="text-accent">{{ __('landing.hero_title_2') }}</span>
-            </h1>
-
-            <p class="text-lg sm:text-xl text-white/80 leading-relaxed mb-10 max-w-2xl">
-                {{ __('landing.hero_subtitle') }}
-            </p>
-
-            <div class="flex flex-wrap gap-4">
-                <a href="#about" class="inline-flex items-center gap-2 bg-accent hover:bg-accent-500 text-primary font-semibold px-7 py-3.5 rounded-xl text-base transition-colors shadow-lg shadow-accent/25">
-                    <span class="material-symbols-outlined">flag</span>
-                    {{ __('landing.hero_mission_btn') }}
-                </a>
-                <a href="#news" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-7 py-3.5 rounded-xl text-base transition-colors backdrop-blur-sm">
-                    <span class="material-symbols-outlined">article</span>
-                    {{ __('landing.hero_reports_btn') }}
-                </a>
-            </div>
+    {{-- Slides --}}
+    @foreach($latestNews as $index => $item)
+    <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out {{ $index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}">
+        @if($item->thumbnail)
+        <img src="{{ asset($item->thumbnail) }}"
+             alt="{{ $item->title }}"
+             class="w-full h-full object-cover">
+        @else
+        <div class="w-full h-full bg-gradient-to-br from-primary via-primary-400 to-accent/40 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white/10" style="font-size: 12rem;">newspaper</span>
         </div>
+        @endif
+
+        {{-- Gradient overlay --}}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+
+        {{-- Caption bar --}}
+        <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $item->slug]) }}"
+           class="absolute bottom-0 left-0 right-0 p-8 z-10 group">
+            <div class="max-w-4xl">
+                <span class="inline-block bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full mb-3">
+                    {{ \Carbon\Carbon::parse($item->published_at)->format('d M Y') }}
+                </span>
+                <h2 class="text-white text-xl sm:text-2xl lg:text-3xl font-bold leading-snug group-hover:text-accent/90 transition-colors">
+                    {{ $item->title }}
+                </h2>
+            </div>
+        </a>
+    </div>
+    @endforeach
+
+    {{-- Prev / Next arrows --}}
+    <button id="heroPrev"
+            class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/60 text-white rounded-full p-3 transition-colors focus:outline-none"
+            aria-label="Previous slide">
+        <span class="material-symbols-outlined text-3xl">chevron_left</span>
+    </button>
+    <button id="heroNext"
+            class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/60 text-white rounded-full p-3 transition-colors focus:outline-none"
+            aria-label="Next slide">
+        <span class="material-symbols-outlined text-3xl">chevron_right</span>
+    </button>
+
+    {{-- Dot indicators --}}
+    <div class="absolute bottom-5 right-8 z-20 flex items-center gap-2">
+        @foreach($latestNews as $index => $item)
+        <button class="hero-dot rounded-full transition-all duration-300 focus:outline-none {{ $index === 0 ? 'bg-white w-6 h-2' : 'bg-white/50 w-2 h-2' }}"
+                aria-label="Go to slide {{ $index + 1 }}"></button>
+        @endforeach
+    </div>
+
+    {{-- Slide counter --}}
+    <div class="absolute top-6 right-8 z-20 bg-black/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">
+        <span id="heroCurrentSlide">1</span> / {{ $latestNews->count() }}
     </div>
 
 </section>
+
+<script>
+(function () {
+    var slides   = document.querySelectorAll('.hero-slide');
+    var dots     = document.querySelectorAll('.hero-dot');
+    var counter  = document.getElementById('heroCurrentSlide');
+    var current  = 0;
+    var timer;
+
+    function goTo(n) {
+        slides[current].classList.remove('opacity-100', 'z-10');
+        slides[current].classList.add('opacity-0', 'z-0');
+        dots[current].classList.remove('bg-white', 'w-6');
+        dots[current].classList.add('bg-white/50', 'w-2');
+
+        current = ((n % slides.length) + slides.length) % slides.length;
+
+        slides[current].classList.remove('opacity-0', 'z-0');
+        slides[current].classList.add('opacity-100', 'z-10');
+        dots[current].classList.remove('bg-white/50', 'w-2');
+        dots[current].classList.add('bg-white', 'w-6');
+
+        if (counter) counter.textContent = current + 1;
+    }
+
+    function startTimer() {
+        timer = setInterval(function () { goTo(current + 1); }, 5000);
+    }
+
+    function resetTimer() {
+        clearInterval(timer);
+        startTimer();
+    }
+
+    document.getElementById('heroPrev').addEventListener('click', function () { goTo(current - 1); resetTimer(); });
+    document.getElementById('heroNext').addEventListener('click', function () { goTo(current + 1); resetTimer(); });
+
+    dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () { goTo(i); resetTimer(); });
+    });
+
+    startTimer();
+})();
+</script>
 
 {{-- ============================================= --}}
 {{-- SECTION 2: Statistics Bar --}}
@@ -82,7 +152,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($latestNews as $item)
+            @foreach($latestNews->take(6) as $item)
                 <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $item->slug]) }}"
                    class="relative rounded-xl overflow-hidden shadow-sm dark:shadow-black/20 border border-gray-100 dark:border-gray-700/50 group h-72 block">
                     {{-- Background: real thumbnail or gradient fallback --}}
