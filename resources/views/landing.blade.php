@@ -466,12 +466,6 @@
             </div>
         </div>
 
-        <div class="text-center mt-8">
-            <a href="#" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-lg shadow-primary/20">
-                <span class="material-symbols-outlined">download</span>
-                {{ __('landing.dir_download') }}
-            </a>
-        </div>
     </div>
 </section>
 
