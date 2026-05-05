@@ -26,14 +26,23 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.app', function ($view) {
             try {
-                $row = DB::table('visitor_stats')
+                $today = now()->toDateString();
+                $total = DB::table('visitor_stats')
                     ->selectRaw('SUM(page_views) as total_views, SUM(unique_visitors) as total_unique')
                     ->first();
-                $view->with('visitorTotalViews', (int) ($row->total_views ?? 0));
-                $view->with('visitorTotalUnique', (int) ($row->total_unique ?? 0));
+                $daily = DB::table('visitor_stats')
+                    ->where('date', $today)
+                    ->selectRaw('page_views, unique_visitors')
+                    ->first();
+                $view->with('visitorTotalViews', (int) ($total->total_views ?? 0));
+                $view->with('visitorTotalUnique', (int) ($total->total_unique ?? 0));
+                $view->with('visitorDailyViews', (int) ($daily->page_views ?? 0));
+                $view->with('visitorDailyUnique', (int) ($daily->unique_visitors ?? 0));
             } catch (\Throwable) {
                 $view->with('visitorTotalViews', 0);
                 $view->with('visitorTotalUnique', 0);
+                $view->with('visitorDailyViews', 0);
+                $view->with('visitorDailyUnique', 0);
             }
         });
     }

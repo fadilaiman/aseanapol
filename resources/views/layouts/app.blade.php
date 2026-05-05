@@ -563,11 +563,13 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <p class="text-white/50 text-sm">{!! __('landing.footer_copyright') !!}</p>
                 <div class="flex items-center gap-6">
-                    {{-- Visitor counter --}}
-                    <div class="flex items-center gap-1.5 text-white/40 text-xs" title="Total page views / Unique visitors">
+                    {{-- Visitor counter (daily) --}}
+                    <div class="flex items-center gap-1.5 text-white/40 text-xs" title="Today's page views / Unique visitors">
                         <span class="material-symbols-outlined text-sm">bar_chart</span>
-                        <span>{{ number_format($visitorTotalViews) }} views &middot; {{ number_format($visitorTotalUnique) }} visitors</span>
+                        <span>{{ number_format($visitorDailyViews) }} views &middot; {{ number_format($visitorDailyUnique) }} visitors today</span>
                     </div>
+                    {{-- Cumulative totals (hidden) --}}
+                    <span hidden data-total-views="{{ $visitorTotalViews }}" data-total-unique="{{ $visitorTotalUnique }}"></span>
                     <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_privacy') }}</a>
                     <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_terms') }}</a>
                     <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_sitemap') }}</a>
