@@ -67,6 +67,13 @@ class PageController extends Controller
             'chief_designation' => 'Commissioner of Police',
             'chief_photo'       => 'media/chiefs/brunei.jpg',
             'logo'              => 'media/police-logo/police-logo/brunei.png',
+            'contact_person'    => [
+                'name'        => 'ASP Ahmad Fuad bin Haji Puteh',
+                'designation' => 'Head of International Affairs, INTERPOL & ASEANAPOL Unit',
+                'mobile'      => '+6738767477',
+                'email'       => 'fuad.puteh@police.gov.bn',
+                'photo'       => 'media/contacts/brunei.png',
+            ],
             'history'           => [
                 ['year' => '1906', 'text' => 'The signing of the 1906 treaty between Brunei Darussalam and the United Kingdom laid the foundation of a new government with the formal introduction of the British Resident. The first officers to police Brunei comprised one Pathan and one Sikh, later supplemented by Sikhs seconded from the Straits Settlement government in Labuan, who were eventually replaced by local Malays.'],
                 ['year' => '1909', 'text' => 'Sergeant Crummy was appointed as the first Chief Police Officer of Brunei Darussalam.'],
@@ -96,6 +103,13 @@ class PageController extends Controller
             'chief_designation' => 'Commissioner General',
             'chief_photo'       => 'media/chiefs/cambodia.jpg',
             'logo'              => 'media/default-album/default-album/cambodian.png',
+            'contact_person'    => [
+                'name'        => 'Pol. Brig. Gen You Boren',
+                'designation' => 'Head of NCB Phnom Penh and Senior Official in Charge of ASEANAPOL',
+                'mobile'      => '+855 89 66 70 70',
+                'email'       => 'borenyou2959@gmail.com',
+                'photo'       => 'media/contacts/cambodia.png',
+            ],
             'history'           => [
                 ['year' => '1884', 'text' => 'The Phnom Penh police force was fully equipped with arms.'],
                 ['year' => '1885', 'text' => 'Port police was established for ship inspection.'],
@@ -129,6 +143,13 @@ class PageController extends Controller
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/indonesia.jpg',
             'logo'              => 'media/default-album/default-album/indonesia.png',
+            'contact_person'    => [
+                'name'        => 'Pol. Snr Supt Dhany Aryanda',
+                'designation' => 'Head of International Conference Section',
+                'mobile'      => '+6281809210808',
+                'email'       => 'internationalconferencesection@gmail.com',
+                'photo'       => 'media/contacts/indonesia.png',
+            ],
             'history'           => [
                 ['year' => '1946', 'text' => 'The Indonesian police was established following independence. Police units fought in the National Revolution against Dutch colonial forces and helped suppress the communist revolt in Madiun.'],
                 ['year' => '1960s', 'text' => 'The police were brought under the control of the Armed Forces Chief during this period.'],
@@ -157,6 +178,13 @@ class PageController extends Controller
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/lao.jpg',
             'logo'              => 'media/police-logo/police-logo/lpf.jpg',
+            'contact_person'    => [
+                'name'        => 'Police Colonel Vanhpheng Phommixay',
+                'designation' => 'Director of Interpol Department, NCB Vientiane',
+                'mobile'      => '+856 20 57785792',
+                'email'       => 'ncb_vientiane@lpf.gov.la',
+                'photo'       => 'media/contacts/lao.png',
+            ],
         ]);
     }
 
@@ -178,6 +206,13 @@ class PageController extends Controller
             'chief_designation' => 'Inspector General of Police',
             'chief_photo'       => 'media/chiefs/malaysia.jpg',
             'logo'              => 'media/police-logo/police-logo/malaysia.png',
+            'contact_person'    => [
+                'name'        => 'Asst. Commissioner of Police Loh Pey Pey',
+                'designation' => 'ACP International Relations, IGP\'s Secretariat',
+                'mobile'      => '019-3577008',
+                'email'       => 'intercorp@rmp.gov.my',
+                'photo'       => 'media/contacts/malaysia.png',
+            ],
             'history'           => [
                 ['year' => '1807', 'text' => 'The modern police organisation in Malaysia began after the Charter of Justice in Penang was granted.'],
                 ['year' => '1940s', 'text' => 'Following World War II, a single centralised police organisation was established, known as the Civil Affairs Police Force, led by H. B. Longworthy.'],
@@ -207,6 +242,13 @@ class PageController extends Controller
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/myanmar.jpg',
             'logo'              => 'media/police-logo/police-logo/myanmar-new-crest-1.png',
+            'contact_person'    => [
+                'name'        => 'Police Lieutenant Colonel Myo Thant Tin',
+                'designation' => 'Head of Interpol and ASEANAPOL Affairs Branch',
+                'mobile'      => '+959420706812',
+                'email'       => 'myothanttin.mpf@gmail.com',
+                'photo'       => 'media/contacts/myanmar.png',
+            ],
             'history'           => [
                 ['year' => '1885', 'text' => 'The British policing system was introduced when Myanmar became a British Colony. The force was known as the Burma Police.'],
                 ['year' => '1964', 'text' => 'The Burma Police was reorganised as the People\'s Police Force following independence.'],
@@ -234,6 +276,13 @@ class PageController extends Controller
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/philippines.jpg',
             'logo'              => 'media/default-album/default-album/philippines.gif',
+            'contact_person'    => [
+                'name'        => 'Police Colonel Angelyn C. Salvador',
+                'designation' => 'Acting Chief, International Affairs and Inter-Agency Division, Directorate for Plans',
+                'mobile'      => '+639190007074',
+                'email'       => 'iaiad.dpl.pnp@gmail.com',
+                'photo'       => 'media/contacts/philippines.png',
+            ],
             'history'           => [
                 ['year' => '1991', 'text' => 'The Philippine National Police was activated on January 29, 1991 through the merger of the Philippine Constabulary and the Integrated National Police, pursuant to Republic Act 6975. Headquarters are located at Camp Crame, Quezon City.'],
             ],
@@ -258,6 +307,13 @@ class PageController extends Controller
             'chief_designation' => 'Commissioner of Police',
             'chief_photo'       => 'media/chiefs/singapore.jpg',
             'logo'              => 'media/default-album/default-album/singapore.png',
+            'contact_person'    => [
+                'name'        => 'Superintendent Ivan Ler',
+                'designation' => 'Assistant Director International Policing (ASEAN & Middle East) & Protocol, International Cooperation Department',
+                'mobile'      => '+65 9299 0175',
+                'email'       => 'ivan_ler@spf.gov.sg',
+                'photo'       => 'media/contacts/singapore.png',
+            ],
             'history'           => [
                 ['year' => '1819', 'text' => 'With the establishment of Singapore as a trading post, the first police team comprised one jemadar (Asian Sergeant), 12 peons (patrolmen) and a jailor.'],
                 ['year' => '1826', 'text' => 'Singapore merged with Malacca and Penang to form the Straits Settlements; the SPF became part of the Straits Settlements Police Force.'],
@@ -294,6 +350,13 @@ class PageController extends Controller
             'chief_designation' => 'Commissioner General',
             'chief_photo'       => 'media/chiefs/thailand.jpg',
             'logo'              => 'media/default-album/default-album/emblem_of_royal_thai_police_new.jpg',
+            'contact_person'    => [
+                'name'        => 'Pol. Lt. Col. Jarasluk La-Inchua',
+                'designation' => 'Inspector of Interpol and Foreign Relations Region 1',
+                'mobile'      => '+66 85 171 4949',
+                'email'       => 'gingenejl@gmail.com',
+                'photo'       => 'media/contacts/thailand.png',
+            ],
             'history'           => [
                 ['year' => '1455', 'text' => 'The Royal Thai Police first came into existence over 500 years ago.'],
                 ['year' => '19th Century', 'text' => 'Modernisation of the police occurred during the reign of King Rama IV, when an English sea captain named Joseph Byrd Ames designed the modern policing system and became the first uniform police commander appointed by the king.'],
@@ -319,6 +382,13 @@ class PageController extends Controller
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/vietnam.jpg',
             'logo'              => 'media/police-logo/police-logo/vietnam.png',
+            'contact_person'    => [
+                'name'        => 'Snr. Lt. Col. Vu Thi Thu Hanh',
+                'designation' => 'Deputy Head of Division',
+                'mobile'      => '+84 983030328',
+                'email'       => 'hanhdanhen@gmail.com',
+                'photo'       => 'media/contacts/vietnam.png',
+            ],
             'history'           => [
                 ['year' => '1930', 'text' => 'The Communist Party of Viet Nam was founded, and \'Red Safeguard\' teams emerged as predecessors to the People\'s Police Force (PPF).'],
                 ['year' => '1945', 'text' => 'On August 15, the first organisation of the PPF was formed after the success of the August Revolution. On September 2, the Democratic Republic of Vietnam\'s Independence Day was protected by the new security forces.'],
@@ -347,7 +417,14 @@ class PageController extends Controller
             'website'     => 'https://www.pntl.tl',
             'route'       => 'about.member.timor-leste',
             'description' => 'The National Police of Timor-Leste (Polícia Nacional de Timor-Leste / PNTL) is the national police force of the Democratic Republic of Timor-Leste. Timor-Leste has been an ASEANAPOL Observer since the 34th ASEANAPOL Conference (2014) and became ASEAN\'s 11th member state in October 2025.',
-            'observer_note' => 'Timor-Leste joined ASEAN as the 11th member state in October 2025. Their ASEANAPOL membership status is currently transitioning from Observer to full member.',
+            'observer_note'  => 'Timor-Leste joined ASEAN as the 11th member state in October 2025. Their ASEANAPOL membership status is currently transitioning from Observer to full member.',
+            'contact_person' => [
+                'name'        => 'Police Supt. Augusto Tilman Da Costa',
+                'designation' => 'Chief',
+                'mobile'      => '+67078299444',
+                'email'       => 'Augusto.tilman@pntl.tl',
+                'photo'       => 'media/contacts/timor-leste.png',
+            ],
         ]);
     }
 

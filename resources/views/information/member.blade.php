@@ -112,9 +112,8 @@
 
                 @php
                     $stubs = [
-                        ['icon' => 'account_tree',      'title' => 'Police Structure',       'desc' => 'Organisational chart and key divisions of the national police force.'],
-                        ['icon' => 'military_tech',     'title' => 'Rank & Uniforms',        'desc' => 'Police rank hierarchy, insignia and uniform regulations.'],
-                        ['icon' => 'folder_special',    'title' => 'ED / DPP / DPS',         'desc' => 'ASEANAPOL-designated focal points: Executive Director, Deputy Programme Points and Deputy Support contacts.'],
+                        ['icon' => 'account_tree',  'title' => 'Police Structure', 'desc' => 'Organisational chart and key divisions of the national police force.'],
+                        ['icon' => 'military_tech', 'title' => 'Rank & Uniforms',  'desc' => 'Police rank hierarchy, insignia and uniform regulations.'],
                     ];
                 @endphp
 
@@ -134,6 +133,38 @@
                     </div>
                     @endforeach
                 </div>
+
+                {{-- Contact Person --}}
+                @isset($contact_person)
+                <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="flex flex-col sm:flex-row gap-0">
+                        <div class="sm:w-40 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            <img src="{{ asset($contact_person['photo']) }}"
+                                 alt="{{ $contact_person['name'] }}"
+                                 class="w-full sm:h-full object-cover object-top max-h-52 sm:max-h-none">
+                        </div>
+                        <div class="p-6 flex flex-col justify-center gap-3">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1 block">Contact Person</span>
+                                <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-0.5">{{ $contact_person['name'] }}</h4>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">{{ $contact_person['designation'] }}</p>
+                            </div>
+                            <div class="flex flex-col gap-1.5 text-sm">
+                                <a href="tel:{{ preg_replace('/\s+/', '', $contact_person['mobile']) }}"
+                                   class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition-colors">
+                                    <span class="material-symbols-outlined text-accent text-base">phone</span>
+                                    {{ $contact_person['mobile'] }}
+                                </a>
+                                <a href="mailto:{{ $contact_person['email'] }}"
+                                   class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition-colors break-all">
+                                    <span class="material-symbols-outlined text-accent text-base">mail</span>
+                                    {{ $contact_person['email'] }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endisset
 
             </div>
 
