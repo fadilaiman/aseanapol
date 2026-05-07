@@ -245,6 +245,7 @@
                             <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Crime Statistics</a>
                             <a href="{{ route('data-resources.publications', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Publications</a>
                             <a href="{{ route('data-resources.digital-library', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Digital Library</a>
+                            <a href="{{ route('data-resources.e-learning', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">E-Learning</a>
                         </div>
                     </div>
 
@@ -392,6 +393,7 @@
                             <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Crime Statistics</a>
                             <a href="{{ route('data-resources.publications', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Publications</a>
                             <a href="{{ route('data-resources.digital-library', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Digital Library</a>
+                            <a href="{{ route('data-resources.e-learning', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">E-Learning</a>
                         </div>
                     </div>
 

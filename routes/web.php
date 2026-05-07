@@ -93,6 +93,7 @@ Route::middleware([SetLocale::class])
         Route::get('/data-resources/crime-statistics', [PageController::class, 'crimeStatistics'])->name('data-resources.crime-statistics');
         Route::get('/data-resources/publications', [PageController::class, 'publicationIndex'])->name('data-resources.publications');
         Route::get('/data-resources/digital-library', [PageController::class, 'digitalLibrary'])->name('data-resources.digital-library');
+        Route::get('/data-resources/e-learning', [PageController::class, 'eLearning'])->name('data-resources.e-learning');
 
         // Legacy /publication redirects
         Route::redirect('/publication', '/data-resources/publications', 301)->name('publication.index');

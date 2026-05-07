@@ -529,6 +529,11 @@ class PageController extends Controller
         return view('data-resources.digital-library');
     }
 
+    public function eLearning()
+    {
+        return view('data-resources.e-learning');
+    }
+
     // Publication editions — kept for direct links
     public function publication8th()  { return $this->publicationPage(['edition' => '8th',  'title' => '8th Edition ASEANAPOL Bulletin',  'type' => 'Bulletin', 'route' => 'publication.8th']); }
     public function publication9th()  { return $this->publicationPage(['edition' => '9th',  'title' => '9th Edition ASEANAPOL Bulletin',  'type' => 'Bulletin', 'route' => 'publication.9th']); }
