@@ -31,7 +31,7 @@ return [
     'mission_4' => 'Membina perkongsian strategik dengan organisasi penguatkuasaan undang-undang antarabangsa',
     'members_badge' => 'Ahli Kami',
     'members_title' => 'Negara Anggota',
-    'members_subtitle' => 'Sepuluh negara anggota ASEAN bersatu dalam mempromosikan profesionalisme polis dan kerjasama keselamatan serantau.',
+    'members_subtitle' => 'Sebelas negara anggota ASEAN bersatu dalam mempromosikan profesionalisme polis dan kerjasama keselamatan serantau.',
     'news_badge' => 'Kekal Bermaklumat',
     'news_title' => 'Berita & Acara Terkini',
     'news_read_more' => 'Baca Lagi',

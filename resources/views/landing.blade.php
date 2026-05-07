@@ -119,7 +119,7 @@
                 @php
                     $stats = [
                         ['value' => '11', 'label' => __('landing.stats_members'), 'icon' => 'public'],
-                        ['value' => '6', 'label' => __('landing.stats_partners'), 'icon' => 'handshake'],
+                        ['value' => '12', 'label' => __('landing.stats_partners'), 'icon' => 'handshake'],
                         ['value' => '44+', 'label' => __('landing.stats_conferences'), 'icon' => 'groups'],
                         ['value' => '1981', 'label' => __('landing.stats_established'), 'icon' => 'calendar_month'],
                     ];
@@ -323,17 +323,17 @@
 
         @php
             $countries = [
-                ['code' => 'bn', 'name' => 'Brunei Darussalam', 'logo' => 'brunei-rbpf.png',       'short' => 'RBPF'],
-                ['code' => 'kh', 'name' => 'Cambodia',          'logo' => 'cambodia-cnp.png',       'short' => 'CNP'],
-                ['code' => 'id', 'name' => 'Indonesia',         'logo' => 'indonesia-polri.png',    'short' => 'INP'],
-                ['code' => 'la', 'name' => 'Lao PDR',           'logo' => 'laos-lpp.png',           'short' => 'LPF'],
-                ['code' => 'my', 'name' => 'Malaysia',          'logo' => 'malaysia-pdrm.png',      'short' => 'RMP'],
-                ['code' => 'mm', 'name' => 'Myanmar',           'logo' => 'myanmar-mpf.png',        'short' => 'MPF'],
-                ['code' => 'ph', 'name' => 'Philippines',       'logo' => 'philippines-pnp.png',    'short' => 'PNP'],
-                ['code' => 'sg', 'name' => 'Singapore',         'logo' => 'singapore-spf.png',      'short' => 'SPF'],
-                ['code' => 'th', 'name' => 'Thailand',          'logo' => 'thailand-rtp.png',       'short' => 'RTP'],
-                ['code' => 'vn', 'name' => 'Viet Nam',          'logo' => 'vietnam-mps.png',        'short' => 'VPF'],
-                ['code' => 'tl', 'name' => 'Timor-Leste',       'logo' => 'timorleste-pntl.png',    'short' => 'PNTL'],
+                ['code' => 'bn', 'name' => 'Brunei Darussalam', 'logo' => 'brunei-rbpf.png',       'short' => 'RBPF', 'since' => '1984'],
+                ['code' => 'kh', 'name' => 'Cambodia',          'logo' => 'cambodia-cnp.png',       'short' => 'CNP',  'since' => '2000'],
+                ['code' => 'id', 'name' => 'Indonesia',         'logo' => 'indonesia-polri.png',    'short' => 'INP',  'since' => '1981'],
+                ['code' => 'la', 'name' => 'Lao PDR',           'logo' => 'laos-lpp.png',           'short' => 'LPF',  'since' => '1998'],
+                ['code' => 'my', 'name' => 'Malaysia',          'logo' => 'malaysia-pdrm.png',      'short' => 'RMP',  'since' => '1981'],
+                ['code' => 'mm', 'name' => 'Myanmar',           'logo' => 'myanmar-mpf.png',        'short' => 'MPF',  'since' => '1998'],
+                ['code' => 'ph', 'name' => 'Philippines',       'logo' => 'philippines-pnp.png',    'short' => 'PNP',  'since' => '1981'],
+                ['code' => 'sg', 'name' => 'Singapore',         'logo' => 'singapore-spf.png',      'short' => 'SPF',  'since' => '1981'],
+                ['code' => 'th', 'name' => 'Thailand',          'logo' => 'thailand-rtp.png',       'short' => 'RTP',  'since' => '1981'],
+                ['code' => 'vn', 'name' => 'Viet Nam',          'logo' => 'vietnam-mps.png',        'short' => 'OIPA, VPF', 'since' => '1996'],
+                ['code' => 'tl', 'name' => 'Timor-Leste',       'logo' => 'timorleste-pntl.png',    'short' => 'PNTL', 'since' => null],
             ];
         @endphp
 
@@ -355,6 +355,9 @@
                                  class="h-4 w-auto rounded-sm shadow-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                             <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                         </div>
+                        @if(!empty($country['since']))
+                        <span class="mt-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent">Since {{ $country['since'] }}</span>
+                        @endif
                     </div>
                 @endforeach
                 {{-- Duplicate set for seamless loop --}}
@@ -372,6 +375,9 @@
                                  class="h-4 w-auto rounded-sm shadow-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                             <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                         </div>
+                        @if(!empty($country['since']))
+                        <span class="mt-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent">Since {{ $country['since'] }}</span>
+                        @endif
                     </div>
                 @endforeach
             </div>

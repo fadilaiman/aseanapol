@@ -34,18 +34,39 @@
             </a>
         </div>
 
-        {{-- Observer list placeholder --}}
-        <div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-8 border border-primary/10 dark:border-primary/30 max-w-3xl">
-            <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary dark:text-accent text-2xl flex-shrink-0">info</span>
-                <div>
-                    <h3 class="font-semibold text-primary dark:text-white mb-2">Current Observers</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                        The current list of observer organisations is maintained by the ASEANAPOL Permanent Secretariat and updated following each annual conference. For the most current listing, please contact the Secretariat at
-                        <a href="mailto:aseanapolsec@aseanapol.org" class="text-primary dark:text-accent hover:underline font-medium">aseanapolsec@aseanapol.org</a>.
-                    </p>
+        {{-- Observer list --}}
+        @php
+        $observers = [
+            ['name' => 'Argentine Federal Police (AFP)',                              'flag' => '🇦🇷', 'since' => '2022', 'conference' => '40th AC, Cambodia'],
+            ['name' => 'Bangladesh Police',                                           'flag' => '🇧🇩', 'since' => '2022', 'conference' => '40th AC, Cambodia'],
+            ['name' => 'Fiji',                                                        'flag' => '🇫🇯', 'since' => '2016', 'conference' => '36th AC, Malaysia'],
+            ['name' => 'French National Police (FNP)',                                'flag' => '🇫🇷', 'since' => '2019', 'conference' => '39th AC, Viet Nam'],
+            ['name' => 'Security Department of Italian Interior (PSD IIM)',           'flag' => '🇮🇹', 'since' => '2022', 'conference' => '40th AC, Cambodia'],
+            ['name' => 'Royal Canadian Mounted Police (RCMP)',                        'flag' => '🇨🇦', 'since' => '2019', 'conference' => '39th AC, Viet Nam'],
+            ['name' => 'Timor-Leste',                                                 'flag' => '🇹🇱', 'since' => '2014', 'conference' => '34th AC, Philippines'],
+            ['name' => 'United Arab Emirates (UAE)',                                  'flag' => '🇦🇪', 'since' => '2022', 'conference' => '40th AC, Cambodia'],
+            ['name' => 'International Association of Chiefs of Police (IACP)',        'flag' => null,  'since' => '2016', 'conference' => '36th AC, Malaysia'],
+            ['name' => 'International Committee of the Red Cross (ICRC)',             'flag' => null,  'since' => '2015', 'conference' => '35th AC, Indonesia'],
+            ['name' => 'Gulf Cooperation Council Police (GCCPOL)',                   'flag' => null,  'since' => '2019', 'conference' => '39th AC, Viet Nam'],
+        ];
+        @endphp
+        <h2 class="text-xl font-bold text-primary dark:text-white mb-5">Current Observers</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            @foreach($observers as $obs)
+            <div class="bg-white dark:bg-dark-card rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                <div class="w-10 h-10 bg-primary/8 dark:bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    @if($obs['flag'])
+                    <span class="text-2xl leading-none">{{ $obs['flag'] }}</span>
+                    @else
+                    <span class="material-symbols-outlined text-primary dark:text-accent text-xl">groups</span>
+                    @endif
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{{ $obs['name'] }}</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Since {{ $obs['since'] }} &middot; {{ $obs['conference'] }}</p>
                 </div>
             </div>
+            @endforeach
         </div>
 
         <div class="mt-10">

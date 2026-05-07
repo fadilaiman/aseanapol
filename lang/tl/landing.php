@@ -31,7 +31,7 @@ return [
     'mission_4' => 'Bumuo ng mga madiskarteng pakikipagsosyo sa mga internasyonal na organisasyong nagpapatupad ng batas',
     'members_badge' => 'Ang aming mga Miyembro',
     'members_title' => 'Mga Bansang Miyembro',
-    'members_subtitle' => 'Sampung bansang miyembro ng ASEAN ang nagkaisa sa pagtataguyod ng propesyonalismo ng pulisya at pagtutulungan sa seguridad sa rehiyon.',
+    'members_subtitle' => 'Labing-isang bansang miyembro ng ASEAN ang nagkaisa sa pagtataguyod ng propesyonalismo ng pulisya at pagtutulungan sa seguridad sa rehiyon.',
     'news_badge' => 'Manatiling Alam',
     'news_title' => 'Pinakabagong Balita at Mga Kaganapan',
     'news_read_more' => 'Magbasa pa',

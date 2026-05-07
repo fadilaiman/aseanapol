@@ -31,7 +31,7 @@ return [
     'mission_4' => 'Membangun kemitraan strategis dengan organisasi penegak hukum internasional',
     'members_badge' => 'Anggota kami',
     'members_title' => 'Negara Anggota',
-    'members_subtitle' => 'Sepuluh negara anggota ASEAN bersatu dalam mempromosikan profesionalisme polisi dan kerja sama keamanan regional.',
+    'members_subtitle' => 'Sebelas negara anggota ASEAN bersatu dalam mempromosikan profesionalisme polisi dan kerja sama keamanan regional.',
     'news_badge' => 'Tetap Terinformasi',
     'news_title' => 'Berita & Acara Terkini',
     'news_read_more' => 'Baca selengkapnya',

@@ -40,7 +40,7 @@ return [
     // Member Countries
     'members_badge' => 'Our Members',
     'members_title' => 'Member Countries',
-    'members_subtitle' => 'Ten ASEAN member states united in promoting police professionalism and regional security cooperation.',
+    'members_subtitle' => 'Eleven ASEAN member states united in promoting police professionalism and regional security cooperation.',
 
     // News
     'news_badge' => 'Stay Informed',

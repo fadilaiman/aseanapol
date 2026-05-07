@@ -40,7 +40,7 @@ return [
     // Member Countries
     'members_badge' => '我们的成员',
     'members_title' => '成员国',
-    'members_subtitle' => '十个东盟成员国携手合作，共同推动警务专业化和区域安全合作。',
+    'members_subtitle' => '十一个东盟成员国携手合作，共同推动警务专业化和区域安全合作。',
 
     // News
     'news_badge' => '保持关注',

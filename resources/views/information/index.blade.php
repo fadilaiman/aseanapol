@@ -15,17 +15,17 @@
 @section('content')
 @php
 $members = [
-    ['name' => 'Royal Brunei Police Force (RBPF)',              'country' => 'Brunei Darussalam', 'iso' => 'bn', 'route' => 'about.member.brunei'],
-    ['name' => 'Cambodian National Police (CNP)',               'country' => 'Cambodia',          'iso' => 'kh', 'route' => 'about.member.cambodia'],
-    ['name' => 'Indonesia National Police (INP)',               'country' => 'Indonesia',         'iso' => 'id', 'route' => 'about.member.indonesia'],
-    ['name' => 'Lao Police Force (LPF)',                        'country' => 'Lao PDR',           'iso' => 'la', 'route' => 'about.member.lao'],
-    ['name' => 'Royal Malaysia Police (RMP)',                   'country' => 'Malaysia',          'iso' => 'my', 'route' => 'about.member.malaysia'],
-    ['name' => 'Myanmar Police Force (MPF)',                    'country' => 'Myanmar',           'iso' => 'mm', 'route' => 'about.member.myanmar'],
-    ['name' => 'Philippines National Police (PNP)',             'country' => 'Philippines',       'iso' => 'ph', 'route' => 'about.member.philippines'],
-    ['name' => 'Singapore Police Force (SPF)',                  'country' => 'Singapore',         'iso' => 'sg', 'route' => 'about.member.singapore'],
-    ['name' => 'Royal Thai Police (RTP)',                       'country' => 'Thailand',          'iso' => 'th', 'route' => 'about.member.thailand'],
-    ['name' => 'Vietnam Police Force (VPF)',                    'country' => 'Viet Nam',          'iso' => 'vn', 'route' => 'about.member.vietnam'],
-    ['name' => 'National Police of Timor-Leste (PNTL)',        'country' => 'Timor-Leste',       'iso' => 'tl', 'route' => 'about.member.timor-leste', 'new' => true],
+    ['name' => 'Royal Brunei Police Force (RBPF)',              'country' => 'Brunei Darussalam', 'iso' => 'bn', 'since' => '1984', 'route' => 'about.member.brunei'],
+    ['name' => 'Cambodian National Police (CNP)',               'country' => 'Cambodia',          'iso' => 'kh', 'since' => '2000', 'route' => 'about.member.cambodia'],
+    ['name' => 'Indonesia National Police (INP)',               'country' => 'Indonesia',         'iso' => 'id', 'since' => '1981', 'route' => 'about.member.indonesia'],
+    ['name' => 'Lao Police Force (LPF)',                        'country' => 'Lao PDR',           'iso' => 'la', 'since' => '1998', 'route' => 'about.member.lao'],
+    ['name' => 'Royal Malaysia Police (RMP)',                   'country' => 'Malaysia',          'iso' => 'my', 'since' => '1981', 'route' => 'about.member.malaysia'],
+    ['name' => 'Myanmar Police Force (MPF)',                    'country' => 'Myanmar',           'iso' => 'mm', 'since' => '1998', 'route' => 'about.member.myanmar'],
+    ['name' => 'Philippines National Police (PNP)',             'country' => 'Philippines',       'iso' => 'ph', 'since' => '1981', 'route' => 'about.member.philippines'],
+    ['name' => 'Singapore Police Force (SPF)',                  'country' => 'Singapore',         'iso' => 'sg', 'since' => '1981', 'route' => 'about.member.singapore'],
+    ['name' => 'Royal Thai Police (RTP)',                       'country' => 'Thailand',          'iso' => 'th', 'since' => '1981', 'route' => 'about.member.thailand'],
+    ['name' => 'Vietnam Police Force (VPF)',                    'country' => 'Viet Nam',          'iso' => 'vn', 'since' => '1996', 'route' => 'about.member.vietnam'],
+    ['name' => 'National Police of Timor-Leste (PNTL)',        'country' => 'Timor-Leste',       'iso' => 'tl', 'since' => null,   'route' => 'about.member.timor-leste', 'new' => true],
 ];
 @endphp
 
@@ -53,6 +53,9 @@ $members = [
                      class="w-16 h-10 object-cover rounded shadow-sm mb-3 group-hover:scale-105 transition-transform">
                 <div class="font-semibold text-gray-900 dark:text-white text-sm group-hover:text-primary dark:group-hover:text-accent transition-colors">{{ $m['country'] }}</div>
                 <div class="text-gray-400 dark:text-gray-500 text-xs mt-1 leading-tight">{{ $m['name'] }}</div>
+                @if(!empty($m['since']))
+                <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent">Since {{ $m['since'] }}</span>
+                @endif
                 <span class="mt-3 text-primary dark:text-accent text-xs font-medium flex items-center gap-1">
                     View <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </span>

@@ -31,7 +31,7 @@ return [
     'mission_4' => 'Xây dựng quan hệ đối tác chiến lược với các tổ chức thực thi pháp luật quốc tế',
     'members_badge' => 'Thành viên của chúng tôi',
     'members_title' => 'Các nước thành viên',
-    'members_subtitle' => 'Mười nước thành viên ASEAN thống nhất thúc đẩy tính chuyên nghiệp của cảnh sát và hợp tác an ninh khu vực',
+    'members_subtitle' => 'Mười một nước thành viên ASEAN thống nhất thúc đẩy tính chuyên nghiệp của cảnh sát và hợp tác an ninh khu vực',
     'news_badge' => 'Cập nhật thông tin',
     'news_title' => 'Tin tức & Sự kiện mới nhất',
     'news_read_more' => 'Đọc thêm',
