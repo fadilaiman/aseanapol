@@ -16,14 +16,32 @@
 <section class="py-16 bg-background dark:bg-dark-surface">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        {{-- Active filter banner --}}
+        @if($q !== '')
+        <div class="flex items-center gap-3 mb-6 p-4 bg-accent/10 dark:bg-accent/15 border border-accent/30 rounded-xl">
+            <span class="material-symbols-outlined text-accent text-lg">filter_alt</span>
+            <p class="text-sm text-gray-700 dark:text-gray-200 flex-1">
+                Showing activities related to <strong class="text-accent">{{ $q }}</strong>
+            </p>
+            <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}"
+               class="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-accent transition-colors">
+                <span class="material-symbols-outlined text-sm">close</span> Clear filter
+            </a>
+        </div>
+        @endif
+
         {{-- Results count --}}
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
-            Showing {{ $articles->firstItem() }}–{{ $articles->lastItem() }} of {{ $articles->total() }} articles
+            @if($articles->total() > 0)
+                Showing {{ $articles->firstItem() }}–{{ $articles->lastItem() }} of {{ $articles->total() }} articles
+            @else
+                No articles found{{ $q !== '' ? ' for "' . e($q) . '"' : '' }}.
+            @endif
         </p>
 
         {{-- Articles Grid --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            @foreach($articles as $article)
+            @forelse($articles as $article)
             @php
                 $excerpt = $article->summary
                     ?: strip_tags(html_entity_decode($article->content ?? ''));
@@ -61,7 +79,12 @@
                     </a>
                 </div>
             </article>
-            @endforeach
+            @empty
+            <div class="col-span-3 text-center py-16 text-gray-400 dark:text-gray-500">
+                <span class="material-symbols-outlined text-5xl mb-3 block">search_off</span>
+                <p class="text-sm">No articles found. <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="text-primary dark:text-accent hover:underline">View all news</a></p>
+            </div>
+            @endforelse
         </div>
 
         {{-- Pagination --}}

@@ -9,7 +9,19 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $articles = NewsItem::orderBy('published_at', 'desc')->paginate(12);
+        $q = trim(request()->query('q', ''));
+
+        $query = NewsItem::orderBy('published_at', 'desc');
+
+        if ($q !== '') {
+            $query->where(function ($sub) use ($q) {
+                $sub->where('title',   'like', "%{$q}%")
+                    ->orWhere('summary', 'like', "%{$q}%")
+                    ->orWhere('content', 'like', "%{$q}%");
+            });
+        }
+
+        $articles = $query->paginate(12)->withQueryString();
 
         $locale = app()->getLocale();
         if ($locale !== 'en') {
@@ -21,7 +33,7 @@ class NewsController extends Controller
             });
         }
 
-        return view('news.index', compact('articles'));
+        return view('news.index', compact('articles', 'q'));
     }
 
     public function show(string $locale, string $slug)
