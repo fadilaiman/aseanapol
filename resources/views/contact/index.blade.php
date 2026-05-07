@@ -23,7 +23,7 @@ $members = [
     ['flag' => 'ph', 'country' => 'Philippines',        'org' => 'Philippines National Police (PNP)',                       'tel' => '+632 8723 0401',               'fax' => '+632 7218549',   'email' => 'laiad.dpl@pnp.gov.ph'],
     ['flag' => 'sg', 'country' => 'Singapore',          'org' => 'Singapore Police Force (SPF)',                            'tel' => '1800 358 000',                 'fax' => '+65 6256 1296',  'email' => null, 'web' => 'https://www.police.gov.sg/e-services'],
     ['flag' => 'th', 'country' => 'Thailand',           'org' => 'Royal Thai Police (RTP)',                                 'tel' => '+6622053001',                  'fax' => '+6622533856',    'email' => 'aseanapol.th@gmail.com'],
-    ['flag' => 'vn', 'country' => 'Viet Nam',           'org' => 'Vietnam Police Force (VPF)',                              'tel' => '+8424 3938 7173',              'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
+    ['flag' => 'vn', 'country' => 'Viet Nam',           'org' => 'Office of Investigation Police Agency, Vietnam Police Force (OIPA, VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
     ['flag' => 'tl', 'country' => 'Timor-Leste',        'org' => 'National Police of Timor-Leste (PNTL)',                  'tel' => '—',                           'fax' => '—',              'email' => null],
 ];
 @endphp

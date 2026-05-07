@@ -436,7 +436,7 @@
                                 ['code' => 'ph', 'logo' => 'philippines-pnp.png','country' => 'Philippines',       'org' => 'Philippines National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '+632 7218549', 'email' => 'laiad.dpl@pnp.gov.ph'],
                                 ['code' => 'sg', 'logo' => 'singapore-spf.png',  'country' => 'Singapore',         'org' => 'Singapore Police Force (SPF)', 'tel' => '1800 358 000', 'fax' => '+65 6256 1296', 'email' => 'www.police.gov.sg/e-services'],
                                 ['code' => 'th', 'logo' => 'thailand-rtp.png',   'country' => 'Thailand',          'org' => 'Royal Thai Police (RTP)', 'tel' => '+6622053001', 'fax' => '+6622533856', 'email' => 'aseanapol.th@gmail.com'],
-                                ['code' => 'vn', 'logo' => 'vietnam-mps.png',    'country' => 'Viet Nam',          'org' => 'Vietnam Police Force (VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
+                                ['code' => 'vn', 'logo' => 'vietnam-mps.png',    'country' => 'Viet Nam',          'org' => 'Office of Investigation Police Agency, Vietnam Police Force (OIPA, VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'division6@dfir.gov.vn'],
                                 ['code' => 'tl', 'logo' => 'timorleste-pntl.png','country' => 'Timor-Leste',       'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => null],
                             ];
                         @endphp

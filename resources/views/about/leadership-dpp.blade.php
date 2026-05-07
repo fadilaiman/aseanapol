@@ -63,7 +63,7 @@
                         @php
                         $directors = [
                             ['no'=>'7th','name'=>'Pol. Col. Jean Mary A. Mangahis',      'force'=>'Philippine National Police (PNP)',  'flag'=>'🇵🇭','photo'=>asset('media/dpp/no7.png')],
-                            ['no'=>'6th','name'=>'Pol. Snr. Lt. Col. Nguyen Huu Ngoc',   'force'=>'Vietnam Police Force (VPF)',        'flag'=>'🇻🇳','photo'=>asset('media/dpp/no6.png')],
+                            ['no'=>'6th','name'=>'Pol. Snr. Lt. Col. Nguyen Huu Ngoc',   'force'=>'Office of Investigation Police Agency, Vietnam Police Force (OIPA, VPF)', 'flag'=>'🇻🇳','photo'=>asset('media/dpp/no6.png')],
                             ['no'=>'5th','name'=>'Supt. Tang Yik Tung',                  'force'=>'Royal Brunei Police Force (RBPF)', 'flag'=>'🇧🇳','photo'=>asset('media/dpp/no5.png')],
                             ['no'=>'4th','name'=>'ACP Aidah Othman',                     'force'=>'Royal Malaysia Police (RMP)',      'flag'=>'🇲🇾','photo'=>asset('media/dpp/no4.png')],
                             ['no'=>'3rd','name'=>'Pol. Supt. Yuli Cahyanti',             'force'=>'Indonesian National Police (INP)', 'flag'=>'🇮🇩','photo'=>asset('media/dpp/no3.png')],

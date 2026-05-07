@@ -305,15 +305,15 @@ class PageController extends Controller
     {
         return $this->memberPage([
             'country'     => 'Viet Nam',
-            'force'       => 'Vietnam Police Force',
-            'abbreviation'=> 'VPF',
+            'force'       => 'Office of Investigation Police Agency, Vietnam Police Force',
+            'abbreviation'=> 'OIPA, VPF',
             'iso'         => 'vn',
             'tel'         => ['+8424 3938 7173'],
             'fax'         => '+8424 3938 7176',
             'email'       => 'division6@dfir.gov.vn',
             'website'     => null,
             'route'       => 'about.member.vietnam',
-            'description' => 'The Vietnam Police Force (VPF) is the designated ASEANAPOL contact body for the Socialist Republic of Viet Nam, responsible for criminal investigation cooperation and transnational crime enforcement.',
+            'description' => 'The Office of Investigation Police Agency, Vietnam Police Force (OIPA, VPF) is the designated ASEANAPOL contact body for the Socialist Republic of Viet Nam, responsible for criminal investigation cooperation and transnational crime enforcement.',
             'chief_name'        => 'Tran Minh Tien',
             'chief_rank'        => 'Police Major General',
             'chief_designation' => 'Chief of Police',
