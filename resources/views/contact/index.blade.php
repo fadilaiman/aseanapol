@@ -121,7 +121,7 @@ $members = [
                         <thead class="bg-gray-50 dark:bg-dark-surface border-b border-gray-100 dark:border-gray-700">
                             <tr>
                                 <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 w-48">Country</th>
-                                <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">Organisation</th>
+                                <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">Org.</th>
                                 <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 w-44 hidden md:table-cell">Phone</th>
                                 <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 w-36 hidden lg:table-cell">Fax</th>
                                 <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 w-52">Contact</th>
@@ -140,7 +140,7 @@ $members = [
                                 </td>
                                 <td class="px-6 py-4 text-gray-600 dark:text-gray-300 text-xs leading-relaxed">{{ $m['org'] }}</td>
                                 <td class="px-6 py-4 text-gray-600 dark:text-gray-300 text-xs hidden md:table-cell">{{ $m['tel'] }}</td>
-                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400 text-xs hidden lg:table-cell">{{ $m['fax'] ?? '—' }}</td>
+                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400 text-xs hidden lg:table-cell whitespace-nowrap">{{ $m['fax'] ?? '—' }}</td>
                                 <td class="px-6 py-4 text-xs">
                                     @if(!empty($m['email']))
                                     <a href="mailto:{{ $m['email'] }}" class="text-primary dark:text-accent hover:underline break-all">{{ $m['email'] }}</a>
