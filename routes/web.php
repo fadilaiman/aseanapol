@@ -23,6 +23,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::post('newsletters/{newsletter}/toggle', [Admin\NewsletterController::class, 'toggle'])->name('newsletters.toggle');
         Route::resource('newsletters', Admin\NewsletterController::class)->except(['show']);
+
+        Route::prefix('digital-library')->name('digital-library.')->group(function () {
+            Route::resource('collections', Admin\DigitalLibraryCollectionController::class)->except(['show']);
+            Route::post('items/{item}/toggle', [Admin\DigitalLibraryItemController::class, 'toggle'])->name('items.toggle');
+            Route::resource('items', Admin\DigitalLibraryItemController::class)->except(['show']);
+        });
     });
 });
 

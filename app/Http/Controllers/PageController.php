@@ -536,7 +536,13 @@ class PageController extends Controller
 
     public function digitalLibrary()
     {
-        return view('data-resources.digital-library');
+        $collections = \App\Models\DigitalLibraryCollection::with(['publishedItems'])
+            ->orderBy('sort_order')
+            ->get()
+            ->filter(fn($c) => $c->publishedItems->isNotEmpty())
+            ->values();
+
+        return view('data-resources.digital-library', compact('collections'));
     }
 
     public function eLearning()
