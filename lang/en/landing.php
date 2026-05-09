@@ -115,6 +115,12 @@ return [
     'footer_terms' => 'Terms of Use',
     'footer_sitemap' => 'Sitemap',
 
+    // Visitor statistics banner
+    'stats_title' => 'Website Statistics',
+    'stats_as_of' => 'As of',
+    'stats_total_visitors' => 'Total Visitors',
+    'stats_today_visitors' => "Today's Visitors",
+
     // Dark mode
     'theme_light' => 'Light mode',
     'theme_dark' => 'Dark mode',

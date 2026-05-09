@@ -114,6 +114,10 @@ return [
     'footer_privacy' => '隐私政策',
     'footer_terms' => '使用条款',
     'footer_sitemap' => '网站地图',
+    'stats_title' => '网站统计',
+    'stats_as_of' => '截至',
+    'stats_total_visitors' => '总访客数',
+    'stats_today_visitors' => '今日访客',
 
     // Dark mode
     'theme_light' => '浅色模式',

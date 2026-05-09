@@ -560,18 +560,30 @@
             </div>
         </div>
 
+        {{-- Visitor Statistics Banner --}}
+        <div class="border-t border-white/10 bg-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+                <h3 class="text-white font-bold text-xl mb-1">{{ __('landing.stats_title') }}</h3>
+                <p class="text-white/50 text-sm mb-6">{{ __('landing.stats_as_of') }} {{ now()->format('d M Y') }}</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-20">
+                    <div>
+                        <p class="text-white/60 text-sm uppercase tracking-widest mb-1">{{ __('landing.stats_total_visitors') }}</p>
+                        <p class="text-accent font-bold text-4xl tracking-tight">{{ number_format($visitorTotalUnique) }}</p>
+                    </div>
+                    <div class="w-px h-14 bg-white/20 hidden sm:block"></div>
+                    <div>
+                        <p class="text-white/60 text-sm uppercase tracking-widest mb-1">{{ __('landing.stats_today_visitors') }}</p>
+                        <p class="text-accent font-bold text-4xl tracking-tight">{{ number_format($visitorDailyUnique) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- Bottom bar --}}
         <div class="border-t border-white/10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <p class="text-white/50 text-sm">{!! __('landing.footer_copyright') !!}</p>
                 <div class="flex items-center gap-6">
-                    {{-- Visitor counter (daily) --}}
-                    <div class="flex items-center gap-1.5 text-white/40 text-xs" title="Today's page views / Unique visitors">
-                        <span class="material-symbols-outlined text-sm">bar_chart</span>
-                        <span>{{ number_format($visitorDailyViews) }} views &middot; {{ number_format($visitorDailyUnique) }} visitors today</span>
-                    </div>
-                    {{-- Cumulative totals (hidden) --}}
-                    <span hidden data-total-views="{{ $visitorTotalViews }}" data-total-unique="{{ $visitorTotalUnique }}"></span>
                     <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_privacy') }}</a>
                     <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_terms') }}</a>
                     <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_sitemap') }}</a>
