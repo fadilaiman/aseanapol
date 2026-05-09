@@ -8,7 +8,7 @@
     </a>
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
-        <form method="POST" action="{{ route('admin.news.update', $news) }}" class="space-y-5">
+        <form method="POST" action="{{ route('admin.news.update', $news) }}" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
 
@@ -33,14 +33,36 @@
                 </div>
             </div>
 
+            {{-- Thumbnail --}}
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail URL</label>
-                <input type="url" name="thumbnail" value="{{ old('thumbnail', $news->thumbnail) }}"
-                       placeholder="https://…"
-                       class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail</label>
                 @if($news->thumbnail)
-                    <img src="{{ $news->thumbnail }}" alt="thumbnail" class="mt-2 h-20 rounded-lg object-cover">
+                    <div class="mb-3 flex items-center gap-3">
+                        <img src="{{ $news->thumbnail }}" alt="current thumbnail" class="h-16 rounded-lg object-cover">
+                        <span class="text-xs text-gray-400">Current thumbnail</span>
+                    </div>
                 @endif
+                <div class="flex gap-1 mb-3">
+                    <button type="button" onclick="switchTab('url')" id="tab-url"
+                            class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors bg-gray-900 text-white border-gray-900">
+                        External URL
+                    </button>
+                    <button type="button" onclick="switchTab('file')" id="tab-file"
+                            class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors bg-white text-gray-500 border-gray-200 hover:bg-gray-50">
+                        Upload File
+                    </button>
+                </div>
+                <div id="panel-url">
+                    <input type="url" name="thumbnail_url" value="{{ old('thumbnail_url', $news->thumbnail) }}"
+                           placeholder="https://…"
+                           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <p class="text-xs text-gray-400 mt-1">Leave blank to keep current thumbnail.</p>
+                </div>
+                <div id="panel-file" class="hidden">
+                    <input type="file" name="thumbnail_file" accept="image/*"
+                           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <p class="text-xs text-gray-400 mt-1">Uploading a file will replace the current thumbnail.</p>
+                </div>
             </div>
 
             <div>
@@ -70,4 +92,16 @@
         </form>
     </div>
 </div>
+<script>
+function switchTab(tab) {
+    document.getElementById('panel-url').classList.toggle('hidden', tab !== 'url');
+    document.getElementById('panel-file').classList.toggle('hidden', tab !== 'file');
+    ['url','file'].forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        const active = t === tab;
+        btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors '
+            + (active ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50');
+    });
+}
+</script>
 @endsection
