@@ -548,7 +548,22 @@ class PageController extends Controller
 
     public function eLearning()
     {
-        return view('data-resources.e-learning');
+        return view('training.e-learning');
+    }
+
+    public function trainingIndex()
+    {
+        return view('training.index');
+    }
+
+    public function onlineTraining()
+    {
+        return view('training.online-training');
+    }
+
+    public function inPersonTraining()
+    {
+        return view('training.in-person-training');
     }
 
     // Publication editions — kept for direct links

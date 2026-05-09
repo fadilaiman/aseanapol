@@ -121,7 +121,7 @@ Route::middleware([SetLocale::class])
         Route::get('/data-resources/crime-statistics', [PageController::class, 'crimeStatistics'])->name('data-resources.crime-statistics');
         Route::get('/data-resources/publications', [PageController::class, 'publicationIndex'])->name('data-resources.publications');
         Route::get('/data-resources/digital-library', [PageController::class, 'digitalLibrary'])->name('data-resources.digital-library');
-        Route::get('/data-resources/e-learning', [PageController::class, 'eLearning'])->name('data-resources.e-learning');
+        Route::redirect('/data-resources/e-learning', '/training/e-learning', 301)->name('data-resources.e-learning');
 
         // Legacy /publication redirects
         Route::redirect('/publication', '/data-resources/publications', 301)->name('publication.index');
@@ -151,6 +151,14 @@ Route::middleware([SetLocale::class])
         Route::get('/events-training/calendar', [PageController::class, 'eventsCalendar'])->name('events-training.calendar');
         Route::get('/events-training/conferences', [PageController::class, 'conferences'])->name('events-training.conferences');
         Route::get('/events-training/training-programs', [PageController::class, 'trainingPrograms'])->name('events-training.training-programs');
+
+        // =====================================================
+        // TRAINING
+        // =====================================================
+        Route::get('/training', [PageController::class, 'trainingIndex'])->name('training.index');
+        Route::get('/training/online-training', [PageController::class, 'onlineTraining'])->name('training.online-training');
+        Route::get('/training/in-person-training', [PageController::class, 'inPersonTraining'])->name('training.in-person-training');
+        Route::get('/training/e-learning', [PageController::class, 'eLearning'])->name('training.e-learning');
 
         // =====================================================
         // CAREERS & OPPORTUNITIES

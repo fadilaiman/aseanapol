@@ -245,7 +245,6 @@
                             <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Crime Statistics</a>
                             <a href="{{ route('data-resources.publications', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Publications</a>
                             <a href="{{ route('data-resources.digital-library', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Digital Library</a>
-                            <a href="{{ route('data-resources.e-learning', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">E-Learning</a>
                         </div>
                     </div>
 
@@ -271,6 +270,18 @@
                             <a href="{{ route('events-training.calendar', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Event Calendar</a>
                             <a href="{{ route('events-training.conferences', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Conferences</a>
                             <a href="{{ route('events-training.training-programs', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Training Programs</a>
+                        </div>
+                    </div>
+
+                    {{-- Training --}}
+                    <div class="nav-group relative">
+                        <a href="{{ route('training.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            Training <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        </a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 w-52 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            <a href="{{ route('training.online-training', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Online Training</a>
+                            <a href="{{ route('training.in-person-training', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">In-Person Training</a>
+                            <a href="{{ route('training.e-learning', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">E-Learning</a>
                         </div>
                     </div>
 
@@ -393,7 +404,6 @@
                             <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Crime Statistics</a>
                             <a href="{{ route('data-resources.publications', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Publications</a>
                             <a href="{{ route('data-resources.digital-library', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Digital Library</a>
-                            <a href="{{ route('data-resources.e-learning', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">E-Learning</a>
                         </div>
                     </div>
 
@@ -419,6 +429,18 @@
                             <a href="{{ route('events-training.calendar', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Event Calendar</a>
                             <a href="{{ route('events-training.conferences', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Conferences</a>
                             <a href="{{ route('events-training.training-programs', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Training Programs</a>
+                        </div>
+                    </div>
+
+                    {{-- Training --}}
+                    <div>
+                        <button onclick="toggleMobSub('mob-training')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            Training <span class="material-symbols-outlined text-base">expand_more</span>
+                        </button>
+                        <div id="mob-training" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            <a href="{{ route('training.online-training', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Online Training</a>
+                            <a href="{{ route('training.in-person-training', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">In-Person Training</a>
+                            <a href="{{ route('training.e-learning', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">E-Learning</a>
                         </div>
                     </div>
 
