@@ -37,17 +37,17 @@
         {{-- Observer list --}}
         @php
         $observers = [
-            ['name' => 'Argentine Federal Police (AFP)',                              'flag' => '🇦🇷', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'Argentina'],
-            ['name' => 'Bangladesh Police',                                           'flag' => '🇧🇩', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'Bangladesh'],
-            ['name' => 'Fiji',                                                        'flag' => '🇫🇯', 'since' => '2016', 'conference' => '36th AC, Malaysia',  'q' => 'Fiji'],
-            ['name' => 'French National Police (FNP)',                                'flag' => '🇫🇷', 'since' => '2019', 'conference' => '39th AC, Viet Nam',  'q' => 'French'],
-            ['name' => 'Security Department of Italian Interior (PSD IIM)',           'flag' => '🇮🇹', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'Italian'],
-            ['name' => 'Royal Canadian Mounted Police (RCMP)',                        'flag' => '🇨🇦', 'since' => '2019', 'conference' => '39th AC, Viet Nam',  'q' => 'Canada'],
-            ['name' => 'Timor-Leste',                                                 'flag' => '🇹🇱', 'since' => '2014', 'conference' => '34th AC, Philippines','q' => 'Timor'],
-            ['name' => 'United Arab Emirates (UAE)',                                  'flag' => '🇦🇪', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'UAE'],
-            ['name' => 'International Association of Chiefs of Police (IACP)',        'flag' => null,  'since' => '2016', 'conference' => '36th AC, Malaysia',  'q' => 'IACP'],
-            ['name' => 'International Committee of the Red Cross (ICRC)',             'flag' => null,  'since' => '2015', 'conference' => '35th AC, Indonesia', 'q' => 'ICRC'],
-            ['name' => 'Gulf Cooperation Council Police (GCCPOL)',                   'flag' => null,  'since' => '2019', 'conference' => '39th AC, Viet Nam',  'q' => 'GCCPOL'],
+            ['name' => 'Argentine Federal Police (AFP)',                              'flag' => '🇦🇷', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'Argentina', 'url' => 'https://www.argentina.gob.ar/seguridad/pfa'],
+            ['name' => 'Bangladesh Police',                                           'flag' => '🇧🇩', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'Bangladesh', 'url' => 'https://www.police.gov.bd/'],
+            ['name' => 'Fiji',                                                        'flag' => '🇫🇯', 'since' => '2016', 'conference' => '36th AC, Malaysia',  'q' => 'Fiji', 'url' => null],
+            ['name' => 'French National Police (FNP)',                                'flag' => '🇫🇷', 'since' => '2019', 'conference' => '39th AC, Viet Nam',  'q' => 'French', 'url' => 'https://www.police-nationale.interieur.gouv.fr/'],
+            ['name' => 'Security Department of Italian Interior (PSD IIM)',           'flag' => '🇮🇹', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'Italian', 'url' => null],
+            ['name' => 'Royal Canadian Mounted Police (RCMP)',                        'flag' => '🇨🇦', 'since' => '2019', 'conference' => '39th AC, Viet Nam',  'q' => 'Canada', 'url' => 'https://rcmp.ca/en'],
+            ['name' => 'Timor-Leste',                                                 'flag' => '🇹🇱', 'since' => '2014', 'conference' => '34th AC, Philippines','q' => 'Timor', 'url' => null],
+            ['name' => 'United Arab Emirates (UAE)',                                  'flag' => '🇦🇪', 'since' => '2022', 'conference' => '40th AC, Cambodia', 'q' => 'UAE', 'url' => 'https://moi.gov.ae/ar/default.aspx'],
+            ['name' => 'International Association of Chiefs of Police (IACP)',        'flag' => null,  'since' => '2016', 'conference' => '36th AC, Malaysia',  'q' => 'IACP', 'url' => 'https://www.theiacp.org/'],
+            ['name' => 'International Committee of the Red Cross (ICRC)',             'flag' => null,  'since' => '2015', 'conference' => '35th AC, Indonesia', 'q' => 'ICRC', 'url' => 'https://www.icrc.org/en'],
+            ['name' => 'Gulf Cooperation Council Police (GCCPOL)',                   'flag' => null,  'since' => '2019', 'conference' => '39th AC, Viet Nam',  'q' => 'GCCPOL', 'url' => 'https://www.gcc-sg.org/ar/JointGulf/Cooperation/GCCPOL/Pages/default.aspx'],
         ];
         @endphp
         <h2 class="text-xl font-bold text-primary dark:text-white mb-5">Current Observers</h2>
@@ -64,10 +64,18 @@
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{{ $obs['name'] }}</p>
                     <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5 mb-2">Since {{ $obs['since'] }} &middot; {{ $obs['conference'] }}</p>
-                    <a href="{{ route('news.index', ['locale' => app()->getLocale(), 'q' => $obs['q']]) }}"
-                       class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary dark:text-accent hover:underline">
-                        <span class="material-symbols-outlined text-sm">open_in_new</span> See Activities
-                    </a>
+                    <div class="flex items-center gap-3">
+                        <a href="{{ route('news.index', ['locale' => app()->getLocale(), 'q' => $obs['q']]) }}"
+                           class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary dark:text-accent hover:underline">
+                            <span class="material-symbols-outlined text-sm">open_in_new</span> See Activities
+                        </a>
+                        @if($obs['url'])
+                        <a href="{{ $obs['url'] }}" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-1 text-[11px] font-semibold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-accent hover:underline">
+                            <span class="material-symbols-outlined text-sm">language</span> Website
+                        </a>
+                        @endif
+                    </div>
                 </div>
             </div>
             @endforeach
