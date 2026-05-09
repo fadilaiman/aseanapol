@@ -29,6 +29,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('items/{item}/toggle', [Admin\DigitalLibraryItemController::class, 'toggle'])->name('items.toggle');
             Route::resource('items', Admin\DigitalLibraryItemController::class)->except(['show']);
         });
+
+        Route::resource('news', Admin\NewsItemController::class)->except(['show']);
     });
 });
 

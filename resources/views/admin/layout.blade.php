@@ -27,6 +27,7 @@
                         ['route' => 'admin.video-gallery.index','label' => 'Video Gallery',   'icon' => 'play_circle',  'match' => 'admin.video-gallery.*'],
                         ['route' => 'admin.newsletters.index',  'label' => 'Newsletters',     'icon' => 'mail',         'match' => 'admin.newsletters.*'],
                         ['route' => 'admin.digital-library.items.index', 'label' => 'Digital Library', 'icon' => 'library_books', 'match' => 'admin.digital-library.*'],
+                        ['route' => 'admin.news.index',                  'label' => 'News',            'icon' => 'newspaper',     'match' => 'admin.news.*'],
                     ];
                 @endphp
                 @foreach($navItems as $item)
