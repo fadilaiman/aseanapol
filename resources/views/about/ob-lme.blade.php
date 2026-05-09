@@ -33,94 +33,112 @@
         @php
         $lmes = [
             [
-                'name'  => 'International Association for Forensic Institutes',
-                'short' => 'IAFI',
-                'logo'  => 'iafi.png',
+                'name'    => 'International Association for Forensic Institutes',
+                'short'   => 'IAFI',
+                'logo'    => 'iafi.png',
+                'website' => null,
             ],
             [
-                'name'  => 'International Association of Police Academies',
-                'short' => 'INTERPA',
-                'logo'  => 'interpa.png',
+                'name'    => 'International Association of Police Academies',
+                'short'   => 'INTERPA',
+                'logo'    => 'interpa.png',
+                'website' => null,
             ],
             [
-                'name'  => 'The Asia Pacific Medico Legal Agencies',
-                'short' => 'APMLA',
-                'logo'  => 'apmla.jpg',
+                'name'    => 'The Asia Pacific Medico Legal Agencies',
+                'short'   => 'APMLA',
+                'logo'    => 'apmla.jpg',
+                'website' => 'https://www.theapmla.net/',
             ],
             [
-                'name'  => 'The World Border Organization, Canada',
-                'short' => 'BORDERPOL',
-                'logo'  => 'borderpol.png',
+                'name'    => 'The World Border Organization, Canada',
+                'short'   => 'BORDERPOL',
+                'logo'    => 'borderpol.png',
+                'website' => null,
             ],
             [
-                'name'  => 'Central Asian Regional Information and Coordination Centre',
-                'short' => 'CARICC',
-                'logo'  => 'caricc.png',
+                'name'    => 'Central Asian Regional Information and Coordination Centre',
+                'short'   => 'CARICC',
+                'logo'    => 'caricc.png',
+                'website' => 'https://www.caricc.org/en/',
             ],
             [
-                'name'  => 'Secretariat of the Convention on International Trade in Endangered Species of Fauna and Flora',
-                'short' => 'CITES',
-                'logo'  => 'cites.png',
+                'name'    => 'Secretariat of the Convention on International Trade in Endangered Species of Fauna and Flora',
+                'short'   => 'CITES',
+                'logo'    => 'cites.png',
+                'website' => 'https://cites.org/eng',
             ],
             [
-                'name'  => 'United Nations Counter-Terrorism Committee Executive Directorate',
-                'short' => 'UN CTED',
-                'logo'  => 'un-cted.png',
+                'name'    => 'United Nations Counter-Terrorism Committee Executive Directorate',
+                'short'   => 'UN CTED',
+                'logo'    => 'un-cted.png',
+                'website' => 'https://www.un.org/securitycouncil/ctc/',
             ],
             [
-                'name'  => 'Southeast European Law Enforcement Center',
-                'short' => 'SELEC',
-                'logo'  => 'selec.jpg',
+                'name'    => 'Southeast European Law Enforcement Center',
+                'short'   => 'SELEC',
+                'logo'    => 'selec.jpg',
+                'website' => 'https://www.selec.org/',
             ],
             [
-                'name'  => 'Pacific Islands Chiefs of Police Secretariat',
-                'short' => 'PICP',
-                'logo'  => 'picp.png',
+                'name'    => 'Pacific Islands Chiefs of Police Secretariat',
+                'short'   => 'PICP',
+                'logo'    => 'picp.png',
+                'website' => 'https://www.picp.co.nz/',
             ],
             [
-                'name'  => 'European Association for Secure Transactions',
-                'short' => 'EAST',
-                'logo'  => 'east.png',
+                'name'    => 'European Association for Secure Transactions',
+                'short'   => 'EAST',
+                'logo'    => 'east.png',
+                'website' => 'https://www.association-secure-transactions.eu/',
             ],
             [
-                'name'  => 'United Nations Office on Drugs and Crime',
-                'short' => 'UNODC',
-                'logo'  => 'unodc.png',
+                'name'    => 'United Nations Office on Drugs and Crime',
+                'short'   => 'UNODC',
+                'logo'    => 'unodc.png',
+                'website' => 'https://www.unodc.org/',
             ],
             [
-                'name'  => 'Regional Anti-Terrorism Structure of the Shanghai Cooperation Organisation',
-                'short' => 'RATS-SCO',
-                'logo'  => 'rats-sco.png',
+                'name'    => 'Regional Anti-Terrorism Structure of the Shanghai Cooperation Organisation',
+                'short'   => 'RATS-SCO',
+                'logo'    => 'rats-sco.png',
+                'website' => 'https://ecrats.org/ru/',
             ],
             [
-                'name'  => 'Association of Police Training Institutions in Asia',
-                'short' => 'APTA',
-                'logo'  => 'apta.jpeg',
+                'name'    => 'Association of Police Training Institutions in Asia',
+                'short'   => 'APTA',
+                'logo'    => 'apta.jpeg',
+                'website' => 'https://aptahome.org/',
             ],
             [
-                'name'  => 'U.S. Agency for International Development Wildlife Asia',
-                'short' => 'USAID Wildlife Asia',
-                'logo'  => 'usaid.png',
+                'name'    => 'U.S. Agency for International Development Wildlife Asia',
+                'short'   => 'USAID Wildlife Asia',
+                'logo'    => 'usaid.png',
+                'website' => 'https://www.fhi360.org/projects/wildlife-asia/',
             ],
             [
-                'name'  => 'Rashtriya Raksha University',
-                'short' => 'RRU',
-                'logo'  => 'rru.png',
+                'name'    => 'Rashtriya Raksha University',
+                'short'   => 'RRU',
+                'logo'    => 'rru.png',
+                'website' => 'https://rru.ac.in/',
             ],
             [
-                'name'  => 'Mastercard Asia Pacific',
-                'short' => 'Mastercard',
-                'logo'  => 'mastercard.png',
+                'name'    => 'Mastercard Asia Pacific',
+                'short'   => 'Mastercard',
+                'logo'    => 'mastercard.png',
+                'website' => 'https://www.mastercard.com/news/ap/en/',
             ],
             [
-                'name'  => 'Freeland',
-                'short' => 'Freeland',
-                'logo'  => 'freeland.jpeg',
+                'name'    => 'Freeland',
+                'short'   => 'Freeland',
+                'logo'    => 'freeland.jpeg',
+                'website' => 'https://www.freeland.org/',
             ],
             [
-                'name'  => 'Lusaka Agreement Task Force',
-                'short' => 'LATF',
-                'logo'  => 'latf.png',
+                'name'    => 'Lusaka Agreement Task Force',
+                'short'   => 'LATF',
+                'logo'    => 'latf.png',
+                'website' => 'https://lusakaagreement.org/',
             ],
         ];
         @endphp
@@ -137,6 +155,12 @@
                     <p class="font-bold text-xs text-primary dark:text-accent">{{ $lme['short'] }}</p>
                     <p class="text-xs text-gray-500 dark:text-gray-400 leading-snug mt-0.5">{{ $lme['name'] }}</p>
                 </div>
+                @if($lme['website'])
+                <a href="{{ $lme['website'] }}" target="_blank" rel="noopener"
+                   class="inline-flex items-center gap-1 text-[11px] font-semibold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-accent hover:underline">
+                    <span class="material-symbols-outlined text-sm">language</span> Official Website
+                </a>
+                @endif
             </div>
             @endforeach
         </div>
