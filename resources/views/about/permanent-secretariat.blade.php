@@ -156,7 +156,7 @@
             ['name' => 'Supt. Yuli Cahyanti',                 'force' => 'INP',          'flag' => '🇮🇩', 'term' => '2015–2016'],
             ['name' => 'ACP Aidah binti Othman',              'force' => 'RMP',          'flag' => '🇲🇾', 'term' => '2017–2019'],
             ['name' => 'Supt. Tang Yik Tung',                 'force' => 'RBPF',         'flag' => '🇧🇳', 'term' => '2020–2022'],
-            ['name' => 'Pol. Snr. Lt. Col. Nguyen Huu Ngoc', 'force' => 'OIPA Vietnam', 'flag' => '🇻🇳', 'term' => '2023–present'],
+            ['name' => 'Pol. Snr. Lt. Col. Nguyen Huu Ngoc', 'force' => 'OIPA, VPF', 'flag' => '🇻🇳', 'term' => '2023–present'],
         ]);
         @endphp
 
