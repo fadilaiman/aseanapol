@@ -497,12 +497,22 @@ class PageController extends Controller
 
     public function videoGallery()
     {
-        return view('news-media.video-gallery');
+        $videos = \App\Models\VideoGallery::published()
+            ->orderBy('sort_order')
+            ->orderBy('event_date', 'desc')
+            ->get();
+
+        return view('news-media.video-gallery', compact('videos'));
     }
 
     public function newsletters()
     {
-        return view('news-media.newsletters');
+        $newsletters = \App\Models\Newsletter::published()
+            ->orderBy('sort_order')
+            ->orderBy('issue_date', 'desc')
+            ->get();
+
+        return view('news-media.newsletters', compact('newsletters'));
     }
 
     // =========================================================

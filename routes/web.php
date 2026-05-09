@@ -1,10 +1,30 @@
 <?php
 
+use App\Http\Controllers\Admin;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
+
+// =====================================================
+// ADMIN (no locale prefix)
+// =====================================================
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('login', [Admin\AuthController::class, 'login'])->name('login');
+    Route::post('login', [Admin\AuthController::class, 'authenticate'])->name('authenticate');
+    Route::post('logout', [Admin\AuthController::class, 'logout'])->name('logout');
+
+    Route::middleware('admin.auth')->group(function () {
+        Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
+
+        Route::post('video-gallery/{videoGallery}/toggle', [Admin\VideoGalleryController::class, 'toggle'])->name('video-gallery.toggle');
+        Route::resource('video-gallery', Admin\VideoGalleryController::class)->except(['show']);
+
+        Route::post('newsletters/{newsletter}/toggle', [Admin\NewsletterController::class, 'toggle'])->name('newsletters.toggle');
+        Route::resource('newsletters', Admin\NewsletterController::class)->except(['show']);
+    });
+});
 
 Route::get('/', function () {
     $preferred = substr(request()->server('HTTP_ACCEPT_LANGUAGE', 'en'), 0, 2);

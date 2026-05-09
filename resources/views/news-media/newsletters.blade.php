@@ -13,35 +13,6 @@
 @endsection
 
 @section('content')
-@php
-$newsletters = [
-    [
-        'title'   => 'ASEANAPOL Secretariat Circular — Q2 2025',
-        'date'    => 'June 2025',
-        'topics'  => ['13th ATCM outcomes', 'World Police Summit participation', 'Job scam advisory'],
-        'edition' => 'Q2 2025',
-    ],
-    [
-        'title'   => 'ASEANAPOL Secretariat Circular — Q1 2025',
-        'date'    => 'March 2025',
-        'topics'  => ['Regional cybercrime updates', 'Upcoming training schedule', 'Member state reports'],
-        'edition' => 'Q1 2025',
-    ],
-    [
-        'title'   => 'ASEANAPOL Secretariat Circular — Q4 2024',
-        'date'    => 'December 2024',
-        'topics'  => ['42nd ASEANAPOL Conference outcomes', 'Strategic framework 2025–2030', 'Partner organisation updates'],
-        'edition' => 'Q4 2024',
-    ],
-    [
-        'title'   => 'ASEANAPOL Secretariat Circular — Q3 2024',
-        'date'    => 'September 2024',
-        'topics'  => ['ASEAN Entities Forum', 'ASEAN Vision 2045 alignment', 'Transnational crime trends'],
-        'edition' => 'Q3 2024',
-    ],
-];
-@endphp
-
 <section class="py-16 bg-background dark:bg-dark-surface">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -56,6 +27,7 @@ $newsletters = [
         </div>
 
         {{-- Newsletter list --}}
+        @if($newsletters->isNotEmpty())
         <div class="space-y-4">
             @foreach($newsletters as $n)
             <article class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col sm:flex-row gap-5">
@@ -64,25 +36,37 @@ $newsletters = [
                     <div class="w-10 h-10 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-primary dark:text-accent text-xl">mail</span>
                     </div>
-                    <span class="text-sm font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $n['date'] }}</span>
+                    <span class="text-sm font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $n->issue_date->format('M Y') }}</span>
                 </div>
 
                 {{-- Content --}}
                 <div class="flex-1">
-                    <h3 class="font-bold text-gray-900 dark:text-white mb-2 leading-snug">{{ $n['title'] }}</h3>
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2 leading-snug">{{ $n->title }}</h3>
+                    @if($n->topics)
                     <div class="flex flex-wrap gap-2 mb-3">
-                        @foreach($n['topics'] as $topic)
+                        @foreach($n->topics as $topic)
                         <span class="text-[11px] px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ $topic }}</span>
                         @endforeach
                     </div>
-                    <span class="inline-flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-sm">
-                        <span class="material-symbols-outlined text-base">lock</span>
-                        Download pending clearance
-                    </span>
+                    @endif
+
+                    @if($n->file_path)
+                        <a href="{{ Storage::url($n->file_path) }}" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
+                            <span class="material-symbols-outlined text-base">download</span>
+                            Download PDF
+                        </a>
+                    @else
+                        <span class="inline-flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-sm">
+                            <span class="material-symbols-outlined text-base">lock</span>
+                            Download pending clearance
+                        </span>
+                    @endif
                 </div>
             </article>
             @endforeach
         </div>
+        @endif
 
         {{-- Publications CTA --}}
         <div class="mt-12 text-center">
