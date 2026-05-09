@@ -142,7 +142,7 @@ class PageController extends Controller
             'chief_rank'        => 'Police General',
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/indonesia.jpg',
-            'logo'              => 'media/default-album/default-album/indonesia.png',
+            'logo'              => 'media/police-logo/indonesia-polri.png',
             'contact_person'    => [
                 'name'        => 'Pol. Snr Supt Dhany Aryanda',
                 'designation' => 'Head of International Conference Section',
@@ -415,6 +415,7 @@ class PageController extends Controller
             'fax'         => null,   // KIV
             'email'       => null,   // KIV
             'website'     => 'https://www.pntl.tl',
+            'logo'              => 'media/police-logo/timorleste-pntl.png', // TODO: replace with final PNTL crest once provided
             'route'       => 'about.member.timor-leste',
             'description' => 'The National Police of Timor-Leste (Polícia Nacional de Timor-Leste / PNTL) is the national police force of the Democratic Republic of Timor-Leste. Timor-Leste has been an ASEANAPOL Observer since the 34th ASEANAPOL Conference (2014) and became ASEAN\'s 11th member state in October 2025.',
             'observer_note'  => 'Timor-Leste joined ASEAN as the 11th member state in October 2025. Their ASEANAPOL membership status is currently transitioning from Observer to full member.',

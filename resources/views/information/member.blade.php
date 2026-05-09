@@ -28,7 +28,7 @@
                     @isset($logo)
                     <img src="{{ asset($logo) }}"
                          alt="{{ $force }} crest"
-                         class="w-16 h-16 object-contain flex-shrink-0">
+                         class="w-20 h-20 object-contain flex-shrink-0">
                     @endisset
                     <div>
                         <div class="text-sm font-semibold text-accent uppercase tracking-wider mb-1">
