@@ -170,7 +170,8 @@
             display: none;
         }
         .mob-sub.open {
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
         /* Coming soon badge */
         .badge-soon {
