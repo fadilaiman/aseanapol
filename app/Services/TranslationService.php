@@ -96,13 +96,14 @@ class TranslationService
             return $html;
         }
 
-        $skipTags  = 'script|style|code|pre|noscript|textarea';
-        $skipDepth = 0;
-        $parts     = preg_split('/(<[^>]*>)/s', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
-        $result    = '';
+        $skipTags    = 'script|style|code|pre|noscript|textarea';
+        $skipDepth   = 0;
+        $noTransStack = [];  // tracks translate="no" element nesting
+        $parts       = preg_split('/(<[^>]*>)/s', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $result      = '';
 
         foreach ($parts as $part) {
-            // Opening skip tag
+            // Opening skip tag (script, style, etc.)
             if (preg_match('/^<(' . $skipTags . ')[\s>\/]/i', $part)) {
                 $skipDepth++;
                 $result .= $part;
@@ -114,12 +115,35 @@ class TranslationService
                 $result .= $part;
                 continue;
             }
-            // Inside skip block or it's a tag
-            if ($skipDepth > 0 || str_starts_with($part, '<')) {
+            // Inside skip block
+            if ($skipDepth > 0) {
                 $result .= $part;
                 continue;
             }
-            // Text node: only translate if it has Latin letters (still English)
+
+            // All other tags: track translate="no" depth
+            if (str_starts_with($part, '<')) {
+                // Opening tag with translate="no" → push tag name onto stack
+                if (preg_match('/^<([a-zA-Z][a-zA-Z0-9]*)[^>]*\btranslate\s*=\s*"no"/i', $part, $m)) {
+                    array_push($noTransStack, strtolower($m[1]));
+                }
+                // Closing tag that matches top of no-trans stack → pop it
+                elseif (!empty($noTransStack) && preg_match('/^<\/([a-zA-Z][a-zA-Z0-9]*)\s*>/i', $part, $m)) {
+                    if (strtolower($m[1]) === end($noTransStack)) {
+                        array_pop($noTransStack);
+                    }
+                }
+                $result .= $part;
+                continue;
+            }
+
+            // Text node: skip if inside a translate="no" element
+            if (!empty($noTransStack)) {
+                $result .= $part;
+                continue;
+            }
+
+            // Text node: translate only if it has Latin letters (still English)
             $trimmed = trim($part);
             if (mb_strlen($trimmed) > 2 && preg_match('/[a-zA-Z]{3,}/', $trimmed)) {
                 $translated = $this->translate($trimmed, $targetLocale, $sourceLocale);

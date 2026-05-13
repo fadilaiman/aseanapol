@@ -189,7 +189,7 @@
     {{-- Header --}}
     <header id="main-header" class="glass-nav fixed top-0 left-0 right-0 z-50 transition-shadow duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 lg:h-20">
+            <div class="flex items-center justify-between min-h-16 lg:min-h-20 py-2 lg:py-3">
                 {{-- Logo --}}
                 <a href="{{ route('landing', ['locale' => app()->getLocale()]) }}" class="flex items-center gap-3 flex-shrink-0">
                     <img src="{{ asset('images/aseanapol-logo.png') }}" alt="ASEANAPOL Logo" class="h-10 lg:h-14 w-auto">
@@ -201,7 +201,7 @@
 
                 {{-- Desktop Nav --}}
                 @php $loc = ['locale' => app()->getLocale()]; @endphp
-                <nav class="hidden xl:flex items-center gap-0.5">
+                <nav class="hidden xl:flex flex-wrap items-center justify-center gap-x-0.5 gap-y-0.5 py-1">
 
                     {{-- About ASEANAPOL --}}
                     <div class="nav-group relative">
@@ -305,7 +305,7 @@
                 </nav>
 
                 {{-- Right actions --}}
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-shrink-0">
                     {{-- Language Switcher --}}
                     <div class="relative">
                         <button onclick="toggleDropdown('lang-dropdown')" class="flex items-center gap-1.5 text-white/80 hover:text-white px-2 py-1.5 rounded-lg hover:bg-white/10 transition-all text-sm">
@@ -326,6 +326,8 @@
                                     'my' => ['label' => 'မြန်မာ',       'flag' => 'mm'],
                                     'tl' => ['label' => 'Filipino',     'flag' => 'ph'],
                                     'zh' => ['label' => '中文',          'flag' => 'cn'],
+                                    'es' => ['label' => 'Español',      'flag' => 'es'],
+                                    'ru' => ['label' => 'Русский',      'flag' => 'ru'],
                                 ];
                                 $currentRouteName   = \Illuminate\Support\Facades\Route::currentRouteName() ?? 'landing';
                                 $currentRouteParams = \Illuminate\Support\Facades\Route::current()?->parameters() ?? [];
@@ -677,6 +679,22 @@
             }
         }
         updateThemeIcon();
+
+        // Keep --header-h CSS variable in sync with actual header height.
+        // Used by page-hero sections so their padding-top follows when nav wraps to 2 rows.
+        (function () {
+            var header = document.getElementById('main-header');
+            function syncHeaderH() {
+                if (header) {
+                    document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+                }
+            }
+            syncHeaderH();
+            window.addEventListener('resize', syncHeaderH);
+            if (window.ResizeObserver) {
+                new ResizeObserver(syncHeaderH).observe(header);
+            }
+        })();
 
         // Map app locale codes → Google Translate locale codes where they differ
         var _gtLocaleMap = { 'zh': 'zh-CN' };
