@@ -54,14 +54,18 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 @if($doc->url)
-                                    <a href="{{ $doc->url }}"
-                                       @if($isPdf) target="_blank" rel="noopener" @endif
-                                       class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
-                                        {{ $isPdf ? 'Download' : 'View' }}
-                                        <span class="material-symbols-outlined text-base">
-                                            {{ $isPdf ? 'download' : 'arrow_forward' }}
-                                        </span>
-                                    </a>
+                                    @if($isPdf)
+                                        <a href="{{ $doc->url }}" target="_blank" rel="noopener"
+                                           class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                                            <span class="material-symbols-outlined text-base">download</span> Download PDF
+                                        </a>
+                                    @else
+                                        <a href="{{ $doc->url }}"
+                                           class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
+                                            View
+                                            <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                        </a>
+                                    @endif
                                 @else
                                     <span class="text-gray-400 text-sm">—</span>
                                 @endif
