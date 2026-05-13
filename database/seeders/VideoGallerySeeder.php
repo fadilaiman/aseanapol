@@ -56,7 +56,7 @@ class VideoGallerySeeder extends Seeder
                 'sort_order'     => 5,
             ],
             [
-                'title'          => 'Video berkaitan 16th ASEANAPOL Contact Person Meeting (ACPM) from 21-24 April 2026 in Kuala Lumpur',
+                'title'          => '16th ASEANAPOL Contact Person Meeting (ACPM) from 21-24 April 2026 in Kuala Lumpur',
                 'file_url'       => 'media/videos/16th-acpm-kuala-lumpur-april-2026.mp4',
                 'category'       => 'Conference',
                 'event_location' => 'Kuala Lumpur, Malaysia',
