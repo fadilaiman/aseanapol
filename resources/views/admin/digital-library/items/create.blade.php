@@ -79,6 +79,14 @@
                 <p class="text-xs text-gray-400 mt-1">For PDFs: use if the file is hosted externally. For links: the destination URL.</p>
             </div>
 
+            <div id="pdf_url_section" style="display:none">
+                <label class="block text-sm font-medium text-gray-700 mb-1">PDF Download URL <span class="text-gray-400 font-normal">(optional)</span></label>
+                <input type="url" name="pdf_url" value="{{ old('pdf_url') }}"
+                       placeholder="https://... (link to downloadable PDF)"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+                <p class="text-xs text-gray-400 mt-1">If set, a "Download PDF" button will appear alongside the "View" link on the public site.</p>
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
@@ -108,13 +116,18 @@
 
 <script>
     const pdfSection = document.getElementById('pdf_section');
+    const pdfUrlSection = document.getElementById('pdf_url_section');
     document.querySelectorAll('input[name="type"]').forEach(radio => {
         radio.addEventListener('change', () => {
             pdfSection.style.display = radio.value === 'pdf' ? 'block' : 'none';
+            pdfUrlSection.style.display = radio.value === 'link' ? 'block' : 'none';
         });
     });
     // Init
     const checked = document.querySelector('input[name="type"]:checked');
-    if (checked) pdfSection.style.display = checked.value === 'pdf' ? 'block' : 'none';
+    if (checked) {
+        pdfSection.style.display = checked.value === 'pdf' ? 'block' : 'none';
+        pdfUrlSection.style.display = checked.value === 'link' ? 'block' : 'none';
+    }
 </script>
 @endsection

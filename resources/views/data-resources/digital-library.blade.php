@@ -60,11 +60,19 @@
                                             <span class="material-symbols-outlined text-base">download</span> Download PDF
                                         </a>
                                     @else
-                                        <a href="{{ $doc->url }}"
-                                           class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
-                                            View
-                                            <span class="material-symbols-outlined text-base">arrow_forward</span>
-                                        </a>
+                                        <div class="flex items-center justify-end gap-3">
+                                            @if($doc->pdf_url)
+                                                <a href="{{ $doc->pdf_url }}" target="_blank" rel="noopener"
+                                                   class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
+                                                    <span class="material-symbols-outlined text-base">download</span> Download PDF
+                                                </a>
+                                            @endif
+                                            <a href="{{ $doc->url }}"
+                                               class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline whitespace-nowrap">
+                                                View
+                                                <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                            </a>
+                                        </div>
                                     @endif
                                 @else
                                     <span class="text-gray-400 text-sm">—</span>

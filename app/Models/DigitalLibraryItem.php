@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class DigitalLibraryItem extends Model
 {
     protected $fillable = [
-        'collection_id', 'title', 'type', 'file_path', 'external_url', 'is_published', 'sort_order',
+        'collection_id', 'title', 'type', 'file_path', 'external_url', 'pdf_url', 'is_published', 'sort_order',
     ];
 
     protected function casts(): array

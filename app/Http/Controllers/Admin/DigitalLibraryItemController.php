@@ -34,6 +34,7 @@ class DigitalLibraryItemController extends Controller
             'title'         => 'required|string|max:255',
             'type'          => 'required|in:pdf,link',
             'external_url'  => 'nullable|url|max:500',
+            'pdf_url'       => 'nullable|url|max:500',
             'file'          => 'nullable|file|mimes:pdf|max:51200',
             'sort_order'    => 'nullable|integer|min:0',
         ]);
@@ -66,6 +67,7 @@ class DigitalLibraryItemController extends Controller
             'title'         => 'required|string|max:255',
             'type'          => 'required|in:pdf,link',
             'external_url'  => 'nullable|url|max:500',
+            'pdf_url'       => 'nullable|url|max:500',
             'file'          => 'nullable|file|mimes:pdf|max:51200',
             'sort_order'    => 'nullable|integer|min:0',
         ]);
