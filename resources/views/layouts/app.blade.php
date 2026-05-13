@@ -474,12 +474,12 @@
                     <a href="{{ route('contact-us', $loc) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">Contact Us</a>
 
                     {{-- Language switcher --}}
-                    <div class="flex items-center gap-2 px-3 py-2 mt-2 border-t border-white/10 pt-3">
+                    <div class="grid grid-cols-4 gap-2 px-3 mt-2 pt-3 border-t border-white/10">
                         @foreach($languages as $code => $lang)
                             <a href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $code])) }}"
                                onclick="setGTLocale('{{ $code }}')"
-                               class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm {{ app()->getLocale() === $code ? 'bg-accent text-primary font-semibold' : 'bg-white/10 text-white/80' }} transition-colors">
-                                <img src="https://flagcdn.com/w40/{{ $lang['flag'] }}.png" alt="" class="w-5 h-auto rounded-sm">
+                               class="flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg text-xs {{ app()->getLocale() === $code ? 'bg-accent text-primary font-semibold' : 'bg-white/10 text-white/80' }} transition-colors">
+                                <img src="https://flagcdn.com/w40/{{ $lang['flag'] }}.png" alt="" class="w-5 h-auto rounded-sm flex-shrink-0">
                                 {{ strtoupper($code) }}
                             </a>
                         @endforeach
