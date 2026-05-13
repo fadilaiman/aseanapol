@@ -43,6 +43,13 @@
             </div>
 
             <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Local Video File Path</label>
+                <input type="text" name="file_url" value="{{ old('file_url', $videoGallery->file_url) }}" placeholder="media/videos/filename.mp4"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+                <p class="text-xs text-gray-400 mt-1">Relative path under <code class="bg-gray-100 px-1 rounded">public/</code>, e.g. <code class="bg-gray-100 px-1 rounded">media/videos/my-video.mp4</code>. Used when no Embed URL is set.</p>
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail URL</label>
                 <input type="url" name="thumbnail_url" value="{{ old('thumbnail_url', $videoGallery->thumbnail_url) }}" placeholder="https://..."
                        class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">

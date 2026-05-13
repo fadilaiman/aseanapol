@@ -16,7 +16,8 @@
 <section class="py-16 bg-background dark:bg-dark-surface">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {{-- Info banner --}}
+        @if($videos->isEmpty())
+        {{-- Info banner (only when no videos yet) --}}
         <div class="bg-primary/5 dark:bg-primary/15 border border-primary/10 dark:border-primary/25 rounded-2xl p-5 mb-10 flex items-start gap-3">
             <span class="material-symbols-outlined text-primary dark:text-accent text-xl flex-shrink-0 mt-0.5">info</span>
             <p class="text-sm text-gray-600 dark:text-gray-300">
@@ -25,19 +26,27 @@
                 <a href="mailto:info@aseanapol.org" class="text-primary dark:text-accent font-semibold hover:underline">info@aseanapol.org</a>.
             </p>
         </div>
+        @endif
 
         @if($videos->isNotEmpty())
         {{-- Video grid --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($videos as $v)
             <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                {{-- Thumbnail / embed --}}
+                {{-- Thumbnail / embed / file --}}
                 @if($v->embed_url)
                     <div class="aspect-video">
                         <iframe src="{{ $v->embed_url }}" title="{{ $v->title }}"
                                 class="w-full h-full" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
+                    </div>
+                @elseif($v->file_url)
+                    <div class="aspect-video bg-black overflow-hidden relative">
+                        <video controls preload="metadata" class="w-full h-full">
+                            <source src="{{ asset($v->file_url) }}" type="video/mp4">
+                        </video>
+                        <span class="absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/80 dark:bg-dark-card/80 text-primary dark:text-accent uppercase tracking-wider pointer-events-none">{{ $v->category }}</span>
                     </div>
                 @elseif($v->thumbnail_url)
                     <div class="aspect-video bg-gray-100 dark:bg-dark-surface overflow-hidden relative">
