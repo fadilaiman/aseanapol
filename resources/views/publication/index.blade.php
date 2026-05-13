@@ -15,13 +15,13 @@
 @section('content')
 @php
 $publications = [
-    ['edition' => '8th',  'title' => '8th Edition ASEANAPOL Bulletin',  'type' => 'Bulletin',  'route' => 'publication.8th',  'color' => 'from-blue-700 to-blue-900',    'pdf' => null],
-    ['edition' => '9th',  'title' => '9th Edition ASEANAPOL Bulletin',  'type' => 'Bulletin',  'route' => 'publication.9th',  'color' => 'from-primary to-primary/70',   'pdf' => null],
-    ['edition' => '10th', 'title' => '10th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.10th', 'color' => 'from-indigo-700 to-indigo-900', 'pdf' => null],
-    ['edition' => '11th', 'title' => '11th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.11th', 'color' => 'from-teal-700 to-teal-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-2018.pdf'],
-    ['edition' => '12th', 'title' => '12th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.12th', 'color' => 'from-primary/90 to-primary',    'pdf' => null],
-    ['edition' => '13th', 'title' => '13th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.13th', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-13.pdf'],
     ['edition' => '14th', 'title' => '14th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.14th', 'color' => 'from-cyan-700 to-cyan-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-14-2025.pdf'],
+    ['edition' => '13th', 'title' => '13th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.13th', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-13.pdf'],
+    ['edition' => '12th', 'title' => '12th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.12th', 'color' => 'from-primary/90 to-primary',    'pdf' => null],
+    ['edition' => '11th', 'title' => '11th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.11th', 'color' => 'from-teal-700 to-teal-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-2018.pdf'],
+    ['edition' => '10th', 'title' => '10th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.10th', 'color' => 'from-indigo-700 to-indigo-900', 'pdf' => null],
+    ['edition' => '9th',  'title' => '9th Edition ASEANAPOL Bulletin',  'type' => 'Bulletin',  'route' => 'publication.9th',  'color' => 'from-primary to-primary/70',   'pdf' => null],
+    ['edition' => '8th',  'title' => '8th Edition ASEANAPOL Bulletin',  'type' => 'Bulletin',  'route' => 'publication.8th',  'color' => 'from-blue-700 to-blue-900',    'pdf' => null],
 ];
 @endphp
 
