@@ -31,7 +31,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">Document</th>
                             <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 hidden sm:table-cell w-24">Format</th>
-                            <th class="px-6 py-3 text-right font-semibold text-gray-700 dark:text-gray-300 w-32">Action</th>
+                            <th class="px-6 py-3 text-right font-semibold text-gray-700 dark:text-gray-300 w-40">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
@@ -56,7 +56,7 @@
                                 @if($doc->url)
                                     @if($isPdf)
                                         <a href="{{ $doc->url }}" target="_blank" rel="noopener"
-                                           class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                                           class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
                                             <span class="material-symbols-outlined text-base">download</span> Download PDF
                                         </a>
                                     @else
