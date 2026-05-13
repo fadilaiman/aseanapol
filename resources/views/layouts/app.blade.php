@@ -182,6 +182,13 @@
             background: rgba(217,119,6,0.2);
             color: #fcd34d;
         }
+        @if(app()->getLocale() === 'en')
+        /* English only: shrink desktop nav text so all 7 items fit on one row */
+        #main-header nav > .nav-group > a,
+        #main-header nav > a {
+            font-size: 11px !important;
+        }
+        @endif
     </style>
 </head>
 <body class="font-sans bg-background dark:bg-dark text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300{{ \Illuminate\Support\Facades\Route::currentRouteName() === 'landing' ? ' notranslate' : '' }}">
