@@ -131,6 +131,7 @@ Route::middleware([SetLocale::class])
         Route::redirect('/publication/11th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.11th');
         Route::redirect('/publication/12th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.12th');
         Route::redirect('/publication/13th-edition-aseanapol-magazine', '/data-resources/publications', 301)->name('publication.13th');
+        Route::redirect('/publication/14th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.14th');
 
         // =====================================================
         // INTERNATIONAL COOPERATION
