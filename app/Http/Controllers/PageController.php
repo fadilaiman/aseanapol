@@ -423,6 +423,13 @@ class PageController extends Controller
             'chief_rank'        => 'Police Commissioner General',
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/timor-leste.png',
+            'contact_person' => [
+                'name'        => 'Police Supt. Augusto Tilman Da Costa',
+                'designation' => 'Chief',
+                'mobile'      => '+67078299444',
+                'email'       => 'Augusto.tilman@pntl.tl',
+                'photo'       => 'media/contacts/timor-leste-contact.png',
+            ],
         ]);
     }
 
