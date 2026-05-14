@@ -95,11 +95,13 @@
                 @isset($chief_name)
                 <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                     <div class="flex flex-col sm:flex-row gap-0">
+                        @if(!empty($chief_photo))
                         <div class="sm:w-40 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                             <img src="{{ asset($chief_photo) }}"
                                  alt="{{ $chief_name }}"
                                  class="w-full sm:h-full object-cover object-top max-h-52 sm:max-h-none">
                         </div>
+                        @endif
                         <div class="p-6 flex flex-col justify-center">
                             <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Chief of Police</span>
                             <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-0.5">{{ $chief_name }}</h4>

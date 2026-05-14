@@ -240,7 +240,7 @@ class PageController extends Controller
             'chief_name'        => 'Soe Hlaing',
             'chief_rank'        => 'Major General',
             'chief_designation' => 'Chief of Police',
-            'chief_photo'       => 'media/chiefs/myanmar.jpg',
+            'chief_photo'       => null,
             'logo'              => 'media/police-logo/police-logo/myanmar-new-crest-1.png',
             'contact_person'    => [
                 'name'        => 'Police Lieutenant Colonel Myo Thant Tin',
