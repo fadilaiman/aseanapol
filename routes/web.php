@@ -123,15 +123,15 @@ Route::middleware([SetLocale::class])
         Route::get('/data-resources/digital-library', [PageController::class, 'digitalLibrary'])->name('data-resources.digital-library');
         Route::redirect('/data-resources/e-learning', '/training/e-learning', 301)->name('data-resources.e-learning');
 
-        // Legacy /publication redirects
+        // Publication edition detail pages
         Route::redirect('/publication', '/data-resources/publications', 301)->name('publication.index');
-        Route::redirect('/publication/8th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.8th');
-        Route::redirect('/publication/9th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.9th');
-        Route::redirect('/publication/10th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.10th');
-        Route::redirect('/publication/11th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.11th');
-        Route::redirect('/publication/12th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.12th');
-        Route::redirect('/publication/13th-edition-aseanapol-magazine', '/data-resources/publications', 301)->name('publication.13th');
-        Route::redirect('/publication/14th-edition-aseanapol-bulletin', '/data-resources/publications', 301)->name('publication.14th');
+        Route::get('/publication/8th-edition-aseanapol-bulletin',  [PageController::class, 'publication8th'])->name('publication.8th');
+        Route::get('/publication/9th-edition-aseanapol-bulletin',  [PageController::class, 'publication9th'])->name('publication.9th');
+        Route::get('/publication/10th-edition-aseanapol-bulletin', [PageController::class, 'publication10th'])->name('publication.10th');
+        Route::get('/publication/11th-edition-aseanapol-bulletin', [PageController::class, 'publication11th'])->name('publication.11th');
+        Route::get('/publication/12th-edition-aseanapol-bulletin', [PageController::class, 'publication12th'])->name('publication.12th');
+        Route::get('/publication/13th-edition-aseanapol-magazine', [PageController::class, 'publication13th'])->name('publication.13th');
+        Route::get('/publication/14th-edition-aseanapol-bulletin', [PageController::class, 'publication14th'])->name('publication.14th');
 
         // =====================================================
         // INTERNATIONAL COOPERATION

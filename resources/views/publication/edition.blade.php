@@ -16,12 +16,13 @@
 @section('content')
 @php
 $editionData = [
-    '8th'  => ['year' => '2015', 'theme' => 'Regional Police Cooperation in the New Millennium',     'color' => 'from-blue-700 to-blue-900',     'pdf' => null],
-    '9th'  => ['year' => '2016', 'theme' => 'Combating Transnational Crime Together',                'color' => 'from-primary to-primary/70',    'pdf' => null],
-    '10th' => ['year' => '2017', 'theme' => 'Strengthening Partnerships for Regional Security',      'color' => 'from-indigo-700 to-indigo-900', 'pdf' => null],
+    '8th'  => ['year' => '2015', 'theme' => 'Regional Police Cooperation in the New Millennium',     'color' => 'from-blue-700 to-blue-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-8.pdf'],
+    '9th'  => ['year' => '2016', 'theme' => 'Combating Transnational Crime Together',                'color' => 'from-primary to-primary/70',    'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-9.pdf'],
+    '10th' => ['year' => '2017', 'theme' => 'Strengthening Partnerships for Regional Security',      'color' => 'from-indigo-700 to-indigo-900', 'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-10.pdf'],
     '11th' => ['year' => '2018', 'theme' => 'Building Resilient Police Forces',                      'color' => 'from-teal-700 to-teal-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-2018.pdf'],
-    '12th' => ['year' => '2019', 'theme' => 'ASEANAPOL: Four Decades of Cooperation',                'color' => 'from-primary/90 to-primary',    'pdf' => null],
-    '13th' => ['year' => '2023', 'theme' => 'Toward a Safer ASEAN: Cooperation, Innovation, Impact', 'color' => 'from-amber-700 to-amber-900',   'pdf' => null],
+    '12th' => ['year' => '2019', 'theme' => 'ASEANAPOL: Four Decades of Cooperation',                'color' => 'from-primary/90 to-primary',    'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-12.pdf'],
+    '13th' => ['year' => '2023', 'theme' => 'Toward a Safer ASEAN: Cooperation, Innovation, Impact', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-13.pdf'],
+    '14th' => ['year' => '2025', 'theme' => '',                                                       'color' => 'from-cyan-700 to-cyan-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-14-2025.pdf'],
 ];
 $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'from-primary to-primary/70'];
 @endphp
