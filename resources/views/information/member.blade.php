@@ -150,16 +150,20 @@
                                 <p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">{{ $contact_person['designation'] }}</p>
                             </div>
                             <div class="flex flex-col gap-1.5 text-sm">
+                                @if(!empty($contact_person['mobile']))
                                 <a href="tel:{{ preg_replace('/\s+/', '', $contact_person['mobile']) }}"
                                    class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition-colors">
                                     <span class="material-symbols-outlined text-accent text-base">phone</span>
                                     {{ $contact_person['mobile'] }}
                                 </a>
+                                @endif
+                                @if(!empty($contact_person['email']))
                                 <a href="mailto:{{ $contact_person['email'] }}"
                                    class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition-colors break-all">
                                     <span class="material-symbols-outlined text-accent text-base">mail</span>
                                     {{ $contact_person['email'] }}
                                 </a>
+                                @endif
                             </div>
                         </div>
                     </div>

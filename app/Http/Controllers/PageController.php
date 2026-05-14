@@ -420,10 +420,10 @@ class PageController extends Controller
             'description' => 'The National Police of Timor-Leste (Polícia Nacional de Timor-Leste / PNTL) is the national police force of the Democratic Republic of Timor-Leste. Timor-Leste has been an ASEANAPOL Observer since the 34th ASEANAPOL Conference (2014) and became ASEAN\'s 11th member state in October 2025.',
             'observer_note'  => 'Timor-Leste joined ASEAN as the 11th member state in October 2025. Their ASEANAPOL membership status is currently transitioning from Observer to full member.',
             'contact_person' => [
-                'name'        => 'Police Supt. Augusto Tilman Da Costa',
-                'designation' => 'Chief',
-                'mobile'      => '+67078299444',
-                'email'       => 'Augusto.tilman@pntl.tl',
+                'name'        => 'Henrique Da Costa',
+                'designation' => 'Police Commissioner General',
+                'mobile'      => null,
+                'email'       => null,
                 'photo'       => 'media/contacts/timor-leste.png',
             ],
         ]);
