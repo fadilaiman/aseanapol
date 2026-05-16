@@ -113,28 +113,140 @@
                 @endisset
 
                 @php
-                    $stubs = [
-                        ['icon' => 'account_tree',  'title' => 'Police Structure', 'desc' => 'Organisational chart and key divisions of the national police force.'],
-                        ['icon' => 'military_tech', 'title' => 'Rank & Uniforms',  'desc' => 'Police rank hierarchy, insignia and uniform regulations.'],
-                    ];
+                    $hasStructure = isset($org_chart) || isset($official_positions);
+                    $hasRanks     = isset($rank_structure);
                 @endphp
 
+                @if(!$hasStructure && !$hasRanks)
+                {{-- Both pending: 2-col grid --}}
                 <div class="grid sm:grid-cols-2 gap-5">
-                    @foreach($stubs as $stub)
                     <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 items-start opacity-75">
                         <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-primary/50 dark:text-accent/50 text-2xl">{{ $stub['icon'] }}</span>
+                            <span class="material-symbols-outlined text-primary/50 dark:text-accent/50 text-2xl">account_tree</span>
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 mb-1">
-                                <h4 class="font-semibold text-primary dark:text-white text-sm">{{ $stub['title'] }}</h4>
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">Police Structure</h4>
                                 <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ $stub['desc'] }}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Organisational chart and key divisions of the national police force.</p>
                         </div>
                     </div>
-                    @endforeach
+                    <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 items-start opacity-75">
+                        <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary/50 dark:text-accent/50 text-2xl">military_tech</span>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">Rank & Uniforms</h4>
+                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Police rank hierarchy, insignia and uniform regulations.</p>
+                        </div>
+                    </div>
                 </div>
+                @else
+                <div class="space-y-5">
+
+                    {{-- Police Structure --}}
+                    @if($hasStructure)
+                    <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary dark:text-accent text-xl">account_tree</span>
+                            </div>
+                            <h4 class="font-semibold text-primary dark:text-white">Police Structure</h4>
+                        </div>
+
+                        @isset($org_chart)
+                        <a href="{{ asset($org_chart) }}" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline mb-5">
+                            <span class="material-symbols-outlined text-base">picture_as_pdf</span>
+                            View Organisational Chart (PDF)
+                        </a>
+                        @endisset
+
+                        @isset($official_positions)
+                        <div class="{{ isset($org_chart) ? 'mt-5 pt-5 border-t border-gray-100 dark:border-gray-700' : '' }}">
+                            <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">Official Positions</p>
+                            <ol class="space-y-2">
+                                @foreach($official_positions as $index => $pos)
+                                <li class="flex gap-3 text-sm text-gray-600 dark:text-gray-300">
+                                    <span class="flex-shrink-0 font-semibold text-primary dark:text-accent w-5 text-right">{{ $index + 1 }}.</span>
+                                    <div>
+                                        @if(isset($pos['ii']))
+                                            <span class="text-gray-400 dark:text-gray-500 text-xs">(i)</span> {{ $pos['i'] }}<br>
+                                            <span class="text-gray-400 dark:text-gray-500 text-xs">(ii)</span> {{ $pos['ii'] }}
+                                        @else
+                                            {{ $pos['i'] }}
+                                        @endif
+                                    </div>
+                                </li>
+                                @endforeach
+                            </ol>
+                        </div>
+                        @endisset
+                    </div>
+                    @else
+                    <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 items-start opacity-75">
+                        <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary/50 dark:text-accent/50 text-2xl">account_tree</span>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">Police Structure</h4>
+                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Organisational chart and key divisions of the national police force.</p>
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- Rank Structure --}}
+                    @if($hasRanks)
+                    <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary dark:text-accent text-xl">military_tech</span>
+                            </div>
+                            <h4 class="font-semibold text-primary dark:text-white">Rank Structure</h4>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-100 dark:border-gray-700">
+                                        <th class="text-left text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 pb-2 pr-6">Rank</th>
+                                        <th class="text-left text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 pb-2">Abbreviation</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                                    @foreach($rank_structure as $item)
+                                    <tr>
+                                        <td class="py-2 pr-6 text-gray-700 dark:text-gray-300">{{ $item['rank'] }}</td>
+                                        <td class="py-2 font-mono text-xs text-accent font-semibold">{{ $item['abbreviation'] }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @else
+                    <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 items-start opacity-75">
+                        <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary/50 dark:text-accent/50 text-2xl">military_tech</span>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">Rank & Uniforms</h4>
+                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Police rank hierarchy, insignia and uniform regulations.</p>
+                        </div>
+                    </div>
+                    @endif
+
+                </div>
+                @endif
 
                 {{-- Contact Person --}}
                 @isset($contact_person)
