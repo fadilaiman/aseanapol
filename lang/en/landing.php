@@ -83,7 +83,7 @@ return [
     'event_4_location' => 'Bangkok, Thailand',
     'event_5_title' => '16th ASEANAPOL Contact Person Meeting (ACPM)',
     'event_5_location' => 'Kuala Lumpur, Malaysia',
-    'event_6_title' => '44th ASEANAPOL Conference',
+    'event_6_title' => 'Pre Coordination Meeting for 44th ASEANAPOL Conference 2026',
     'event_6_location' => 'Manila, Philippines',
     'contact_us' => 'Contact Us',
     'send_inquiry' => 'Send Inquiry',

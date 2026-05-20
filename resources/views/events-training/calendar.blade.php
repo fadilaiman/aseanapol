@@ -21,7 +21,7 @@ $events = [
     ['date' => '2026-03-11', 'end' => '2026-03-12', 'title' => '40th ASEANAPOL Database System Technical Committee (ADSTC)',           'city' => 'Bangkok',      'country' => 'Thailand',     'type' => 'Meeting'],
     ['date' => '2026-03-31', 'end' => '2026-04-02', 'title' => '33rd Joint ASEANAPOL Senior Police Course (JASPOC)',                   'city' => 'Bangkok',      'country' => 'Thailand',     'type' => 'Training'],
     ['date' => '2026-04-21', 'end' => '2026-04-24', 'title' => '16th ASEANAPOL Contact Person Meeting (ACPM)',                         'city' => 'Kuala Lumpur', 'country' => 'Malaysia',     'type' => 'Meeting'],
-    ['date' => '2026-07-02', 'end' => '2026-07-02', 'title' => '44th ASEANAPOL Conference',                                            'city' => 'Manila',       'country' => 'Philippines',  'type' => 'Conference'],
+    ['date' => '2026-07-02', 'end' => '2026-07-02', 'title' => 'Pre Coordination Meeting for 44th ASEANAPOL Conference 2026',           'city' => 'Manila',       'country' => 'Philippines',  'type' => 'Meeting'],
     // 2025
     ['date' => '2025-10-01', 'end' => '2025-10-01', 'title' => '43rd ASEANAPOL Conference (Forthcoming)',                                        'city' => 'Bangkok',      'country' => 'Thailand',          'type' => 'Conference'],
     ['date' => '2025-07-01', 'end' => '2025-07-01', 'title' => '13th ASEANAPOL Training Cooperation Meeting (ATCM)',                              'city' => '',             'country' => '',                  'type' => 'Meeting'],
