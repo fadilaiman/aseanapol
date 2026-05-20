@@ -301,7 +301,7 @@ class PageController extends Controller
             'iso'         => 'ph',
             'tel'         => ['+632 8723 0401'],
             'fax'         => null,
-            'email'       => 'laiad.dpl@pnp.gov.ph',
+            'email'       => 'iaiad.dpl.pnp@gmail.com',
             'website'     => 'https://www.pnp.gov.ph',
             'route'       => 'about.member.philippines',
             'description' => 'The Philippine National Police (PNP) is the national police force of the Philippines, mandated to enforce the law, prevent and control crimes, maintain peace and order, and ensure public safety.',
