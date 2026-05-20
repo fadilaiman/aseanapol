@@ -220,9 +220,12 @@
 
         @php
             $events = [
-                ['month' => 'SEP', 'day' => '18', 'year' => '2013', 'title' => __('landing.event_1_title'), 'location' => __('landing.event_1_location')],
-                ['month' => 'AUG', 'day' => '01', 'year' => '2013', 'title' => __('landing.event_2_title'), 'location' => __('landing.event_2_location')],
-                ['month' => 'FEB', 'day' => '19', 'year' => '2013', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
+                ['month' => 'MAR', 'day' => '05', 'year' => '2026', 'title' => __('landing.event_1_title'), 'location' => __('landing.event_1_location')],
+                ['month' => 'MAR', 'day' => '09', 'year' => '2026', 'title' => __('landing.event_2_title'), 'location' => __('landing.event_2_location')],
+                ['month' => 'MAR', 'day' => '11', 'year' => '2026', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
+                ['month' => 'MAR', 'day' => '31', 'year' => '2026', 'title' => __('landing.event_4_title'), 'location' => __('landing.event_4_location')],
+                ['month' => 'APR', 'day' => '21', 'year' => '2026', 'title' => __('landing.event_5_title'), 'location' => __('landing.event_5_location')],
+                ['month' => 'JUL', 'day' => '02', 'year' => '2026', 'title' => __('landing.event_6_title'), 'location' => __('landing.event_6_location')],
             ];
         @endphp
         @php $loc = ['locale' => app()->getLocale()]; @endphp
