@@ -31,62 +31,13 @@
         .skiptranslate { display:none!important; }
     </style>
 
-    {{-- Google Fonts: Inter --}}
+    {{-- Fonts: Inter + Material Symbols (single request, swap prevents FOIT) --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
 
-    {{-- Material Symbols --}}
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
-
-    {{-- Tailwind CSS CDN --}}
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            DEFAULT: '#1B2660',
-                            50: '#eceef8',
-                            100: '#c4caeb',
-                            200: '#9ca6de',
-                            300: '#7482d1',
-                            400: '#4c5ec4',
-                            500: '#1B2660',
-                            600: '#172054',
-                            700: '#121a44',
-                            800: '#0d1434',
-                            900: '#080e24',
-                        },
-                        accent: {
-                            DEFAULT: '#C9A840',
-                            50: '#fdf8ea',
-                            100: '#f7ecc0',
-                            200: '#f1e096',
-                            300: '#ebd46c',
-                            400: '#C9A840',
-                            500: '#a98c30',
-                            600: '#8a7027',
-                            700: '#6b541d',
-                            800: '#4c3814',
-                            900: '#2d1c0a',
-                        },
-                        background: '#f4f5f9',
-                        dark: {
-                            DEFAULT: '#0d1130',
-                            card: '#162050',
-                            surface: '#111844',
-                        },
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    },
-                },
-            },
-        }
-    </script>
+    {{-- Vite-compiled Tailwind CSS (replaces CDN — ~14 KB gzipped vs ~3 MB CDN) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Dark mode init (before paint) --}}
     <script>
