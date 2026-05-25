@@ -8,7 +8,7 @@
 <section id="hero" class="relative overflow-hidden" style="height: 90vh; min-height: 400px;">
 
     {{-- Slides --}}
-    @foreach($latestNews as $index => $item)
+    @foreach($latestNews->take(10) as $index => $item)
     <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out {{ $index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}">
         @if($item->thumbnail)
         <img src="{{ asset($item->thumbnail) }}"
@@ -52,7 +52,7 @@
 
     {{-- Dot indicators --}}
     <div class="absolute bottom-5 right-8 z-20 flex items-center gap-2">
-        @foreach($latestNews as $index => $item)
+        @foreach($latestNews->take(10) as $index => $item)
         <button class="hero-dot rounded-full transition-all duration-300 focus:outline-none {{ $index === 0 ? 'bg-white w-6 h-2' : 'bg-white/50 w-2 h-2' }}"
                 aria-label="Go to slide {{ $index + 1 }}"></button>
         @endforeach
@@ -60,7 +60,7 @@
 
     {{-- Slide counter --}}
     <div class="absolute top-6 right-8 z-20 bg-black/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">
-        <span id="heroCurrentSlide">1</span> / {{ $latestNews->count() }}
+        <span id="heroCurrentSlide">1</span> / {{ $latestNews->take(10)->count() }}
     </div>
 
 </section>
@@ -152,7 +152,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($latestNews->take(6) as $item)
+            @foreach($latestNews->slice(10, 6) as $item)
                 <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $item->slug]) }}"
                    class="relative rounded-xl overflow-hidden shadow-sm dark:shadow-black/20 border border-gray-100 dark:border-gray-700/50 group h-72 block">
                     {{-- Background: real thumbnail or gradient fallback --}}
