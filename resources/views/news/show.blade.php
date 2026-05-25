@@ -33,8 +33,8 @@
             @endif
         </div>
 
-        {{-- Hero image --}}
-        @if($article->thumbnail)
+        {{-- Hero image: only shown when the content has no embedded images --}}
+        @if($article->thumbnail && !str_contains($article->content ?? '', '<img'))
         <div class="rounded-2xl overflow-hidden mb-8 shadow-sm border border-gray-100 dark:border-gray-700">
             <img src="{{ asset($article->thumbnail) }}" alt="{{ $article->title }}"
                  class="w-full max-h-96 object-cover">

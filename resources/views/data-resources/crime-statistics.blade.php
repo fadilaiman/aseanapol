@@ -63,6 +63,22 @@ $categories = [
         'color' => 'text-purple-600 dark:text-purple-400',
         'bg'    => 'bg-purple-50 dark:bg-purple-900/20',
     ],
+    [
+        'icon'  => 'sailing',
+        'title' => 'Sea Piracy',
+        'desc'  => 'Armed robbery and hijacking of vessels in ASEAN waters, including the Strait of Malacca and South China Sea.',
+        'trend' => 'Monitored',
+        'color' => 'text-cyan-600 dark:text-cyan-400',
+        'bg'    => 'bg-cyan-50 dark:bg-cyan-900/20',
+    ],
+    [
+        'icon'  => 'security',
+        'title' => 'Arms Trafficking',
+        'desc'  => 'Illegal trade and smuggling of firearms, ammunition, and military-grade weapons across ASEAN borders.',
+        'trend' => 'Monitored',
+        'color' => 'text-rose-600 dark:text-rose-400',
+        'bg'    => 'bg-rose-50 dark:bg-rose-900/20',
+    ],
 ];
 @endphp
 

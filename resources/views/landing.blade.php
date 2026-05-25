@@ -13,7 +13,7 @@
         @if($item->thumbnail)
         <img src="{{ asset($item->thumbnail) }}"
              alt="{{ $item->title }}"
-             class="w-full h-full object-cover">
+             class="w-full h-full object-cover object-top">
         @else
         <div class="w-full h-full bg-gradient-to-br from-primary via-primary-400 to-accent/40 flex items-center justify-center">
             <span class="material-symbols-outlined text-white/10" style="font-size: 12rem;">newspaper</span>
@@ -220,22 +220,26 @@
 
         @php
             $events = [
-                ['month' => 'MAR', 'day' => '05', 'year' => '2026', 'title' => __('landing.event_1_title'), 'location' => __('landing.event_1_location')],
-                ['month' => 'MAR', 'day' => '09', 'year' => '2026', 'title' => __('landing.event_2_title'), 'location' => __('landing.event_2_location')],
-                ['month' => 'MAR', 'day' => '11', 'year' => '2026', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
-                ['month' => 'MAR', 'day' => '31', 'year' => '2026', 'title' => __('landing.event_4_title'), 'location' => __('landing.event_4_location')],
-                ['month' => 'APR', 'day' => '21', 'year' => '2026', 'title' => __('landing.event_5_title'), 'location' => __('landing.event_5_location')],
-                ['month' => 'JUL', 'day' => '02', 'year' => '2026', 'title' => __('landing.event_6_title'), 'location' => __('landing.event_6_location')],
+                ['month' => 'MAR', 'day' => '05', 'year' => '2026', 'end_day' => '06',  'end_month' => 'MAR', 'title' => __('landing.event_1_title'), 'location' => __('landing.event_1_location')],
+                ['month' => 'MAR', 'day' => '09', 'year' => '2026', 'end_day' => '11',  'end_month' => 'MAR', 'title' => __('landing.event_2_title'), 'location' => __('landing.event_2_location')],
+                ['month' => 'MAR', 'day' => '11', 'year' => '2026', 'end_day' => '12',  'end_month' => 'MAR', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
+                ['month' => 'MAR', 'day' => '31', 'year' => '2026', 'end_day' => '02',  'end_month' => 'APR', 'title' => __('landing.event_4_title'), 'location' => __('landing.event_4_location')],
+                ['month' => 'APR', 'day' => '21', 'year' => '2026', 'end_day' => '24',  'end_month' => 'APR', 'title' => __('landing.event_5_title'), 'location' => __('landing.event_5_location')],
+                ['month' => 'JUL', 'day' => '02', 'year' => '2026', 'end_day' => null,  'end_month' => null,  'title' => __('landing.event_6_title'), 'location' => __('landing.event_6_location')],
             ];
         @endphp
         @php $loc = ['locale' => app()->getLocale()]; @endphp
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             @foreach($events as $event)
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-6 border border-gray-100 dark:border-gray-700/50 shadow-sm dark:shadow-black/20 flex gap-5 items-start card-hover">
-                    <div class="flex-shrink-0 w-16 h-16 bg-primary rounded-xl flex flex-col items-center justify-center text-white shadow-lg shadow-primary/30">
+                    <div class="flex-shrink-0 w-16 bg-primary rounded-xl flex flex-col items-center justify-center text-white shadow-lg shadow-primary/30 py-2">
                         <span class="text-[10px] font-bold uppercase tracking-wider leading-none">{{ $event['month'] }}</span>
                         <span class="text-2xl font-extrabold leading-none mt-0.5">{{ $event['day'] }}</span>
+                        @if($event['end_day'])
+                        <span class="text-[9px] text-white/70 leading-none mt-1">to {{ $event['end_day'] }} {{ $event['end_month'] }}</span>
+                        @else
                         <span class="text-[9px] text-white/60 leading-none mt-0.5">{{ $event['year'] }}</span>
+                        @endif
                     </div>
                     <div>
                         <h3 class="font-bold text-primary dark:text-white text-base leading-snug mb-2">{{ $event['title'] }}</h3>

@@ -148,7 +148,8 @@
             ['name' => 'Pol. Colonel Kenechanh Phommachack',                              'force' => 'LPF',  'flag' => '🇱🇦', 'term' => '2018–2019'],
             ['name' => 'DAC Jim Wee',                                                     'force' => 'SPF',  'flag' => '🇸🇬', 'term' => '2020–2021'],
             ['name' => 'Pol. Brigadier General Zaw Lin Tun',                              'force' => 'MPF',  'flag' => '🇲🇲', 'term' => '2022–2023'],
-            ['name' => 'Pol. Colonel David Martinez Vinluan',                             'force' => 'PNP',  'flag' => '🇵🇭', 'term' => '2024–present'],
+            ['name' => 'Pol. Colonel David Martinez Vinluan',                             'force' => 'PNP',  'flag' => '🇵🇭', 'term' => '2024–2025'],
+            ['name' => 'Police Senior Colonel Kongkrissada Kittithiraphong',              'force' => 'RTP',  'flag' => '🇹🇭', 'term' => '2026–present'],
         ]);
         $dirPlans = array_reverse([
             ['name' => 'Supt. Desy Adriani',                  'force' => 'INP',          'flag' => '🇮🇩', 'term' => '2010–2012'],
@@ -156,7 +157,8 @@
             ['name' => 'Supt. Yuli Cahyanti',                 'force' => 'INP',          'flag' => '🇮🇩', 'term' => '2015–2016'],
             ['name' => 'ACP Aidah binti Othman',              'force' => 'RMP',          'flag' => '🇲🇾', 'term' => '2017–2019'],
             ['name' => 'Supt. Tang Yik Tung',                 'force' => 'RBPF',         'flag' => '🇧🇳', 'term' => '2020–2022'],
-            ['name' => 'Pol. Snr. Lt. Col. Nguyen Huu Ngoc', 'force' => 'OIPA, VPF', 'flag' => '🇻🇳', 'term' => '2023–present'],
+            ['name' => 'Pol. Snr. Lt. Col. Nguyen Huu Ngoc', 'force' => 'OIPA, VPF',    'flag' => '🇻🇳', 'term' => '2023–2025'],
+            ['name' => 'Police Colonel Jean Mary A. Mangahis','force' => 'PNP',           'flag' => '🇵🇭', 'term' => '2026–present'],
         ]);
         @endphp
 
