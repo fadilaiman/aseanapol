@@ -39,7 +39,7 @@
                 'desc'  => 'The Cambodian National Police formally joined ASEANAPOL, completing the full ten-member configuration of the organisation aligned with all ASEAN member states.',
             ],
             [
-                'year'  => '2004',
+                'year'  => '2010',
                 'title' => 'Permanent Secretariat Established',
                 'desc'  => 'The ASEANAPOL Permanent Secretariat was formally established in Kuala Lumpur, Malaysia, hosted by the Royal Malaysia Police. This marked a significant step in institutionalising ASEANAPOL\'s administrative capacity.',
             ],
@@ -55,8 +55,8 @@
             ],
             [
                 'year'  => '2025',
-                'title' => '44th ASEANAPOL Conference',
-                'desc'  => 'ASEANAPOL continues to grow with the 44th Annual Conference and ongoing cooperation programmes. The organisation remains the premier platform for police cooperation in the ASEAN region.',
+                'title' => '43rd ASEANAPOL Conference',
+                'desc'  => 'ASEANAPOL continues to grow with the 43rd Annual Conference and ongoing cooperation programmes. The organisation remains the premier platform for police cooperation in the ASEAN region.',
             ],
         ];
         @endphp

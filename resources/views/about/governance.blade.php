@@ -115,6 +115,7 @@
                             [40, '1 - 5 March',         2022, 'Phnom Penh',          'Cambodia'],
                             [41, '16 - 20 October',     2023, 'Vientiane',           'Lao PDR'],
                             [42, '21 - 25 October',     2024, 'Nay Pyi Taw',         'Myanmar'],
+                            [43, '3 - 7 November',      2025, 'Bangkok',             'Thailand'],
                         ];
                         @endphp
                         @foreach($conferences as $i => $c)

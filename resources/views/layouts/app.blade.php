@@ -141,10 +141,10 @@
             color: #fcd34d;
         }
         @if(app()->getLocale() === 'en')
-        /* English only: shrink desktop nav text so all 7 items fit on one row */
+        /* English only: shrink desktop nav text so all items fit on one row */
         #main-header nav > .nav-group > a,
         #main-header nav > a {
-            font-size: 11px !important;
+            font-size: 10.5px !important;
         }
         @endif
     </style>
@@ -166,7 +166,7 @@
 
                 {{-- Desktop Nav --}}
                 @php $loc = ['locale' => app()->getLocale()]; @endphp
-                <nav class="hidden xl:flex flex-wrap items-center justify-center gap-x-0.5 gap-y-0.5 py-1">
+                <nav class="hidden xl:flex {{ app()->getLocale() === 'en' ? 'flex-nowrap' : 'flex-wrap gap-y-0.5' }} items-center justify-center gap-x-0.5 py-1">
 
                     {{-- About ASEANAPOL --}}
                     <div class="nav-group relative">
