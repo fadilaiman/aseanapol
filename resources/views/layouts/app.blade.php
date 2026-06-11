@@ -565,6 +565,52 @@
                         <p class="text-accent font-bold text-4xl tracking-tight">{{ number_format($visitorDailyUnique) }}</p>
                     </div>
                 </div>
+                @if($visitorHistory->count() > 1)
+                <div class="mt-8 max-w-2xl mx-auto w-full">
+                    <p class="text-white/40 text-xs text-center mb-3 uppercase tracking-widest">Daily Visitors — Last 30 Days</p>
+                    <canvas id="visitorHistoryChart" height="80"></canvas>
+                </div>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+                <script>
+                (function () {
+                    const labels = @json($visitorHistory->pluck('date'));
+                    const data = @json($visitorHistory->pluck('unique_visitors'));
+                    new Chart(document.getElementById('visitorHistoryChart'), {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: data,
+                                borderColor: 'rgba(250,189,0,0.9)',
+                                backgroundColor: 'rgba(250,189,0,0.12)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 3,
+                                pointBackgroundColor: 'rgba(250,189,0,1)',
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: {
+                                    ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 }, maxTicksLimit: 10 },
+                                    grid: { color: 'rgba(255,255,255,0.05)' },
+                                    border: { color: 'rgba(255,255,255,0.1)' },
+                                },
+                                y: {
+                                    ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } },
+                                    grid: { color: 'rgba(255,255,255,0.05)' },
+                                    border: { color: 'rgba(255,255,255,0.1)' },
+                                    beginAtZero: true,
+                                }
+                            }
+                        }
+                    });
+                })();
+                </script>
+                @endif
             </div>
         </div>
 

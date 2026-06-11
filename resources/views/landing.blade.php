@@ -225,7 +225,8 @@
                 ['month' => 'MAR', 'day' => '11', 'year' => '2026', 'end_day' => '12',  'end_month' => 'MAR', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
                 ['month' => 'MAR', 'day' => '31', 'year' => '2026', 'end_day' => '02',  'end_month' => 'APR', 'title' => __('landing.event_4_title'), 'location' => __('landing.event_4_location')],
                 ['month' => 'APR', 'day' => '21', 'year' => '2026', 'end_day' => '24',  'end_month' => 'APR', 'title' => __('landing.event_5_title'), 'location' => __('landing.event_5_location')],
-                ['month' => 'JUL', 'day' => '02', 'year' => '2026', 'end_day' => null,  'end_month' => null,  'title' => __('landing.event_6_title'), 'location' => __('landing.event_6_location')],
+                ['month' => 'JUN', 'day' => '02', 'year' => '2026', 'end_day' => null,  'end_month' => null,  'title' => __('landing.event_6_title'), 'location' => __('landing.event_6_location')],
+                ['month' => 'JUL', 'day' => '22', 'year' => '2026', 'end_day' => '26',  'end_month' => 'JUL', 'title' => __('landing.event_7_title'), 'location' => __('landing.event_7_location')],
             ];
         @endphp
         @php $loc = ['locale' => app()->getLocale()]; @endphp

@@ -72,6 +72,8 @@ return [
     'event_5_location' => 'Kuala Lumpur, Malaysia',
     'event_6_title' => 'Pre Coordination Meeting for 44th ASEANAPOL Conference 2026',
     'event_6_location' => 'Manila, Philippines',
+    'event_7_title' => '44th ASEANAPOL Conference',
+    'event_7_location' => 'Manila, Philippines',
     'contact_us' => 'ទាក់ទងមកយើងខ្ញុំ',
     'send_inquiry' => 'ផ្ញើការសាកសួរ',
     'quick_resources' => 'ធនធានរហ័ស',
