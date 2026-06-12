@@ -201,7 +201,7 @@ class PageController extends Controller
             'website'     => 'https://www.rmp.gov.my',
             'route'       => 'about.member.malaysia',
             'description' => 'The Royal Malaysia Police (RMP) or Polis DiRaja Malaysia (PDRM) is the national police force of Malaysia, host of the ASEANAPOL Permanent Secretariat, and one of the founding members of ASEANAPOL.',
-            'chief_name'        => "Dato' Seri Hj. Mohd Khalid Hj. Ismail",
+            'chief_name'        => "Tan Sri Dato' Seri Hj. Mohd Khalid Hj. Ismail",
             'chief_rank'        => 'Inspector General',
             'chief_designation' => 'Inspector General of Police',
             'chief_photo'       => 'media/chiefs/malaysia.jpg',
