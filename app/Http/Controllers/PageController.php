@@ -272,9 +272,9 @@ class PageController extends Controller
             'route'       => 'about.member.myanmar',
             'description' => 'The Myanmar Police Force is the national police organisation of the Republic of the Union of Myanmar, responsible for maintaining law and order, preventing crime, and ensuring public safety.',
             'chief_name'        => 'Soe Hlaing',
-            'chief_rank'        => 'Major General',
+            'chief_rank'        => 'Lieutenant General',
             'chief_designation' => 'Chief of Police',
-            'chief_photo'       => null,
+            'chief_photo'       => 'media/chiefs/myanmar.jpg',
             'logo'              => 'media/police-logo/police-logo/myanmar-new-crest-1.png',
             'contact_person'    => [
                 'name'        => 'Police Lieutenant Colonel Myo Thant Tin',
