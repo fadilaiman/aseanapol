@@ -152,7 +152,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($latestNews->slice(10, 6) as $item)
+            @foreach($latestNews->take(6) as $item)
                 <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $item->slug]) }}"
                    class="relative rounded-xl overflow-hidden shadow-sm dark:shadow-black/20 border border-gray-100 dark:border-gray-700/50 group h-72 block">
                     {{-- Background: real thumbnail or gradient fallback --}}
