@@ -248,41 +248,42 @@
                 </div>
                 @endif
 
-                {{-- Contact Person --}}
-                @isset($contact_person)
+                {{-- Contact Person(s) --}}
+                @php $contacts = isset($contact_persons) ? $contact_persons : (isset($contact_person) ? [$contact_person] : []); @endphp
+                @foreach($contacts as $cp)
                 <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                     <div class="flex flex-col sm:flex-row gap-0">
                         <div class="sm:w-40 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                            <img src="{{ asset($contact_person['photo']) }}"
-                                 alt="{{ $contact_person['name'] }}"
+                            <img src="{{ asset($cp['photo']) }}"
+                                 alt="{{ $cp['name'] }}"
                                  class="w-full sm:h-full object-cover object-top max-h-52 sm:max-h-none">
                         </div>
                         <div class="p-6 flex flex-col justify-center gap-3">
                             <div>
                                 <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1 block">Contact Person</span>
-                                <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-0.5">{{ $contact_person['name'] }}</h4>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">{{ $contact_person['designation'] }}</p>
+                                <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-0.5">{{ $cp['name'] }}</h4>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">{{ $cp['designation'] }}</p>
                             </div>
                             <div class="flex flex-col gap-1.5 text-sm">
-                                @if(!empty($contact_person['mobile']))
-                                <a href="tel:{{ preg_replace('/\s+/', '', $contact_person['mobile']) }}"
+                                @if(!empty($cp['mobile']))
+                                <a href="tel:{{ preg_replace('/\s+/', '', $cp['mobile']) }}"
                                    class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition-colors">
                                     <span class="material-symbols-outlined text-accent text-base">phone</span>
-                                    {{ $contact_person['mobile'] }}
+                                    {{ $cp['mobile'] }}
                                 </a>
                                 @endif
-                                @if(!empty($contact_person['email']))
-                                <a href="mailto:{{ $contact_person['email'] }}"
+                                @if(!empty($cp['email']))
+                                <a href="mailto:{{ $cp['email'] }}"
                                    class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition-colors break-all">
                                     <span class="material-symbols-outlined text-accent text-base">mail</span>
-                                    {{ $contact_person['email'] }}
+                                    {{ $cp['email'] }}
                                 </a>
                                 @endif
                             </div>
                         </div>
                     </div>
                 </div>
-                @endisset
+                @endforeach
 
             </div>
 

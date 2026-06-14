@@ -276,12 +276,21 @@ class PageController extends Controller
             'chief_designation' => 'Chief of Police',
             'chief_photo'       => 'media/chiefs/myanmar.jpg',
             'logo'              => 'media/police-logo/police-logo/myanmar-new-crest-1.png',
-            'contact_person'    => [
-                'name'        => 'Police Lieutenant Colonel Myo Thant Tin',
-                'designation' => 'Head of Interpol and ASEANAPOL Affairs Branch',
-                'mobile'      => '+959420706812',
-                'email'       => 'myothanttin.mpf@gmail.com',
-                'photo'       => 'media/contacts/myanmar.png',
+            'contact_persons'   => [
+                [
+                    'name'        => 'Police Lieutenant Colonel Myo Thant Tin',
+                    'designation' => 'Head of Interpol and ASEANAPOL Affairs Branch',
+                    'mobile'      => '+959420706812',
+                    'email'       => 'myothanttin.mpf@gmail.com',
+                    'photo'       => 'media/contacts/myanmar.png',
+                ],
+                [
+                    'name'        => 'Police Captain Aung Ko',
+                    'designation' => 'Head of Interpol & ASEANAPOL Affairs Section',
+                    'mobile'      => '+95943154650',
+                    'email'       => 'pslyekoko.007@gmail.com',
+                    'photo'       => 'media/contacts/myanmar-aung-ko.jpg',
+                ],
             ],
             'history'           => [
                 ['year' => '1885', 'text' => 'The British policing system was introduced when Myanmar became a British Colony. The force was known as the Burma Police.'],
