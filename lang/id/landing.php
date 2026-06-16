@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'nav_home' => 'Rumah',
@@ -60,7 +60,7 @@ return [
     'news_6_title' => 'ASEANAPOL Reaffirms Commitment to ASEAN Vision 2045 at the 9th Forum of Entities',
     'news_6_excerpt' => 'The ASEANAPOL Secretariat participated in the 9th Forum of Entities Assembly in support of the ASEAN Vision 2045 agenda on regional security and cooperation.',
     'upcoming_events' => 'Event Highlights',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',

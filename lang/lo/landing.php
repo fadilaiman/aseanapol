@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'nav_home' => 'ບ້ານ',
@@ -60,7 +60,7 @@ return [
     'news_6_title' => 'ASEANAPOL Reaffirms Commitment to ASEAN Vision 2045 at the 9th Forum of Entities',
     'news_6_excerpt' => 'ກອງ​ເລ​ຂາ​ອາ​ຊຽນ​ໄດ້​ເຂົ້າ​ຮ່ວມ​ກອງ​ປະ​ຊຸມ​ເວ​ທີ​ປຶກ​ສາ​ຫາ​ລື​ອົງ​ການ​ຈັດ​ຕັ້ງ​ຄັ້ງ​ທີ 9 ເພື່ອ​ສະ​ຫນັບ​ສະ​ຫນູນ​ວາ​ລະ​ວິ​ໄສ​ທັດ​ອາ​ຊຽນ 2045 ກ່ຽວ​ກັບ​ຄວາມ​ປອດ​ໄພ​ແລະ​ການ​ຮ່ວມ​ມື​ພາກ​ພື້ນ.',
     'upcoming_events' => 'ຈຸດເດັ່ນຂອງເຫດການ',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',

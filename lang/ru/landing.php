@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     // Nav
@@ -73,7 +73,7 @@ return [
 
     // Sidebar
     'upcoming_events' => 'Предстоящие события',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'nav_home' => 'အိမ်',
@@ -60,7 +60,7 @@ return [
     'news_6_title' => '9th Forum of Entities တွင် အာဆီယံ မျှော်မှန်းချက် 2045 ကို အာဆီယံAPOL မှ ထပ်မံအတည်ပြု',
     'news_6_excerpt' => 'ဒေသတွင်းလုံခြုံရေးနှင့် ပူးပေါင်းဆောင်ရွက်မှုဆိုင်ရာ အာဆီယံ မျှော်မှန်းချက် 2045 အစီအစဉ်ကို ထောက်ခံသည့်အနေဖြင့် ASEANAPOL အတွင်းရေးမှူးချုပ်ရုံးသည် ၉ ကြိမ်မြောက် Forum of Entities Assembly တွင် ပါဝင်ခဲ့ပါသည်။',
     'upcoming_events' => 'ပွဲပေါ်လွင်ချက်များ',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',

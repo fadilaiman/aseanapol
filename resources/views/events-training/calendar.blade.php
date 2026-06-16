@@ -16,7 +16,7 @@
 @php
 $events = [
     // 2026
-    ['date' => '2026-03-05', 'end' => '2026-03-06', 'title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',                   'city' => 'Bangkok',      'country' => 'Thailand',     'type' => 'Meeting'],
+    ['date' => '2026-03-05', 'end' => '2026-03-06', 'title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',                   'city' => 'Bangkok',      'country' => 'Thailand',     'type' => 'Meeting'],
     ['date' => '2026-03-09', 'end' => '2026-03-11', 'title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',        'city' => 'Bangkok',      'country' => 'Thailand',     'type' => 'Meeting'],
     ['date' => '2026-03-11', 'end' => '2026-03-12', 'title' => '40th ASEANAPOL Database System Technical Committee (ADSTC)',           'city' => 'Bangkok',      'country' => 'Thailand',     'type' => 'Meeting'],
     ['date' => '2026-03-31', 'end' => '2026-04-02', 'title' => '33rd Joint ASEANAPOL Senior Police Course (JASPOC)',                   'city' => 'Bangkok',      'country' => 'Thailand',     'type' => 'Training'],

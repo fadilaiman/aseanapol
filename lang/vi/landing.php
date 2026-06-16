@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'nav_home' => 'Trang chủ',
@@ -60,7 +60,7 @@ return [
     'news_6_title' => 'ASEANAPOL tái khẳng định cam kết đối với Tầm nhìn ASEAN 2045 tại Diễn đàn các tổ chức lần thứ 9',
     'news_6_excerpt' => 'Ban Thư ký ASEANAPOL đã tham gia Diễn đàn các tổ chức lần thứ 9 để ủng hộ chương trình nghị sự Tầm nhìn ASEAN 2045 về an ninh và hợp tác khu vực.',
     'upcoming_events' => 'Sự kiện nổi bật',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',

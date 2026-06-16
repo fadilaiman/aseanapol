@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'nav_home' => 'Bahay',
@@ -60,7 +60,7 @@ return [
     'news_6_title' => 'Muling Pinagtibay ng ASEANAPOL ang Pangako sa ASEAN Vision 2045 sa 9th Forum of Entities',
     'news_6_excerpt' => 'Lumahok ang ASEANAPOL Secretariat sa 9th Forum of Entities Assembly bilang suporta sa ASEAN Vision 2045 agenda sa panrehiyong seguridad at kooperasyon.',
     'upcoming_events' => 'Mga Highlight ng Kaganapan',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',

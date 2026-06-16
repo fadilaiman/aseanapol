@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'nav_home' => 'Utama',
@@ -60,7 +60,7 @@ return [
     'news_6_title' => 'ASEANAPOL Reaffirms Commitment to ASEAN Vision 2045 at the 9th Forum of Entities',
     'news_6_excerpt' => 'Sekretariat ASEANAPOL menyertai Perhimpunan Forum Entiti ke-9 menyokong agenda Wawasan ASEAN 2045 berkaitan keselamatan dan kerjasama serantau.',
     'upcoming_events' => 'Sorotan Acara',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',

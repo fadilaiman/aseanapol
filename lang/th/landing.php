@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     'nav_home' => 'Home',
@@ -60,7 +60,7 @@ return [
     'news_6_title' => 'อาเซียนAPOL ตอกย้ำความมุ่งมั่นต่อวิสัยทัศน์อาเซียน 2045 ในงาน Forum of Entities ครั้งที่ 9',
     'news_6_excerpt' => 'สำนักเลขาธิการอาเซียนนาโปลเข้าร่วมการประชุมสมัชชาหน่วยงาน ครั้งที่ 9 เพื่อสนับสนุนวาระวิสัยทัศน์อาเซียน 2045 ว่าด้วยความมั่นคงและความร่วมมือระดับภูมิภาค',
     'upcoming_events' => 'ไฮไลท์ของงาน',
-    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ACPM)',
+    'event_1_title' => '14th ASEANAPOL Training Cooperation Meeting (ATCM)',
     'event_1_location' => 'Bangkok, Thailand',
     'event_2_title' => '8th ASEANAPOL Police Forensic Science Network Meeting (APFSN)',
     'event_2_location' => 'Bangkok, Thailand',
