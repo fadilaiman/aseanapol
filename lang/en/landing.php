@@ -45,6 +45,7 @@ return [
     // News
     'news_badge' => 'Stay Informed',
     'news_title' => 'Latest News & Events',
+    'upcoming_event_badge' => 'Upcoming Event',
     'news_read_more' => 'Read More',
     'news_1_cat' => 'Training',
     'news_1_date' => 'Jul 04, 2025',

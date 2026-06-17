@@ -34,6 +34,7 @@ return [
     'members_subtitle' => 'Labing-isang bansang miyembro ng ASEAN ang nagkaisa sa pagtataguyod ng propesyonalismo ng pulisya at pagtutulungan sa seguridad sa rehiyon.',
     'news_badge' => 'Manatiling Alam',
     'news_title' => 'Pinakabagong Balita at Mga Kaganapan',
+    'upcoming_event_badge' => 'Paparating na Kaganapan',
     'news_read_more' => 'Magbasa pa',
     'news_1_cat' => 'Pagsasanay',
     'news_1_date' => 'Hul 04, 2025',

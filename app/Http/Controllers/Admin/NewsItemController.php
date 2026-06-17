@@ -44,9 +44,10 @@ class NewsItemController extends Controller
             'slug'           => 'nullable|string|max:500',
         ]);
 
-        $data['id']        = (string) Str::uuid();
-        $data['thumbnail'] = $this->resolveThumbnail($request);
-        $data['slug']      = Str::slug($data['slug'] ?: $data['title']);
+        $data['id']                 = (string) Str::uuid();
+        $data['thumbnail']          = $this->resolveThumbnail($request);
+        $data['slug']               = Str::slug($data['slug'] ?: $data['title']);
+        $data['is_upcoming_event']  = $request->boolean('is_upcoming_event');
 
         $base = $data['slug'];
         $i = 1;
@@ -87,7 +88,8 @@ class NewsItemController extends Controller
         while (NewsItem::where('slug', $slug)->where('id', '!=', $news->id)->exists()) {
             $slug = $base . '-' . $i++;
         }
-        $data['slug'] = $slug;
+        $data['slug']              = $slug;
+        $data['is_upcoming_event'] = $request->boolean('is_upcoming_event');
 
         $news->update($data);
         return redirect()->route('admin.news.index')->with('success', 'Article updated.');

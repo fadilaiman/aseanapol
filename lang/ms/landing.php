@@ -34,6 +34,7 @@ return [
     'members_subtitle' => 'Sebelas negara anggota ASEAN bersatu dalam mempromosikan profesionalisme polis dan kerjasama keselamatan serantau.',
     'news_badge' => 'Kekal Bermaklumat',
     'news_title' => 'Berita & Acara Terkini',
+    'upcoming_event_badge' => 'Acara Akan Datang',
     'news_read_more' => 'Baca Lagi',
     'news_1_cat' => 'Latihan',
     'news_1_date' => '04 Jul 2025',

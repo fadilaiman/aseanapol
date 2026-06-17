@@ -34,6 +34,7 @@ return [
     'members_subtitle' => 'Sebelas negara anggota ASEAN bersatu dalam mempromosikan profesionalisme polisi dan kerja sama keamanan regional.',
     'news_badge' => 'Tetap Terinformasi',
     'news_title' => 'Berita & Acara Terkini',
+    'upcoming_event_badge' => 'Acara Mendatang',
     'news_read_more' => 'Baca selengkapnya',
     'news_1_cat' => 'Pelatihan',
     'news_1_date' => '04 Juli 2025',

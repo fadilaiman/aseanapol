@@ -173,6 +173,16 @@
                         </span>
                     </div>
 
+                    {{-- Upcoming event badge --}}
+                    @if($item->is_upcoming_event)
+                    <div class="absolute top-3 right-3 z-10 group-hover:opacity-0 transition-opacity duration-300">
+                        <span class="bg-white text-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">event_upcoming</span>
+                            {{ __('landing.upcoming_event_badge') }}
+                        </span>
+                    </div>
+                    @endif
+
                     {{-- Default: title at bottom --}}
                     <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 group-hover:opacity-0 transition-opacity duration-300">
                         <h3 class="font-bold text-white text-sm leading-snug line-clamp-2">{{ $item->title }}</h3>

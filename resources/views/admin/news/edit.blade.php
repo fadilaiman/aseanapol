@@ -83,6 +83,12 @@
                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 font-mono">
             </div>
 
+            <div class="flex items-center gap-2">
+                <input type="checkbox" name="is_upcoming_event" id="is_upcoming_event" value="1" {{ old('is_upcoming_event', $news->is_upcoming_event) ? 'checked' : '' }}
+                       class="rounded border-gray-300 text-blue-600 focus:ring-blue-300">
+                <label for="is_upcoming_event" class="text-sm font-medium text-gray-700">Show "Upcoming Event" badge</label>
+            </div>
+
             <div class="flex items-center justify-between pt-2">
                 <div class="text-xs text-gray-400">{{ $news->views_count }} views &middot; ID: {{ $news->id }}</div>
                 <button type="submit"

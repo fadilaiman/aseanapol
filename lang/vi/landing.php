@@ -34,6 +34,7 @@ return [
     'members_subtitle' => 'Mười một nước thành viên ASEAN thống nhất thúc đẩy tính chuyên nghiệp của cảnh sát và hợp tác an ninh khu vực',
     'news_badge' => 'Cập nhật thông tin',
     'news_title' => 'Tin tức & Sự kiện mới nhất',
+    'upcoming_event_badge' => 'Sự kiện sắp tới',
     'news_read_more' => 'Đọc thêm',
     'news_1_cat' => 'Đào tạo',
     'news_1_date' => 'Ngày 04 tháng 7 năm 2025',

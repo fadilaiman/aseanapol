@@ -45,6 +45,7 @@ return [
     // News
     'news_badge' => 'Будьте в курсе',
     'news_title' => 'Последние новости и события',
+    'upcoming_event_badge' => 'Предстоящее событие',
     'news_read_more' => 'Читать далее',
     'news_1_cat' => 'Обучение',
     'news_1_date' => '04 июл 2025',

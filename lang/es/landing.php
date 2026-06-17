@@ -45,6 +45,7 @@ return [
     // News
     'news_badge' => 'Manténgase Informado',
     'news_title' => 'Últimas Noticias y Eventos',
+    'upcoming_event_badge' => 'Próximo Evento',
     'news_read_more' => 'Leer Más',
     'news_1_cat' => 'Capacitación',
     'news_1_date' => '04 Jul 2025',

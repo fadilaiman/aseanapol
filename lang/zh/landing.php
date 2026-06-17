@@ -45,6 +45,7 @@ return [
     // News
     'news_badge' => '保持关注',
     'news_title' => '最新新闻与活动',
+    'upcoming_event_badge' => '即将举行的活动',
     'news_read_more' => '阅读更多',
     'news_1_cat' => '培训',
     'news_1_date' => '2025年7月4日',
