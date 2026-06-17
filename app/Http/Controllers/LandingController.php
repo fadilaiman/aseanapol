@@ -11,7 +11,7 @@ class LandingController extends Controller
         $latestNews = DB::table('news_items')
             ->orderBy('published_at', 'desc')
             ->limit(16)
-            ->get(['id', 'title', 'slug', 'thumbnail', 'summary', 'published_at']);
+            ->get(['id', 'title', 'slug', 'thumbnail', 'summary', 'published_at', 'is_upcoming_event']);
 
         return view('landing', compact('latestNews'));
     }
