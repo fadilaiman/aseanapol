@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 return [
     'nav_home' => 'Bahay',
