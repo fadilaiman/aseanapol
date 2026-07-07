@@ -501,7 +501,7 @@ class PageController extends Controller
             'chief_name'        => 'Afonso Dos Santos',
             'chief_rank'        => 'Assistant Commissioner',
             'chief_designation' => 'Chief of Police',
-            'chief_photo'       => 'media/chiefs/timor-leste.png',
+            'chief_photo'       => 'media/chiefs/timor-leste-2026.png',
             'contact_person' => [
                 'name'        => 'Police Supt. Augusto Tilman Da Costa',
                 'designation' => 'Chief',
