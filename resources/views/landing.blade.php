@@ -11,9 +11,13 @@
     @foreach($latestNews->take(10) as $index => $item)
     <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out {{ $index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}">
         @if($item->thumbnail)
+        {{-- Blurred full-bleed backdrop so no empty space ever shows --}}
+        <div class="absolute inset-0 bg-cover bg-center scale-110 blur-2xl opacity-70"
+             style="background-image: url('{{ asset($item->thumbnail) }}');"></div>
+        {{-- Full image, always shown uncropped --}}
         <img src="{{ asset($item->thumbnail) }}"
              alt="{{ $item->title }}"
-             class="w-full h-full object-cover object-center">
+             class="absolute inset-0 w-full h-full object-contain">
         @else
         <div class="w-full h-full bg-gradient-to-br from-primary via-primary-400 to-accent/40 flex items-center justify-center">
             <span class="material-symbols-outlined text-white/10" style="font-size: 12rem;">newspaper</span>
