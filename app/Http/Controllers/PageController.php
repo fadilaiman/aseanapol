@@ -350,12 +350,28 @@ class PageController extends Controller
             'chief_designation' => 'Commissioner of Police',
             'chief_photo'       => 'media/chiefs/singapore.jpg',
             'logo'              => 'media/default-album/default-album/singapore.png',
-            'contact_person'    => [
-                'name'        => 'Superintendent Ivan Ler',
-                'designation' => 'Assistant Director International Policing (ASEAN & Middle East) & Protocol, International Cooperation Department',
-                'mobile'      => '+65 9299 0175',
-                'email'       => 'ivan_ler@spf.gov.sg',
-                'photo'       => 'media/contacts/singapore.png',
+            'contact_persons'   => [
+                [
+                    'name'        => 'Superintendent Ivan Ler',
+                    'designation' => 'Assistant Director, International Policing (ASEAN & Middle East) & Protocol, International Cooperation Department',
+                    'mobile'      => '+65 9299 0175',
+                    'email'       => 'ivan_ler@spf.gov.sg',
+                    'photo'       => 'media/contacts/singapore-ivan.png',
+                ],
+                [
+                    'name'        => 'Deputy Superintendent Julian Teu',
+                    'designation' => 'Desk Officer (ASEAN, ASEANAPOL & Middle East), International Cooperation Department',
+                    'mobile'      => null,
+                    'email'       => null,
+                    'photo'       => 'media/contacts/singapore-julian.png',
+                ],
+                [
+                    'name'        => 'Assistant Superintendent Mila Alyssa',
+                    'designation' => 'Desk Officer (ASEAN, ASEANAPOL & Middle East), International Cooperation Department',
+                    'mobile'      => null,
+                    'email'       => null,
+                    'photo'       => 'media/contacts/singapore-mila.png',
+                ],
             ],
             'history'           => [
                 ['year' => '1819', 'text' => 'With the establishment of Singapore as a trading post, the first police team comprised one jemadar (Asian Sergeant), 12 peons (patrolmen) and a jailor.'],
