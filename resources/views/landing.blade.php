@@ -13,7 +13,7 @@
         @if($item->thumbnail)
         <img src="{{ asset($item->thumbnail) }}"
              alt="{{ $item->title }}"
-             class="w-full h-full object-cover object-top">
+             class="w-full h-full object-cover object-center">
         @else
         <div class="w-full h-full bg-gradient-to-br from-primary via-primary-400 to-accent/40 flex items-center justify-center">
             <span class="material-symbols-outlined text-white/10" style="font-size: 12rem;">newspaper</span>
