@@ -69,8 +69,16 @@ class GatewayTranslator
         $noTransStack = [];
         $parts        = preg_split('/(<[^>]*>)/s', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
 
-        // First pass: find translatable text nodes.
-        $targets = []; // part index => trimmed source text
+        // First pass: find translatable text nodes. Each node is split into
+        // a leading/trailing boundary (whitespace AND punctuation, e.g. the
+        // ", " right after a closing </strong> before the next clause) and
+        // a translatable core. Only the core is sent to the model — models
+        // routinely drop odd leading punctuation from an isolated fragment,
+        // which previously glued adjacent translated segments together with
+        // no separator at all (e.g. "Kittithiraphong</strong>held a...").
+        // Preserving the exact original boundary characters verbatim avoids
+        // that regardless of what the model does with the fragment.
+        $targets = []; // part index => [core, prefix, suffix]
         foreach ($parts as $i => $part) {
             if (preg_match('/^<(' . $skipTags . ')[\s>\/]/i', $part)) {
                 $skipDepth++;
@@ -97,9 +105,12 @@ class GatewayTranslator
                 continue;
             }
 
-            $trimmed = trim(html_entity_decode($part, ENT_QUOTES | ENT_HTML5));
-            if (mb_strlen($trimmed) > 1 && preg_match('/[a-zA-Z]/', $trimmed)) {
-                $targets[$i] = $trimmed;
+            $decoded = html_entity_decode($part, ENT_QUOTES | ENT_HTML5);
+            preg_match('/^([^\p{L}\p{N}]*)(.*?)([^\p{L}\p{N}]*)$/su', $decoded, $m);
+            [, $prefix, $core, $suffix] = $m;
+
+            if (mb_strlen($core) > 1 && preg_match('/[a-zA-Z]/', $core)) {
+                $targets[$i] = ['core' => $core, 'prefix' => $prefix, 'suffix' => $suffix];
             }
         }
 
@@ -107,13 +118,13 @@ class GatewayTranslator
             return $html;
         }
 
-        $translated = $this->translateBatch(array_values($targets), $targetLocale, $sourceLocale);
-        $byIndex    = array_combine(array_keys($targets), $translated);
+        $keys       = array_keys($targets);
+        $translated = $this->translateBatch(array_map(fn ($t) => $t['core'], $targets), $targetLocale, $sourceLocale);
 
-        // Second pass: substitute, preserving surrounding whitespace.
-        foreach ($byIndex as $i => $text) {
-            preg_match('/^(\s*).*?(\s*)$/su', $parts[$i], $m);
-            $parts[$i] = ($m[1] ?? '') . htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8', false) . ($m[2] ?? '');
+        // Second pass: substitute, reattaching the original boundary chars.
+        foreach ($keys as $idx => $i) {
+            $t = $targets[$i];
+            $parts[$i] = $t['prefix'] . htmlspecialchars($translated[$idx], ENT_NOQUOTES, 'UTF-8', false) . $t['suffix'];
         }
 
         return implode('', $parts);
