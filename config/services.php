@@ -28,6 +28,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'translator' => [
+        // Translation gateway on the GPU box. Prod reaches it over WireGuard
+        // (http://10.201.0.2:8100), local dev over the office LAN
+        // (http://10.63.20.200:8100). Empty URL disables the pipeline.
+        'url'     => env('TRANSLATOR_GATEWAY_URL'),
+        'token'   => env('TRANSLATOR_GATEWAY_TOKEN'),
+        'timeout' => env('TRANSLATOR_GATEWAY_TIMEOUT', 600),
+        'locales' => ['ms', 'id', 'th', 'vi', 'km', 'lo', 'my', 'tl', 'zh', 'es', 'ru'],
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewsItem;
-use App\Services\TranslationService;
+use App\Models\NewsTranslation;
 
 class NewsController extends Controller
 {
@@ -25,10 +25,9 @@ class NewsController extends Controller
 
         $locale = app()->getLocale();
         if ($locale !== 'en') {
-            $translator = app(TranslationService::class);
-            $articles->getCollection()->transform(function (NewsItem $item) use ($translator, $locale) {
-                $item->title   = $translator->translate($item->title, $locale);
-                $item->summary = $item->summary ? $translator->translate($item->summary, $locale) : null;
+            $translations = NewsTranslation::forItems($articles->getCollection(), $locale);
+            $articles->getCollection()->transform(function (NewsItem $item) use ($translations) {
+                $item->applyTranslationRow($translations->get($item->id));
                 return $item;
             });
         }
@@ -43,13 +42,7 @@ class NewsController extends Controller
         $article = NewsItem::where('slug', $decoded)->first()
             ?? NewsItem::where('slug', $this->asciiSlug($decoded))->firstOrFail();
 
-        if ($locale !== 'en') {
-            $translator = app(TranslationService::class);
-            $article->title   = $translator->translate($article->title, $locale);
-            $article->content = $article->content
-                ? $translator->translateHtml($article->content, $locale)
-                : null;
-        }
+        $article->applyTranslation($locale);
 
         return view('news.show', compact('article'));
     }
