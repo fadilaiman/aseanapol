@@ -67,7 +67,7 @@ class TranslateNewsItemJob implements ShouldQueue, ShouldBeUnique
             [
                 'source_hash' => $this->sourceHash,
                 'status'      => 'failed',
-                'error'       => substr((string) $exception?->getMessage(), 0, 1000),
+                'error'       => mb_substr(mb_scrub((string) $exception?->getMessage(), 'UTF-8'), 0, 1000),
             ]
         );
     }

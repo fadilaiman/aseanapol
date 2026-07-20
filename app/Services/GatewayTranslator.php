@@ -36,7 +36,7 @@ class GatewayTranslator
             ]);
 
         if (! $response->successful()) {
-            throw new RuntimeException("translation gateway error {$response->status()}: " . substr($response->body(), 0, 300));
+            throw new RuntimeException("translation gateway error {$response->status()}: " . mb_substr(mb_scrub($response->body(), 'UTF-8'), 0, 300));
         }
 
         $results = $response->json('results');
