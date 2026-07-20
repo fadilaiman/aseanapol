@@ -29,6 +29,11 @@ class SyncNewsTranslations extends Command
             return self::SUCCESS;
         }
 
+        if (! $this->gatewayIsUp()) {
+            $this->warn('Translation gateway unreachable — skipping this run (will retry on next schedule).');
+            return self::SUCCESS;
+        }
+
         $locales = $this->option('locale') ?: config('services.translator.locales');
 
         $items = NewsItem::query()
@@ -75,5 +80,16 @@ class SyncNewsTranslations extends Command
         $this->info("Dispatched {$dispatched} translation job(s) for {$items->count()} news item(s).");
 
         return self::SUCCESS;
+    }
+
+    private function gatewayIsUp(): bool
+    {
+        try {
+            return \Illuminate\Support\Facades\Http::timeout(5)
+                ->get(rtrim(config('services.translator.url'), '/') . '/health')
+                ->successful();
+        } catch (\Throwable) {
+            return false;
+        }
     }
 }

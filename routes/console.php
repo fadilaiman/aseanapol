@@ -11,3 +11,4 @@ Artisan::command('inspire', function () {
 // Safety net for news inserted by raw-SQL deploy scripts: hash-diff and
 // queue any missing/stale translations.
 Schedule::command('translate:sync-news')->everyFiveMinutes()->withoutOverlapping();
+Schedule::command('queue:prune-failed', ['--hours' => 48])->daily();
