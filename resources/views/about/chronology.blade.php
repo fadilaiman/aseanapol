@@ -21,7 +21,7 @@
             [
                 'year'  => '1981',
                 'title' => '1st ASEANAPOL Conference — Manila, Philippines',
-                'desc'  => 'ASEANAPOL was founded on 10 June 1981 at the 1st ASEANAPOL Conference held in Manila, Philippines. The founding member states were Brunei Darussalam, Indonesia, Malaysia, the Philippines, Singapore, and Thailand.',
+                'desc'  => 'ASEANAPOL was founded on 21 October 1981 at the 1st ASEANAPOL Conference held in Manila, Philippines. The founding member states were Brunei Darussalam, Indonesia, Malaysia, the Philippines, Singapore, and Thailand.',
             ],
             [
                 'year'  => '1984',
