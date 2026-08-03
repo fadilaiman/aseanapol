@@ -35,7 +35,7 @@
 
         {{-- Hero image: only shown when the content has no embedded images --}}
         @if($article->thumbnail && !str_contains($article->content ?? '', '<img'))
-        <div class="rounded-2xl overflow-hidden mb-8 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div class="rounded-2xl overflow-hidden mb-8 shadow-sm border border-gray-100 dark:border-gray-700 lightbox-zone">
             <img src="{{ asset($article->thumbnail) }}" alt="{{ $article->title }}"
                  class="w-full max-h-96 object-cover">
         </div>
@@ -47,7 +47,7 @@
                 <div class="prose prose-sm sm:prose dark:prose-invert max-w-none
                             prose-headings:text-primary dark:prose-headings:text-white
                             prose-a:text-accent prose-a:no-underline hover:prose-a:underline
-                            prose-img:rounded-xl prose-img:shadow-md">
+                            prose-img:rounded-xl prose-img:shadow-md lightbox-zone">
                     {!! $article->content !!}
                 </div>
             @else

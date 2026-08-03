@@ -15,7 +15,7 @@
 
 @section('content')
 <section class="py-16 bg-background dark:bg-dark-surface">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 lightbox-zone">
 
         {{-- ── Current Director for Plans and Programmes ─────────────── --}}
         <div>

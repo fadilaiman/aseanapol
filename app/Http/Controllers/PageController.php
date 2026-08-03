@@ -559,40 +559,64 @@ class PageController extends Controller
         return view('news-media.press-releases');
     }
 
+    private const GALLERY_ALBUM_LABELS = [
+        'activities' => 'ASEANAPOL Activities',
+        'news'       => 'News Photos',
+        'events'     => 'Events',
+        'governance' => 'Governance',
+        'partners'   => 'Dialogue Partners',
+        'observers'  => 'Observers',
+    ];
+
+    private const GALLERY_PAGE_SIZE = 60;
+
+    /**
+     * Images come from the gallery_images index (rebuilt by `gallery:reindex`
+     * from news_items + public/media — see routes/console.php), sorted by
+     * each image's real event date rather than filesystem/upload order.
+     * Each album loads its first page here; the rest is fetched via
+     * galleryMore() as the user clicks "Load more" so a 6000+ image album
+     * still renders fast.
+     */
     public function gallery()
     {
-        $mediaBase = public_path('media');
-        $imageExts = '{jpg,jpeg,png,gif,webp,JPG,JPEG,PNG}';
-
-        $libraries = [
-            ['key' => 'activities', 'label' => 'ASEANAPOL Activities', 'dirs' => ['rotating-image/rotating-image', 'default-album/default-album'], 'limit' => 48],
-            ['key' => 'news',       'label' => 'News Photos',           'dirs' => ['news/news'],                                                    'limit' => 48],
-            ['key' => 'events',     'label' => 'Events',                'dirs' => ['events/events'],                                                'limit' => 48],
-            ['key' => 'governance', 'label' => 'Governance',            'dirs' => ['governance/governance'],                                        'limit' => 48],
-            ['key' => 'partners',   'label' => 'Dialogue Partners',     'dirs' => ['dialogue-partner/dialogue-partner'],                            'limit' => 48],
-            ['key' => 'observers',  'label' => 'Observers',             'dirs' => ['observer/observer'],                                            'limit' => 48],
-        ];
-
         $albums = [];
-        foreach ($libraries as $lib) {
-            $images = [];
-            foreach ($lib['dirs'] as $relDir) {
-                $pattern = "{$mediaBase}/{$relDir}/*.{$imageExts}";
-                $found = glob($pattern, GLOB_BRACE) ?: [];
-                foreach ($found as $f) {
-                    $images[] = 'media/' . $relDir . '/' . basename($f);
-                }
-            }
-            $images = array_slice($images, 0, $lib['limit']);
+        foreach (self::GALLERY_ALBUM_LABELS as $key => $label) {
+            $query = \App\Models\GalleryImage::where('album_key', $key)->orderByDesc('event_date')->orderByDesc('id');
+            $count = (clone $query)->count();
+            $images = $query->limit(self::GALLERY_PAGE_SIZE)->pluck('path')->all();
+
             $albums[] = [
-                'key'    => $lib['key'],
-                'label'  => $lib['label'],
-                'images' => $images,
-                'count'  => count($images),
+                'key'      => $key,
+                'label'    => $label,
+                'images'   => $images,
+                'count'    => $count,
+                'hasMore'  => $count > count($images),
             ];
         }
 
         return view('news.gallery', compact('albums'));
+    }
+
+    public function galleryMore(Request $request)
+    {
+        $key = $request->query('album');
+        $offset = max(0, (int) $request->query('offset'));
+
+        if (! isset(self::GALLERY_ALBUM_LABELS[$key])) {
+            return response()->json(['images' => [], 'hasMore' => false], 404);
+        }
+
+        $query = \App\Models\GalleryImage::where('album_key', $key)->orderByDesc('event_date')->orderByDesc('id');
+        $total = (clone $query)->count();
+        $images = $query->skip($offset)->limit(self::GALLERY_PAGE_SIZE)->pluck('path')
+            ->map(fn ($p) => asset($p))
+            ->all();
+
+        return response()->json([
+            'images'  => $images,
+            'hasMore' => ($offset + count($images)) < $total,
+        ]);
     }
 
     public function videoGallery()

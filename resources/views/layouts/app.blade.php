@@ -738,6 +738,8 @@
     </script>
     @stack('scripts')
 
+    @include('partials.lightbox')
+
     {{-- Protect Material Icons from Google Translate (must run before GT script) --}}
     <script>
         document.querySelectorAll('.material-symbols-outlined,.material-icons').forEach(function(el){

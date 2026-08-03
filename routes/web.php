@@ -108,6 +108,7 @@ Route::middleware([SetLocale::class])
         Route::get('/news-media/news/{slug}', [NewsController::class, 'show'])->name('news.show')->where('slug', '[^/]+');
         Route::get('/news-media/press-releases', [PageController::class, 'pressReleases'])->name('news-media.press-releases');
         Route::get('/news-media/gallery', [PageController::class, 'gallery'])->name('news-media.gallery');
+        Route::get('/news-media/gallery/more', [PageController::class, 'galleryMore'])->name('news-media.gallery.more');
         Route::get('/news-media/video-gallery', [PageController::class, 'videoGallery'])->name('news-media.video-gallery');
         Route::get('/news-media/newsletters', [PageController::class, 'newsletters'])->name('news-media.newsletters');
 
