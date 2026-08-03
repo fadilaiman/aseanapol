@@ -23,6 +23,7 @@ $editionData = [
     '12th' => ['year' => '2019', 'theme' => 'ASEANAPOL: Four Decades of Cooperation',                'color' => 'from-primary/90 to-primary',    'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-12.pdf'],
     '13th' => ['year' => '2023', 'theme' => 'Toward a Safer ASEAN: Cooperation, Innovation, Impact', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-13.pdf'],
     '14th' => ['year' => '2025', 'theme' => '',                                                       'color' => 'from-cyan-700 to-cyan-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-14-2025.pdf'],
+    '15th' => ['year' => '2026', 'theme' => 'ASEANAPOL 45 — From Five Nations to Eleven Nations',     'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-magazine-15-2026.pdf', 'size' => '369 MB'],
 ];
 $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'from-primary to-primary/70'];
 @endphp
@@ -95,7 +96,12 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
                         <div>
                             <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Download PDF</h4>
                             @if(!empty($data['pdf']))
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">This edition is available for download.</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                                This edition is available for download.
+                                @if(!empty($data['size']))
+                                    <span class="text-gray-400 dark:text-gray-500">(PDF, {{ $data['size'] }})</span>
+                                @endif
+                            </p>
                             <a href="{{ asset($data['pdf']) }}" target="_blank" rel="noopener"
                                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
                                 <span class="material-symbols-outlined text-lg">download</span>

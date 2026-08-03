@@ -673,6 +673,7 @@ class PageController extends Controller
     public function publication12th() { return $this->publicationPage(['edition' => '12th', 'title' => '12th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin', 'route' => 'publication.12th']); }
     public function publication13th() { return $this->publicationPage(['edition' => '13th', 'title' => '13th Edition ASEANAPOL Magazine',  'type' => 'Magazine', 'route' => 'publication.13th']); }
     public function publication14th() { return $this->publicationPage(['edition' => '14th', 'title' => '14th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin', 'route' => 'publication.14th']); }
+    public function publication15th() { return $this->publicationPage(['edition' => '15th', 'title' => '15th Edition ASEANAPOL Magazine',  'type' => 'Magazine', 'route' => 'publication.15th']); }
 
     private function publicationPage(array $data)
     {

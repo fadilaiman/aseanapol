@@ -132,6 +132,7 @@ Route::middleware([SetLocale::class])
         Route::get('/publication/12th-edition-aseanapol-bulletin', [PageController::class, 'publication12th'])->name('publication.12th');
         Route::get('/publication/13th-edition-aseanapol-magazine', [PageController::class, 'publication13th'])->name('publication.13th');
         Route::get('/publication/14th-edition-aseanapol-bulletin', [PageController::class, 'publication14th'])->name('publication.14th');
+        Route::get('/publication/15th-edition-aseanapol-magazine', [PageController::class, 'publication15th'])->name('publication.15th');
 
         // =====================================================
         // INTERNATIONAL COOPERATION
