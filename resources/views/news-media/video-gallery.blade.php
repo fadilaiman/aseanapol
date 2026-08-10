@@ -43,14 +43,14 @@
                     </div>
                 @elseif($v->file_url)
                     <div class="aspect-video bg-black overflow-hidden relative">
-                        <video controls preload="metadata" class="w-full h-full">
+                        <video controls preload="metadata" class="w-full h-full" @if($v->thumbnail_url) poster="{{ str_starts_with($v->thumbnail_url, 'http') ? $v->thumbnail_url : asset($v->thumbnail_url) }}" @endif>
                             <source src="{{ asset($v->file_url) }}" type="video/mp4">
                         </video>
                         <span class="absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/80 dark:bg-dark-card/80 text-primary dark:text-accent uppercase tracking-wider pointer-events-none">{{ $v->category }}</span>
                     </div>
                 @elseif($v->thumbnail_url)
                     <div class="aspect-video bg-gray-100 dark:bg-dark-surface overflow-hidden relative">
-                        <img src="{{ $v->thumbnail_url }}" alt="{{ $v->title }}" class="w-full h-full object-cover">
+                        <img src="{{ str_starts_with($v->thumbnail_url, 'http') ? $v->thumbnail_url : asset($v->thumbnail_url) }}" alt="{{ $v->title }}" class="w-full h-full object-cover">
                         <span class="absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/80 dark:bg-dark-card/80 text-primary dark:text-accent uppercase tracking-wider">{{ $v->category }}</span>
                     </div>
                 @else

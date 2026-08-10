@@ -622,8 +622,7 @@ class PageController extends Controller
     public function videoGallery()
     {
         $videos = \App\Models\VideoGallery::published()
-            ->orderBy('sort_order')
-            ->orderBy('event_date', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('news-media.video-gallery', compact('videos'));
