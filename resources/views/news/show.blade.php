@@ -33,11 +33,15 @@
             @endif
         </div>
 
-        {{-- Hero image: only shown when the content has no embedded images --}}
+        {{-- Hero image: only shown when the content has no embedded images.
+             Fitted, never cropped — a fair share of these thumbnails are portrait
+             (event posters, standing group photos), and a fixed-height cover crop
+             cut the top and bottom clean off them. --}}
         @if($article->thumbnail && !str_contains($article->content ?? '', '<img'))
-        <div class="rounded-2xl overflow-hidden mb-8 shadow-sm border border-gray-100 dark:border-gray-700 lightbox-zone">
+        <div class="rounded-2xl overflow-hidden mb-8 shadow-sm border border-gray-100 dark:border-gray-700 lightbox-zone flex justify-center bg-gray-50 dark:bg-dark-card">
+            {{-- inline max-height: the arbitrary-value Tailwind class would need an asset rebuild --}}
             <img src="{{ asset($article->thumbnail) }}" alt="{{ $article->title }}"
-                 class="w-full max-h-96 object-cover">
+                 class="w-auto max-w-full object-contain" style="max-height: 34rem;">
         </div>
         @endif
 
