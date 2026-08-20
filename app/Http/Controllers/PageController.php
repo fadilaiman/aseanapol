@@ -72,7 +72,7 @@ class PageController extends Controller
                 'designation' => 'Head of International Affairs, INTERPOL & ASEANAPOL Unit',
                 'mobile'      => '+6738767477',
                 'email'       => 'fuad.puteh@police.gov.bn',
-                'photo'       => 'media/contacts/brunei.png',
+                'photo'       => 'media/contacts/brunei-2026.png',
             ],
             'history'           => [
                 ['year' => '1906', 'text' => 'The signing of the 1906 treaty between Brunei Darussalam and the United Kingdom laid the foundation of a new government with the formal introduction of the British Resident. The first officers to police Brunei comprised one Pathan and one Sikh, later supplemented by Sikhs seconded from the Straits Settlement government in Labuan, who were eventually replaced by local Malays.'],
