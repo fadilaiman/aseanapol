@@ -15,7 +15,7 @@
 @section('content')
 @php
 $publications = [
-    ['edition' => '15th', 'title' => '15th Edition ASEANAPOL Magazine', 'type' => 'Magazine',  'route' => 'publication.15th', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-magazine-15-2026.pdf', 'size' => '373 MB'],
+    ['edition' => '15th', 'title' => '15th Edition ASEANAPOL Magazine', 'type' => 'Magazine',  'route' => 'publication.15th', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-magazine-15-2026-final.pdf', 'size' => '373 MB'],
     ['edition' => '14th', 'title' => '14th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.14th', 'color' => 'from-cyan-700 to-cyan-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-14-2025.pdf'],
     ['edition' => '13th', 'title' => '13th Edition ASEANAPOL Magazine', 'type' => 'Magazine',  'route' => 'publication.13th', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-13.pdf'],
     ['edition' => '12th', 'title' => '12th Edition ASEANAPOL Bulletin', 'type' => 'Bulletin',  'route' => 'publication.12th', 'color' => 'from-primary/90 to-primary',    'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-12.pdf'],
