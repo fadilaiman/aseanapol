@@ -25,7 +25,7 @@ $members = [
     ['name' => 'Singapore Police Force (SPF)',                  'country' => 'Singapore',         'iso' => 'sg', 'since' => '1981', 'route' => 'about.member.singapore'],
     ['name' => 'Royal Thai Police (RTP)',                       'country' => 'Thailand',          'iso' => 'th', 'since' => '1981', 'route' => 'about.member.thailand'],
     ['name' => 'Office of Investigation Police Agency, Vietnam Police Force (OIPA, VPF)', 'country' => 'Viet Nam', 'iso' => 'vn', 'since' => '1996', 'route' => 'about.member.vietnam'],
-    ['name' => 'National Police of Timor-Leste (PNTL)',        'country' => 'Timor-Leste',       'iso' => 'tl', 'since' => null,   'route' => 'about.member.timor-leste', 'new' => true],
+    ['name' => 'National Police of Timor-Leste (PNTL)',        'country' => 'Timor-Leste',       'iso' => 'tl', 'since' => '2026', 'route' => 'about.member.timor-leste', 'new' => true],
 ];
 @endphp
 
