@@ -62,7 +62,7 @@ class PageController extends Controller
             'website'     => 'https://www.police.gov.bn',
             'route'       => 'about.member.brunei',
             'description' => 'The Royal Brunei Police Force (RBPF) is the national police force of Brunei Darussalam, responsible for maintaining law and order, preventing and detecting crime, and safeguarding the peace and security of the nation.',
-            'chief_name'        => 'Dato Seri Pahlawan Sulaiman bin Alidin',
+            'chief_name'        => 'Yang Mulia Dato Paduka Seri Awang Sulaiman Alidin',
             'chief_rank'        => 'Commissioner of Police',
             'chief_designation' => 'Commissioner of Police',
             'chief_photo'       => 'media/chiefs/brunei.jpg',
