@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 // =====================================================
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', [Admin\AuthController::class, 'login'])->name('login');
-    Route::post('login', [Admin\AuthController::class, 'authenticate'])->name('authenticate');
+    Route::post('login', [Admin\AuthController::class, 'authenticate'])->middleware('throttle:6,1')->name('authenticate');
     Route::post('logout', [Admin\AuthController::class, 'logout'])->name('logout');
 
     Route::middleware('admin.auth')->group(function () {
@@ -175,7 +175,7 @@ Route::middleware([SetLocale::class])
         // CONTACT US
         // =====================================================
         Route::get('/contact-us', [PageController::class, 'contactUs'])->name('contact-us');
-        Route::post('/contact-us', [PageController::class, 'submitContact'])->name('contact-us.submit');
+        Route::post('/contact-us', [PageController::class, 'submitContact'])->middleware('throttle:5,1')->name('contact-us.submit');
 
         // =====================================================
         // GUIDELINES  (kept, accessible via footer/search)
