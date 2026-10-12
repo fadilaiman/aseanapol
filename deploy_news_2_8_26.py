@@ -15,7 +15,8 @@ SRC_ROOT = os.path.join(LOCAL_BASE, r"docs\fix\2-8-26")
 MEDIA_DIR = os.path.join(LOCAL_BASE, r"public\media\news\news")
 REMOTE_MEDIA_DIR = "/var/www/aseanapol/public/media/news/news"
 
-HOST, USER, PW = "47.250.166.174", "root", "RtW-9-nq3V0t"
+HOST, USER, PW = "47.250.166.174", "asnpladmin", "8e-y3£78GanR"
+REMOTE_STAGING_DIR = "/home/asnpladmin/deploy_tmp"
 DB_USER, DB_PASS, DB_NAME = "aseanapol", "AsEaNaPoL_2026_Prod", "aseanapol"
 
 ARTICLES = [
@@ -166,6 +167,7 @@ ARTICLES = [
         "published_at": "2026-07-26 18:00:00",
         "src_dir": os.path.join(SRC_ROOT, "item 5", "unzipped"),
         "images": [
+            "conference-closing-stage-group-photo.jpeg",
             "WhatsApp Image 2026-07-31 at 13.43.23.jpeg",
             "WhatsApp Image 2026-07-31 at 13.43.01 (2).jpeg",
             "WhatsApp Image 2026-07-31 at 13.43.17 (1).jpeg",
@@ -400,6 +402,23 @@ ARTICLES = [
     },
 ]
 
+# Items 1-5 and 7-10 each come from a dedicated source folder (zip or loose
+# jpegs) — use every photo in that folder, not just the hand-picked hero shot.
+# Item 6 (the general conference recap) has no dedicated source folder of its
+# own (it borrows 2 representative photos from item 5's folder), so it is
+# left out of this expansion.
+_NO_FULL_GALLERY_SLUGS = {"44th-aseanapol-conference-2026-united-in-vision-recap"}
+
+for _art in ARTICLES:
+    if _art["slug"] in _NO_FULL_GALLERY_SLUGS:
+        continue
+    _hero = _art["images"][0]
+    _all_files = sorted(
+        fn for fn in os.listdir(_art["src_dir"])
+        if fn.lower().endswith((".jpeg", ".jpg"))
+    )
+    _art["images"] = [_hero] + [f for f in _all_files if f != _hero]
+
 
 def gallery_html(prefix, n):
     imgs = [
@@ -443,7 +462,12 @@ def insert_local():
             for art in ARTICLES:
                 cur.execute("SELECT id FROM news_items WHERE slug=%s", (art["slug"],))
                 if cur.fetchone():
-                    print(f'  skip (already in local DB): {art["slug"]}')
+                    cur.execute(
+                        "UPDATE news_items SET title=%s, summary=%s, content=%s, thumbnail=%s "
+                        "WHERE slug=%s",
+                        (art["title"], art["summary"], full_content(art), thumbnail_path(art), art["slug"]),
+                    )
+                    print(f'  updated (local): {art["slug"]}')
                     continue
                 cur.execute(
                     "INSERT INTO news_items "
@@ -474,6 +498,14 @@ def mkdir_p(sftp, remote_path):
             sftp.mkdir(path)
 
 
+def sudo_cmd(client, cmd, timeout=60):
+    full = f"sudo -S -p '' {cmd}"
+    stdin, stdout, stderr = client.exec_command(full, timeout=timeout)
+    stdin.write(PW + "\n")
+    stdin.flush()
+    return stdout.read().decode("utf-8", errors="replace"), stderr.read().decode("utf-8", errors="replace")
+
+
 def deploy_production():
     import paramiko
 
@@ -483,21 +515,24 @@ def deploy_production():
     print("Connected to server")
 
     sftp = client.open_sftp()
-    mkdir_p(sftp, REMOTE_MEDIA_DIR)
+    mkdir_p(sftp, REMOTE_STAGING_DIR)
 
+    # NOTE: always overwrite — do NOT skip based on remote existence. Gallery
+    # order can change between runs (e.g. inserting a new hero image shifts
+    # every other image's index), so a same-named file on the server may hold
+    # different content than the local file now mapped to that index/name.
     uploaded = 0
     for art in ARTICLES:
         for i in range(1, len(art["images"]) + 1):
             fname = f'{art["dest_prefix"]}-{i}.jpeg'
             local_path = os.path.join(MEDIA_DIR, fname)
             remote_path = f"{REMOTE_MEDIA_DIR}/{fname}"
-            try:
-                sftp.stat(remote_path)
-                print(f"  skip (exists): {fname}")
-            except FileNotFoundError:
-                sftp.put(local_path, remote_path)
-                uploaded += 1
-                print(f"  uploaded: {fname}")
+            staging_path = f"{REMOTE_STAGING_DIR}/{fname}"
+            sftp.put(local_path, staging_path)
+            sudo_cmd(client, f"cp '{staging_path}' '{remote_path}'")
+            sudo_cmd(client, f"rm '{staging_path}'")
+            uploaded += 1
+            print(f"  uploaded: {fname}")
     sftp.close()
     print(f"\nUploaded {uploaded} images")
 
@@ -506,46 +541,55 @@ def deploy_production():
             f"docker exec aseanapol_mysql mysql -u {DB_USER} -p{DB_PASS} {DB_NAME} -N "
             f"-e \"SELECT id FROM news_items WHERE slug='{art['slug']}';\""
         )
-        _, out, _ = client.exec_command(check_cmd, timeout=15)
-        if out.read().decode().strip():
-            print(f'  skip (already in prod DB): {art["slug"]}')
-            continue
+        out, _ = sudo_cmd(client, check_cmd, timeout=15)
+        exists = bool(out.strip())
 
         title_b64 = base64.b64encode(art["title"].encode("utf-8")).decode()
         summary_b64 = base64.b64encode(art["summary"].encode("utf-8")).decode()
         content_b64 = base64.b64encode(full_content(art).encode("utf-8")).decode()
+        thumb_b64 = base64.b64encode(thumbnail_path(art).encode("utf-8")).decode()
 
-        sql = (
-            "INSERT INTO news_items "
-            "(id, title, summary, content, author, published_at, slug, thumbnail, views_count, created_at, updated_at) "
-            "VALUES ("
-            f"'{art['id']}', "
-            f"FROM_BASE64('{title_b64}'), "
-            f"FROM_BASE64('{summary_b64}'), "
-            f"FROM_BASE64('{content_b64}'), "
-            "'ASEANAPOL Secretariat', "
-            f"'{art['published_at']}', "
-            f"'{art['slug']}', "
-            f"'{thumbnail_path(art)}', "
-            "0, NOW(), NOW());"
-        )
+        if exists:
+            sql = (
+                "UPDATE news_items SET "
+                f"title=FROM_BASE64('{title_b64}'), "
+                f"summary=FROM_BASE64('{summary_b64}'), "
+                f"content=FROM_BASE64('{content_b64}'), "
+                f"thumbnail=FROM_BASE64('{thumb_b64}') "
+                f"WHERE slug='{art['slug']}';"
+            )
+            verb = "updated"
+        else:
+            sql = (
+                "INSERT INTO news_items "
+                "(id, title, summary, content, author, published_at, slug, thumbnail, views_count, created_at, updated_at) "
+                "VALUES ("
+                f"'{art['id']}', "
+                f"FROM_BASE64('{title_b64}'), "
+                f"FROM_BASE64('{summary_b64}'), "
+                f"FROM_BASE64('{content_b64}'), "
+                "'ASEANAPOL Secretariat', "
+                f"'{art['published_at']}', "
+                f"'{art['slug']}', "
+                f"FROM_BASE64('{thumb_b64}'), "
+                "0, NOW(), NOW());"
+            )
+            verb = "inserted"
         cmd = f'docker exec aseanapol_mysql mysql -u {DB_USER} -p{DB_PASS} {DB_NAME} -e "{sql}"'
-        _, out, err = client.exec_command(cmd, timeout=30)
-        stdout = out.read().decode("utf-8", errors="replace")
-        stderr = err.read().decode("utf-8", errors="replace")
+        stdout, stderr = sudo_cmd(client, cmd, timeout=30)
         if stdout:
             print("OUT:", stdout)
         if stderr and "Warning" not in stderr:
             print("ERR:", stderr)
         else:
-            print(f'  inserted (prod): {art["slug"]}')
+            print(f'  {verb} (prod): {art["slug"]}')
 
     for artisan_cmd in [
         "docker exec aseanapol_app php artisan cache:clear",
         "docker exec aseanapol_app php artisan view:clear",
     ]:
-        _, out, err = client.exec_command(artisan_cmd, timeout=30)
-        print(out.read().decode().strip() or err.read().decode().strip())
+        out, err = sudo_cmd(client, artisan_cmd, timeout=30)
+        print(out.strip() or err.strip())
 
     client.close()
     print("\nProduction deployment complete")
