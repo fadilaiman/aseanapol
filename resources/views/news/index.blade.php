@@ -73,10 +73,18 @@
                     @if($excerpt)
                     <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mb-4">{{ $excerpt }}</p>
                     @endif
-                    <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $article->slug]) }}"
-                       class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline mt-auto">
-                        Read More <span class="material-symbols-outlined text-base">arrow_forward</span>
-                    </a>
+                    <div class="flex items-center justify-between gap-3 mt-auto">
+                        <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $article->slug]) }}"
+                           class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
+                            Read More <span class="material-symbols-outlined text-base">arrow_forward</span>
+                        </a>
+                        @if(str_starts_with($article->title, 'ASEANAPOL Anti-Scam Study Visit'))
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <img src="{{ asset('media/logos/jaif-cooperation.png') }}" alt="Japan-ASEAN Cooperation (JAIF)" class="h-8 w-auto">
+                            <img src="{{ asset('media/logos/japan-flag.png') }}" alt="Japan" class="h-8 w-auto">
+                        </div>
+                        @endif
+                    </div>
                 </div>
             </article>
             @empty
