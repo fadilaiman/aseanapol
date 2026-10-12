@@ -31,6 +31,12 @@
                 {{ $article->author }}
             </span>
             @endif
+            @if(str_starts_with($article->title, 'ASEANAPOL Anti-Scam Study Visit'))
+            <div class="flex items-center gap-2 sm:ml-auto flex-shrink-0">
+                <img src="{{ asset('media/logos/jaif-cooperation.png') }}" alt="Japan-ASEAN Cooperation (JAIF)" class="h-8 w-auto">
+                <img src="{{ asset('media/logos/japan-flag.png') }}" alt="Japan" class="h-8 w-auto">
+            </div>
+            @endif
         </div>
 
         {{-- Hero image: only shown when the content has no embedded images.
