@@ -2,30 +2,23 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => $title,
-    'subtitle' => 'Official ASEANAPOL ' . $type,
+    'title'    => $pub->title,
+    'subtitle' => str_replace('{type}', $pub->type, cms('data.publication-edition', 'hero.subtitle')),
     'breadcrumbs' => [
         ['label' => 'Home',             'url' => route('landing',                  ['locale' => app()->getLocale()])],
-        ['label' => 'Data & Resources', 'url' => route('data-resources.index',     ['locale' => app()->getLocale()])],
-        ['label' => 'Publications',     'url' => route('data-resources.publications',['locale' => app()->getLocale()])],
-        ['label' => $title,             'url' => ''],
+        ['label' => cms('data.hub', 'hero.title'), 'url' => route('data-resources.index',     ['locale' => app()->getLocale()])],
+        ['label' => cms('data.publications-index', 'hero.title'),     'url' => route('data-resources.publications',['locale' => app()->getLocale()])],
+        ['label' => $pub->title,         'url' => ''],
     ],
 ])
 @endsection
 
 @section('content')
 @php
-$editionData = [
-    '8th'  => ['year' => '2015', 'theme' => 'Regional Police Cooperation in the New Millennium',     'color' => 'from-blue-700 to-blue-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-8.pdf'],
-    '9th'  => ['year' => '2016', 'theme' => 'Combating Transnational Crime Together',                'color' => 'from-primary to-primary/70',    'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-9.pdf'],
-    '10th' => ['year' => '2017', 'theme' => 'Strengthening Partnerships for Regional Security',      'color' => 'from-indigo-700 to-indigo-900', 'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-10.pdf'],
-    '11th' => ['year' => '2018', 'theme' => 'Building Resilient Police Forces',                      'color' => 'from-teal-700 to-teal-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-2018.pdf'],
-    '12th' => ['year' => '2019', 'theme' => 'ASEANAPOL: Four Decades of Cooperation',                'color' => 'from-primary/90 to-primary',    'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-12.pdf'],
-    '13th' => ['year' => '2023', 'theme' => 'Toward a Safer ASEAN: Cooperation, Innovation, Impact', 'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-13.pdf'],
-    '14th' => ['year' => '2025', 'theme' => '',                                                       'color' => 'from-cyan-700 to-cyan-900',     'pdf' => 'media/bulletin/bulletin/aseanapol-bulletin-14-2025.pdf'],
-    '15th' => ['year' => '2026', 'theme' => 'ASEANAPOL 45 — From Five Nations to Eleven Nations',     'color' => 'from-amber-700 to-amber-900',   'pdf' => 'media/bulletin/bulletin/aseanapol-magazine-15-2026-final.pdf', 'size' => '373 MB'],
-];
-$data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'from-primary to-primary/70'];
+$title = $pub->title;
+$type  = $pub->type;
+$edition = $pub->edition;
+$pdfUrl = $pub->pdf_url;
 @endphp
 
 <section class="py-16 bg-background dark:bg-dark-surface">
@@ -34,15 +27,18 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
 
             {{-- Cover --}}
             <div class="lg:col-span-1">
-                <div class="bg-gradient-to-br {{ $data['color'] }} rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-lg min-h-72 relative overflow-hidden">
+                <div class="bg-gradient-to-br {{ $pub->color_class }} rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-lg min-h-72 relative overflow-hidden">
+                    @if($pub->cover_url)
+                    <img src="{{ $pub->cover_url }}" alt="{{ $pub->title }}" class="absolute inset-0 w-full h-full object-cover">
+                    @endif
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="relative z-10">
                         <img src="{{ asset('images/aseanapol-logo.png') }}" alt="ASEANAPOL" class="w-16 h-16 object-contain mx-auto mb-4 opacity-80">
-                        <div class="text-white/70 text-xs uppercase tracking-widest font-semibold mb-1">ASEANAPOL</div>
+                        <div class="text-white/70 text-xs uppercase tracking-widest font-semibold mb-1">{{ cms('data.publication-edition', 'cover.brand') }}</div>
                         <div class="text-white font-extrabold text-5xl mb-1">{{ $edition }}</div>
-                        <div class="text-white/80 text-sm">Edition {{ $type }}</div>
-                        @if($data['year'] !== '—')
-                        <div class="text-white/60 text-xs mt-2">{{ $data['year'] }}</div>
+                        <div class="text-white/80 text-sm">{{ str_replace('{type}', $type, cms('data.publication-edition', 'cover.edition_label')) }}</div>
+                        @if(!empty($pub->year))
+                        <div class="text-white/60 text-xs mt-2">{{ $pub->year }}</div>
                         @endif
                     </div>
                 </div>
@@ -53,34 +49,25 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="text-xs font-semibold text-accent uppercase tracking-wider">{{ $type }}</span>
-                        @if($data['year'] !== '—')
-                        <span class="text-xs text-gray-400">· {{ $data['year'] }}</span>
+                        @if(!empty($pub->year))
+                        <span class="text-xs text-gray-400">· {{ $pub->year }}</span>
                         @endif
                     </div>
                     <h2 class="text-2xl font-bold text-primary dark:text-white mb-3">{{ $title }}</h2>
-                    @if($data['theme'])
-                    <p class="text-gray-500 dark:text-gray-400 italic mb-5">"{{ $data['theme'] }}"</p>
+                    @if($pub->theme)
+                    <p class="text-gray-500 dark:text-gray-400 italic mb-5">"{{ $pub->theme }}"</p>
                     @endif
                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                        The {{ $title }} is an official publication of the ASEANAPOL Permanent Secretariat. It documents the activities, programmes, and achievements of ASEANAPOL and its member police forces, serving as a key resource for police professionals, researchers, and stakeholders across the ASEAN region.
+                        {{ $pub->summary ?: str_replace('{title}', $title, cms('data.publication-edition', 'intro.text')) }}
                     </p>
                 </div>
 
                 {{-- Contents overview --}}
+                @if(cms_on('data.publication-edition', 'contents'))
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 class="font-bold text-lg text-primary dark:text-white mb-5">Typical Contents</h3>
-                    @php
-                    $contents = [
-                        ['icon' => 'article',       'text' => 'Message from the ASEANAPOL Executive Director'],
-                        ['icon' => 'groups',        'text' => 'Annual Conference highlights and resolutions'],
-                        ['icon' => 'task_alt',      'text' => 'Working committee reports and achievements'],
-                        ['icon' => 'handshake',     'text' => 'Partnership and collaboration updates'],
-                        ['icon' => 'school',        'text' => 'Training and capacity building activities'],
-                        ['icon' => 'newspaper',     'text' => 'Member police force news and updates'],
-                    ];
-                    @endphp
+                    <h3 class="font-bold text-lg text-primary dark:text-white mb-5">{{ cms('data.publication-edition', 'contents.heading') }}</h3>
                     <ul class="space-y-3">
-                        @foreach($contents as $c)
+                        @foreach(cms('data.publication-edition', 'contents.items') as $c)
                         <li class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-accent text-xl flex-shrink-0">{{ $c['icon'] }}</span>
                             <span class="text-gray-600 dark:text-gray-300 text-sm">{{ $c['text'] }}</span>
@@ -88,33 +75,34 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
                         @endforeach
                     </ul>
                 </div>
+                @endif
 
                 {{-- Download --}}
                 <div class="bg-primary/5 dark:bg-primary/15 rounded-2xl p-6 border border-primary/10 dark:border-primary/30">
                     <div class="flex items-start gap-3">
                         <span class="material-symbols-outlined text-primary dark:text-accent text-2xl flex-shrink-0">picture_as_pdf</span>
                         <div>
-                            <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Download PDF</h4>
-                            @if(!empty($data['pdf']))
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ cms('data.publication-edition', 'download.heading') }}</h4>
+                            @if(!empty($pdfUrl))
                             <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
-                                This edition is available for download.
-                                @if(!empty($data['size']))
-                                    <span class="text-gray-400 dark:text-gray-500">(PDF, {{ $data['size'] }})</span>
+                                {{ cms('data.publication-edition', 'download.available') }}
+                                @if(!empty($pub->size))
+                                    <span class="text-gray-400 dark:text-gray-500">{{ str_replace('{size}', $pub->size, cms('data.publication-edition', 'download.size_format')) }}</span>
                                 @endif
                             </p>
-                            <a href="{{ asset($data['pdf']) }}" target="_blank" rel="noopener"
+                            <a href="{{ $pdfUrl }}" target="_blank" rel="noopener"
                                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
                                 <span class="material-symbols-outlined text-lg">download</span>
-                                Download PDF
+                                {{ cms('data.publication-edition', 'download.button') }}
                             </a>
                             @else
                             <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
-                                To request a copy of this publication, please contact the ASEANAPOL Permanent Secretariat.
+                                {{ cms('data.publication-edition', 'download.unavailable') }}
                             </p>
-                            <a href="mailto:aseanapolsec@aseanapol.org?subject=Request: {{ $title }}"
+                            <a href="mailto:{{ cms('data.publication-edition', 'download.request_email') }}?subject={{ str_replace('{title}', $title, cms('data.publication-edition', 'download.request_subject')) }}"
                                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
                                 <span class="material-symbols-outlined text-lg">mail</span>
-                                Request This Publication
+                                {{ cms('data.publication-edition', 'download.request_button') }}
                             </a>
                             @endif
                         </div>
@@ -127,7 +115,7 @@ $data = $editionData[$edition] ?? ['year' => '—', 'theme' => '', 'color' => 'f
             <a href="{{ route('data-resources.publications', ['locale' => app()->getLocale()]) }}"
                class="inline-flex items-center gap-2 text-primary dark:text-accent hover:underline text-sm font-medium">
                 <span class="material-symbols-outlined text-base">arrow_back</span>
-                Back to Publications
+                {{ cms('data.publication-edition', 'back.label') }}
             </a>
         </div>
     </div>

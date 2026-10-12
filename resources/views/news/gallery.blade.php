@@ -2,12 +2,12 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'Photo Gallery',
-    'subtitle' => 'Images from ASEANAPOL conferences, activities, and member organisations.',
+    'title'    => cms('newsmedia.gallery', 'hero.title'),
+    'subtitle' => cms('newsmedia.gallery', 'hero.subtitle'),
     'breadcrumbs' => [
         ['label' => 'Home',        'url' => route('landing',         ['locale' => app()->getLocale()])],
-        ['label' => 'News & Media','url' => route('news-media.index', ['locale' => app()->getLocale()])],
-        ['label' => 'Gallery',     'url' => ''],
+        ['label' => cms('newsmedia.index', 'hero.title'),'url' => route('news-media.index', ['locale' => app()->getLocale()])],
+        ['label' => cms('newsmedia.gallery', 'hero.crumb'),     'url' => ''],
     ],
 ])
 @endsection
@@ -20,7 +20,7 @@
         <div class="flex flex-wrap gap-2 mb-10" id="gallery-tabs">
             <button onclick="showAlbum('all')" data-tab="all"
                 class="tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors bg-primary text-white">
-                All
+                {{ cms('newsmedia.gallery', 'labels.all') }}
             </button>
             @foreach($albums as $album)
                 @if($album['count'] > 0)
@@ -52,7 +52,7 @@
             <div class="text-center mb-12">
                 <button type="button" onclick="loadMoreGallery('{{ $album['key'] }}', this)"
                     class="px-5 py-2 rounded-full text-sm font-semibold bg-white dark:bg-dark-card text-primary dark:text-accent border border-gray-200 dark:border-gray-600 hover:border-primary/30 transition-colors">
-                    Load more
+                    {{ cms('newsmedia.gallery', 'labels.load_more') }}
                 </button>
             </div>
             @else
@@ -66,7 +66,7 @@
         @if($total === 0)
         <div class="text-center py-20 text-gray-400">
             <span class="material-symbols-outlined text-5xl mb-4 block">image_not_supported</span>
-            <p>No gallery images available.</p>
+            <p>{{ cms('newsmedia.gallery', 'labels.empty') }}</p>
         </div>
         @endif
     </div>
@@ -94,7 +94,7 @@ function loadMoreGallery(albumKey, btn) {
     const offset = parseInt(section.dataset.offset, 10) || 0;
 
     btn.disabled = true;
-    btn.textContent = 'Loading…';
+    btn.textContent = '{!! str_replace('<', '\x3C', addcslashes(cms('newsmedia.gallery', 'labels.loading'), "\\'\n\r")) !!}';
 
     fetch('{{ route("news-media.gallery.more", ["locale" => app()->getLocale()]) }}?album=' + encodeURIComponent(albumKey) + '&offset=' + offset)
         .then(r => r.json())
@@ -108,14 +108,14 @@ function loadMoreGallery(albumKey, btn) {
             section.dataset.offset = offset + data.images.length;
             if (data.hasMore) {
                 btn.disabled = false;
-                btn.textContent = 'Load more';
+                btn.textContent = '{!! str_replace('<', '\x3C', addcslashes(cms('newsmedia.gallery', 'labels.load_more'), "\\'\n\r")) !!}';
             } else {
                 btn.remove();
             }
         })
         .catch(() => {
             btn.disabled = false;
-            btn.textContent = 'Load more';
+            btn.textContent = '{!! str_replace('<', '\x3C', addcslashes(cms('newsmedia.gallery', 'labels.load_more'), "\\'\n\r")) !!}';
         });
 }
 </script>

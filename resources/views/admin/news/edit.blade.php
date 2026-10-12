@@ -8,6 +8,16 @@
     </a>
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
+        @if($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-5">
+                <ul class="list-disc list-inside space-y-0.5">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('admin.news.update', $news) }}" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
@@ -16,7 +26,6 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-red-500">*</span></label>
                 <input type="text" name="title" value="{{ old('title', $news->title) }}" required
                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                @error('title')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -38,7 +47,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail</label>
                 @if($news->thumbnail)
                     <div class="mb-3 flex items-center gap-3">
-                        <img src="{{ $news->thumbnail }}" alt="current thumbnail" class="h-16 rounded-lg object-cover">
+                        <img src="{{ asset($news->thumbnail) }}" alt="current thumbnail" class="h-16 rounded-lg object-cover">
                         <span class="text-xs text-gray-400">Current thumbnail</span>
                     </div>
                 @endif
@@ -53,8 +62,8 @@
                     </button>
                 </div>
                 <div id="panel-url">
-                    <input type="url" name="thumbnail_url" value="{{ old('thumbnail_url', $news->thumbnail) }}"
-                           placeholder="https://…"
+                    <input type="text" name="thumbnail_url" value="{{ old('thumbnail_url', $news->thumbnail) }}"
+                           placeholder="https://… or media/news/…"
                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
                     <p class="text-xs text-gray-400 mt-1">Leave blank to keep current thumbnail.</p>
                 </div>

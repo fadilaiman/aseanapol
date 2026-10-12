@@ -2,12 +2,12 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'News',
-    'subtitle' => 'Latest news, activities and announcements from ASEANAPOL.',
+    'title'    => cms('newsmedia.news-list', 'hero.title'),
+    'subtitle' => cms('newsmedia.news-list', 'hero.subtitle'),
     'breadcrumbs' => [
         ['label' => 'Home',        'url' => route('landing',        ['locale' => app()->getLocale()])],
-        ['label' => 'News & Media','url' => route('news-media.index',['locale' => app()->getLocale()])],
-        ['label' => 'News',        'url' => ''],
+        ['label' => cms('newsmedia.index', 'hero.title'),'url' => route('news-media.index',['locale' => app()->getLocale()])],
+        ['label' => cms('newsmedia.news-list', 'hero.title'),        'url' => ''],
     ],
 ])
 @endsection
@@ -17,15 +17,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Active filter banner --}}
-        @if($q !== '')
+        @if($q !== '' && cms_on('newsmedia.news-search', 'filter'))
         <div class="flex items-center gap-3 mb-6 p-4 bg-accent/10 dark:bg-accent/15 border border-accent/30 rounded-xl">
             <span class="material-symbols-outlined text-accent text-lg">filter_alt</span>
             <p class="text-sm text-gray-700 dark:text-gray-200 flex-1">
-                Showing activities related to <strong class="text-accent">{{ $q }}</strong>
+                {{ cms('newsmedia.news-search', 'filter.text') }} <strong class="text-accent">{{ $q }}</strong>
             </p>
             <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}"
                class="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-accent transition-colors">
-                <span class="material-symbols-outlined text-sm">close</span> Clear filter
+                <span class="material-symbols-outlined text-sm">close</span> {{ cms('newsmedia.news-search', 'filter.clear') }}
             </a>
         </div>
         @endif
@@ -33,9 +33,9 @@
         {{-- Results count --}}
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
             @if($articles->total() > 0)
-                Showing {{ $articles->firstItem() }}–{{ $articles->lastItem() }} of {{ $articles->total() }} articles
+                {{ cms('newsmedia.news-list', 'labels.showing') }} {{ $articles->firstItem() }}–{{ $articles->lastItem() }} {{ cms('newsmedia.news-list', 'labels.of') }} {{ $articles->total() }} {{ cms('newsmedia.news-list', 'labels.articles') }}
             @else
-                No articles found{{ $q !== '' ? ' for "' . e($q) . '"' : '' }}.
+                {{ cms('newsmedia.news-search', 'empty.summary') }}{{ $q !== '' ? ' ' . cms('newsmedia.news-search', 'empty.summary_for') . ' "' . $q . '"' : '' }}.
             @endif
         </p>
 
@@ -76,7 +76,7 @@
                     <div class="flex items-center justify-between gap-3 mt-auto">
                         <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $article->slug]) }}"
                            class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
-                            Read More <span class="material-symbols-outlined text-base">arrow_forward</span>
+                            {{ cms('newsmedia.news-list', 'labels.read_more') }} <span class="material-symbols-outlined text-base">arrow_forward</span>
                         </a>
                         @if(str_starts_with($article->title, 'ASEANAPOL Anti-Scam Study Visit'))
                         <div class="flex items-center gap-2 flex-shrink-0">
@@ -90,7 +90,7 @@
             @empty
             <div class="col-span-3 text-center py-16 text-gray-400 dark:text-gray-500">
                 <span class="material-symbols-outlined text-5xl mb-3 block">search_off</span>
-                <p class="text-sm">No articles found. <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="text-primary dark:text-accent hover:underline">View all news</a></p>
+                <p class="text-sm">{{ cms('newsmedia.news-search', 'empty.message') }} <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="text-primary dark:text-accent hover:underline">{{ cms('newsmedia.news-search', 'empty.link') }}</a></p>
             </div>
             @endforelse
         </div>

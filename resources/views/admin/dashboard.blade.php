@@ -22,9 +22,26 @@
         <div class="text-xs text-green-600 mt-1">{{ $publishedNewsletterCount }} published</div>
     </div>
 
+    <a href="{{ route('admin.cms.index') }}" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-300" data-testid="dash-cms-tile">
+        <div class="flex items-center gap-2 text-emerald-600 mb-3">
+            <span class="material-symbols-outlined" style="font-size:22px;">account_tree</span>
+            <span class="text-sm text-gray-500 font-medium">Editable Pages</span>
+        </div>
+        <div class="text-3xl font-bold text-gray-900">{{ $cmsPageCount }}</div>
+        <div class="text-xs text-amber-600 mt-1">{{ $cmsCustomisedPages }} customised</div>
+    </a>
+
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <a href="{{ route('admin.cms.index') }}"
+       class="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-300 hover:shadow-sm transition-all group">
+        <span class="material-symbols-outlined text-emerald-500 group-hover:text-emerald-600" style="font-size:24px;">edit_note</span>
+        <div>
+            <div class="font-semibold text-gray-800 text-sm">Edit Site Pages</div>
+            <div class="text-gray-400 text-xs">Browse the page tree and edit any page's content</div>
+        </div>
+    </a>
     <a href="{{ route('admin.video-gallery.create') }}"
        class="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-blue-300 hover:shadow-sm transition-all group">
         <span class="material-symbols-outlined text-blue-500 group-hover:text-blue-600" style="font-size:24px;">add_circle</span>

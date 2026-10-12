@@ -6,9 +6,9 @@
     'subtitle' => $article->published_at ? $article->published_at->format('d F Y') : '',
     'breadcrumbs' => [
         ['label' => 'Home',        'url' => route('landing',        ['locale' => app()->getLocale()])],
-        ['label' => 'News & Media','url' => route('news-media.index',['locale' => app()->getLocale()])],
-        ['label' => 'News',        'url' => route('news.index',     ['locale' => app()->getLocale()])],
-        ['label' => 'Article',     'url' => ''],
+        ['label' => cms('newsmedia.index', 'hero.title'),'url' => route('news-media.index',['locale' => app()->getLocale()])],
+        ['label' => cms('newsmedia.news-article', 'labels.breadcrumb_news'),        'url' => route('news.index',     ['locale' => app()->getLocale()])],
+        ['label' => cms('newsmedia.news-article', 'labels.breadcrumb_article'),     'url' => ''],
     ],
 ])
 @endsection
@@ -55,7 +55,7 @@
                     {!! $article->content !!}
                 </div>
             @else
-                <p class="text-gray-500 dark:text-gray-400 italic">Content not available.</p>
+                <p class="text-gray-500 dark:text-gray-400 italic">{{ cms('newsmedia.news-article', 'labels.no_content') }}</p>
             @endif
         </div>
 
@@ -64,7 +64,7 @@
             <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}"
                class="inline-flex items-center gap-2 text-primary dark:text-accent hover:underline text-sm font-medium">
                 <span class="material-symbols-outlined text-base">arrow_back</span>
-                Back to News
+                {{ cms('newsmedia.news-article', 'labels.back') }}
             </a>
         </div>
 

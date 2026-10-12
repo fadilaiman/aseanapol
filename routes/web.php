@@ -31,6 +31,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::resource('news', Admin\NewsItemController::class)->except(['show']);
+
+        // Registry-driven page content editor (config/cms_pages/*.php)
+        Route::prefix('site-content')->name('cms.')->group(function () {
+            Route::get('/', [Admin\CmsPageController::class, 'index'])->name('index');
+            Route::get('{page}', [Admin\CmsPageController::class, 'edit'])->where('page', '[a-z0-9_\-]+\.[a-z0-9_\-]+')->name('edit');
+            Route::put('{page}', [Admin\CmsPageController::class, 'update'])->where('page', '[a-z0-9_\-]+\.[a-z0-9_\-]+')->name('update');
+            Route::post('{page}/reset', [Admin\CmsPageController::class, 'reset'])->where('page', '[a-z0-9_\-]+\.[a-z0-9_\-]+')->name('reset');
+        });
+
+        // Dedicated content modules: each drops its own routes file in routes/admin/*.php
+        foreach (glob(base_path('routes/admin/*.php')) ?: [] as $adminRoutes) {
+            require $adminRoutes;
+        }
     });
 });
 
@@ -86,19 +99,19 @@ Route::middleware([SetLocale::class])
         // =====================================================
         // LEGACY /information redirects  (301)
         // =====================================================
-        Route::redirect('/information', '/about-aseanapol/member-countries', 301)->name('information.index');
-        Route::redirect('/information/royal-brunei-police-force', '/about-aseanapol/member-countries/royal-brunei-police-force', 301)->name('information.brunei');
-        Route::redirect('/information/cambodian-national-police', '/about-aseanapol/member-countries/cambodian-national-police', 301)->name('information.cambodia');
-        Route::redirect('/information/indonesian-national-police', '/about-aseanapol/member-countries/indonesian-national-police', 301)->name('information.indonesia');
-        Route::redirect('/information/lao-police-force', '/about-aseanapol/member-countries/lao-police-force', 301)->name('information.lao');
-        Route::redirect('/information/royal-malaysia-police', '/about-aseanapol/member-countries/royal-malaysia-police', 301)->name('information.malaysia');
-        Route::redirect('/information/myanmar-police-force', '/about-aseanapol/member-countries/myanmar-police-force', 301)->name('information.myanmar');
-        Route::redirect('/information/philippine-national-police', '/about-aseanapol/member-countries/philippine-national-police', 301)->name('information.philippines');
-        Route::redirect('/information/singapore-police-force', '/about-aseanapol/member-countries/singapore-police-force', 301)->name('information.singapore');
-        Route::redirect('/information/royal-thai-police', '/about-aseanapol/member-countries/royal-thai-police', 301)->name('information.thailand');
-        Route::redirect('/information/the-office-of-investigation-police-agency-ministry-of-public-security-socialist-republic-of-viet-nam', '/about-aseanapol/member-countries/office-of-investigation-police-agency-viet-nam', 301)->name('information.vietnam');
-        Route::redirect('/information/dialogue-partners', '/about-aseanapol/dialogue-partners', 301)->name('information.dialogue-partners');
-        Route::redirect('/information/observers', '/about-aseanapol/observers', 301)->name('information.observers');
+        Route::redirect('/information', '/{locale}/about-aseanapol/member-countries', 301)->name('information.index');
+        Route::redirect('/information/royal-brunei-police-force', '/{locale}/about-aseanapol/member-countries/royal-brunei-police-force', 301)->name('information.brunei');
+        Route::redirect('/information/cambodian-national-police', '/{locale}/about-aseanapol/member-countries/cambodian-national-police', 301)->name('information.cambodia');
+        Route::redirect('/information/indonesian-national-police', '/{locale}/about-aseanapol/member-countries/indonesian-national-police', 301)->name('information.indonesia');
+        Route::redirect('/information/lao-police-force', '/{locale}/about-aseanapol/member-countries/lao-police-force', 301)->name('information.lao');
+        Route::redirect('/information/royal-malaysia-police', '/{locale}/about-aseanapol/member-countries/royal-malaysia-police', 301)->name('information.malaysia');
+        Route::redirect('/information/myanmar-police-force', '/{locale}/about-aseanapol/member-countries/myanmar-police-force', 301)->name('information.myanmar');
+        Route::redirect('/information/philippine-national-police', '/{locale}/about-aseanapol/member-countries/philippine-national-police', 301)->name('information.philippines');
+        Route::redirect('/information/singapore-police-force', '/{locale}/about-aseanapol/member-countries/singapore-police-force', 301)->name('information.singapore');
+        Route::redirect('/information/royal-thai-police', '/{locale}/about-aseanapol/member-countries/royal-thai-police', 301)->name('information.thailand');
+        Route::redirect('/information/the-office-of-investigation-police-agency-ministry-of-public-security-socialist-republic-of-viet-nam', '/{locale}/about-aseanapol/member-countries/office-of-investigation-police-agency-viet-nam', 301)->name('information.vietnam');
+        Route::redirect('/information/dialogue-partners', '/{locale}/about-aseanapol/dialogue-partners', 301)->name('information.dialogue-partners');
+        Route::redirect('/information/observers', '/{locale}/about-aseanapol/observers', 301)->name('information.observers');
 
         // =====================================================
         // NEWS & MEDIA
@@ -113,7 +126,7 @@ Route::middleware([SetLocale::class])
         Route::get('/news-media/newsletters', [PageController::class, 'newsletters'])->name('news-media.newsletters');
 
         // Legacy /news redirect
-        Route::redirect('/news', '/news-media/news', 301);
+        Route::redirect('/news', '/{locale}/news-media/news', 301);
 
         // =====================================================
         // DATA & RESOURCES
@@ -122,10 +135,10 @@ Route::middleware([SetLocale::class])
         Route::get('/data-resources/crime-statistics', [PageController::class, 'crimeStatistics'])->name('data-resources.crime-statistics');
         Route::get('/data-resources/publications', [PageController::class, 'publicationIndex'])->name('data-resources.publications');
         Route::get('/data-resources/digital-library', [PageController::class, 'digitalLibrary'])->name('data-resources.digital-library');
-        Route::redirect('/data-resources/e-learning', '/training/e-learning', 301)->name('data-resources.e-learning');
+        Route::redirect('/data-resources/e-learning', '/{locale}/training/e-learning', 301)->name('data-resources.e-learning');
 
         // Publication edition detail pages
-        Route::redirect('/publication', '/data-resources/publications', 301)->name('publication.index');
+        Route::redirect('/publication', '/{locale}/data-resources/publications', 301)->name('publication.index');
         Route::get('/publication/8th-edition-aseanapol-bulletin',  [PageController::class, 'publication8th'])->name('publication.8th');
         Route::get('/publication/9th-edition-aseanapol-bulletin',  [PageController::class, 'publication9th'])->name('publication.9th');
         Route::get('/publication/10th-edition-aseanapol-bulletin', [PageController::class, 'publication10th'])->name('publication.10th');
@@ -134,6 +147,7 @@ Route::middleware([SetLocale::class])
         Route::get('/publication/13th-edition-aseanapol-magazine', [PageController::class, 'publication13th'])->name('publication.13th');
         Route::get('/publication/14th-edition-aseanapol-bulletin', [PageController::class, 'publication14th'])->name('publication.14th');
         Route::get('/publication/15th-edition-aseanapol-magazine', [PageController::class, 'publication15th'])->name('publication.15th');
+        Route::get('/publication/{slug}', [PageController::class, 'publicationShow'])->where('slug', '[a-z0-9\-]+')->name('publication.show');
 
         // =====================================================
         // INTERNATIONAL COOPERATION
@@ -145,7 +159,7 @@ Route::middleware([SetLocale::class])
         Route::get('/international-cooperation/joint-projects', [PageController::class, 'cooperationJointProjects'])->name('international-cooperation.joint-projects');
 
         // Legacy /international-collaboration redirect
-        Route::redirect('/international-collaboration', '/international-cooperation', 301)->name('international-collaboration');
+        Route::redirect('/international-collaboration', '/{locale}/international-cooperation', 301)->name('international-collaboration');
 
         // =====================================================
         // EVENTS & TRAINING

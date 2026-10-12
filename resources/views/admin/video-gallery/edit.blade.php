@@ -61,7 +61,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Category <span class="text-red-500">*</span></label>
                     <select name="category" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
-                        @foreach(['General','Conference','Training','International','Cybercrime','Cooperation','About'] as $cat)
+                        @foreach(array_values(array_unique(array_merge(['General','Conference','Training','International','Cybercrime','Cooperation','About'], [$videoGallery->category]))) as $cat)
                             <option value="{{ $cat }}" {{ old('category', $videoGallery->category) === $cat ? 'selected' : '' }}>{{ $cat }}</option>
                         @endforeach
                     </select>

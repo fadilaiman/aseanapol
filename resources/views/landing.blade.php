@@ -1,14 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+$P = 'site.landing';
+$t = fn ($p, $l = null, $d = false) => \App\Support\SiteCms::t($P, $p, $l, $d);
+$L = fn ($v) => \App\Support\SiteCms::link($v);
+$maxSlides = max(1, (int) (cms($P, 'slider.max_slides') ?: 10));
+$newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
+@endphp
+
+{{-- Optional welcome banner (only when a headline is set) --}}
+@if(trim((string) cms($P, 'banner.headline')) !== '')
+<section class="relative overflow-hidden bg-primary text-white"
+         style="padding-top: calc(var(--header-h, 5rem) + 3rem); padding-bottom: 4rem;@if(cms_img($P, 'banner.image')) background-image: url('{{ cms_img($P, 'banner.image') }}'); background-size: cover; background-position: center;@endif">
+    <div class="absolute inset-0 hero-gradient"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight max-w-3xl">{{ cms($P, 'banner.headline') }}</h1>
+        @if(trim((string) cms($P, 'banner.subtitle')) !== '')
+        <p class="text-white/80 mt-4 text-lg max-w-2xl leading-relaxed">{{ cms($P, 'banner.subtitle') }}</p>
+        @endif
+        @if(trim((string) cms($P, 'banner.button_label')) !== '')
+        <a href="{{ $L(cms($P, 'banner.button_link')) }}" class="inline-flex items-center gap-2 mt-8 bg-accent hover:bg-accent-600 text-primary font-semibold px-6 py-3 rounded-xl transition-colors">{{ cms($P, 'banner.button_label') }}</a>
+        @endif
+    </div>
+</section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 1: Hero News Slider --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'slider'))
 <section id="hero" class="relative overflow-hidden" style="height: 90vh; min-height: 400px;">
 
     {{-- Slides --}}
-    @foreach($latestNews->take(10) as $index => $item)
+    @foreach($latestNews->take($maxSlides) as $index => $item)
     <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out {{ $index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}">
         @if($item->thumbnail)
         {{-- Blurred full-bleed backdrop so no empty space ever shows --}}
@@ -56,7 +81,7 @@
 
     {{-- Dot indicators --}}
     <div class="absolute bottom-5 right-8 z-20 flex items-center gap-2">
-        @foreach($latestNews->take(10) as $index => $item)
+        @foreach($latestNews->take($maxSlides) as $index => $item)
         <button class="hero-dot rounded-full transition-all duration-300 focus:outline-none {{ $index === 0 ? 'bg-white w-6 h-2' : 'bg-white/50 w-2 h-2' }}"
                 aria-label="Go to slide {{ $index + 1 }}"></button>
         @endforeach
@@ -64,7 +89,7 @@
 
     {{-- Slide counter --}}
     <div class="absolute top-6 right-8 z-20 bg-black/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">
-        <span id="heroCurrentSlide">1</span> / {{ $latestNews->take(10)->count() }}
+        <span id="heroCurrentSlide">1</span> / {{ $latestNews->take($maxSlides)->count() }}
     </div>
 
 </section>
@@ -112,21 +137,18 @@
     startTimer();
 })();
 </script>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 2: Statistics Bar --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'stats'))
 <section class="relative z-10 -mt-8 mb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-dark-card rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/30 p-6 sm:p-8">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                 @php
-                    $stats = [
-                        ['value' => '11', 'label' => __('landing.stats_members'), 'icon' => 'public'],
-                        ['value' => '12', 'label' => __('landing.stats_partners'), 'icon' => 'handshake'],
-                        ['value' => '44+', 'label' => __('landing.stats_conferences'), 'icon' => 'groups'],
-                        ['value' => '1981', 'label' => __('landing.stats_established'), 'icon' => 'calendar_month'],
-                    ];
+                    $stats = \App\Support\SiteCms::rows($P, 'stats.items', ['label' => ['landing.stats_members', 'landing.stats_partners', 'landing.stats_conferences', 'landing.stats_established']]);
                 @endphp
                 @foreach($stats as $stat)
                     <div class="text-center">
@@ -141,22 +163,24 @@
         </div>
     </div>
 </section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 3: Latest News --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'news'))
 <section id="news" class="py-20 bg-white dark:bg-dark-surface">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-14">
             <div class="inline-flex items-center gap-2 bg-primary/5 dark:bg-primary/20 text-primary dark:text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                 <span class="material-symbols-outlined text-base">newspaper</span>
-                {{ __('landing.news_badge') }}
+                {{ $t('news.badge', 'landing.news_badge') }}
             </div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ __('landing.news_title') }}</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('news.title', 'landing.news_title') }}</h2>
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($latestNews->take(6) as $item)
+            @foreach($latestNews->take($newsCount) as $item)
                 <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $item->slug]) }}"
                    class="relative rounded-xl overflow-hidden shadow-sm dark:shadow-black/20 border border-gray-100 dark:border-gray-700/50 group h-72 block">
                     {{-- Background: real thumbnail or gradient fallback --}}
@@ -182,7 +206,7 @@
                     <div class="absolute top-3 right-3 z-10 group-hover:opacity-0 transition-opacity duration-300">
                         <span class="bg-white text-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
                             <span class="material-symbols-outlined text-sm">event_upcoming</span>
-                            {{ __('landing.upcoming_event_badge') }}
+                            {{ $t('news.upcoming_badge', 'landing.upcoming_event_badge') }}
                         </span>
                     </div>
                     @endif
@@ -203,7 +227,7 @@
                         <p class="text-white/75 text-xs leading-relaxed mb-3 line-clamp-4">{{ $item->summary }}</p>
                         @endif
                         <span class="inline-flex items-center gap-1 text-accent font-semibold text-sm mt-auto">
-                            {{ __('landing.news_read_more') }}
+                            {{ $t('news.read_more', 'landing.news_read_more') }}
                             <span class="material-symbols-outlined text-base">arrow_forward</span>
                         </span>
                     </div>
@@ -213,35 +237,32 @@
         <div class="text-center mt-10">
             <a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center gap-2 border border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 py-3 rounded-xl transition-colors dark:border-accent dark:text-accent dark:hover:bg-accent dark:hover:text-primary">
                 <span class="material-symbols-outlined">newspaper</span>
-                View All News
+                {{ cms($P, 'news.view_all') }}
             </a>
         </div>
     </div>
 </section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 4: Upcoming Events --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'events'))
 <section id="events" class="py-20 bg-background dark:bg-dark">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-14">
             <div class="inline-flex items-center gap-2 bg-primary/5 dark:bg-primary/20 text-primary dark:text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                 <span class="material-symbols-outlined text-base">event</span>
-                {{ __('landing.upcoming_events') }}
+                {{ $t('events.badge', 'landing.upcoming_events') }}
             </div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ __('landing.upcoming_events') }}</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('events.title', 'landing.upcoming_events') }}</h2>
         </div>
 
         @php
-            $events = [
-                ['month' => 'MAR', 'day' => '05', 'year' => '2026', 'end_day' => '06',  'end_month' => 'MAR', 'title' => __('landing.event_1_title'), 'location' => __('landing.event_1_location')],
-                ['month' => 'MAR', 'day' => '09', 'year' => '2026', 'end_day' => '11',  'end_month' => 'MAR', 'title' => __('landing.event_2_title'), 'location' => __('landing.event_2_location')],
-                ['month' => 'MAR', 'day' => '11', 'year' => '2026', 'end_day' => '12',  'end_month' => 'MAR', 'title' => __('landing.event_3_title'), 'location' => __('landing.event_3_location')],
-                ['month' => 'MAR', 'day' => '31', 'year' => '2026', 'end_day' => '02',  'end_month' => 'APR', 'title' => __('landing.event_4_title'), 'location' => __('landing.event_4_location')],
-                ['month' => 'APR', 'day' => '21', 'year' => '2026', 'end_day' => '24',  'end_month' => 'APR', 'title' => __('landing.event_5_title'), 'location' => __('landing.event_5_location')],
-                ['month' => 'JUN', 'day' => '02', 'year' => '2026', 'end_day' => null,  'end_month' => null,  'title' => __('landing.event_6_title'), 'location' => __('landing.event_6_location')],
-                ['month' => 'JUL', 'day' => '22', 'year' => '2026', 'end_day' => '26',  'end_month' => 'JUL', 'title' => __('landing.event_7_title'), 'location' => __('landing.event_7_location')],
-            ];
+            $events = \App\Support\SiteCms::rows($P, 'events.items', [
+                'title'    => array_map(fn ($i) => "landing.event_{$i}_title", range(1, 7)),
+                'location' => array_map(fn ($i) => "landing.event_{$i}_location", range(1, 7)),
+            ]);
         @endphp
         @php $loc = ['locale' => app()->getLocale()]; @endphp
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -251,7 +272,7 @@
                         <span class="text-[10px] font-bold uppercase tracking-wider leading-none">{{ $event['month'] }}</span>
                         <span class="text-2xl font-extrabold leading-none mt-0.5">{{ $event['day'] }}</span>
                         @if($event['end_day'])
-                        <span class="text-[9px] text-white/70 leading-none mt-1">to {{ $event['end_day'] }} {{ $event['end_month'] }}</span>
+                        <span class="text-[9px] text-white/70 leading-none mt-1">{{ cms($P, 'events.range_word') }} {{ $event['end_day'] }} {{ $event['end_month'] }}</span>
                         @else
                         <span class="text-[9px] text-white/60 leading-none mt-0.5">{{ $event['year'] }}</span>
                         @endif
@@ -267,25 +288,27 @@
             @endforeach
         </div>
         <div class="text-center">
-            <a href="{{ route('events-training.calendar', $loc) }}" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-lg shadow-primary/20">
+            <a href="{{ $L(cms($P, 'events.view_all_link')) }}" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-lg shadow-primary/20">
                 <span class="material-symbols-outlined">calendar_month</span>
-                View All Events
+                {{ cms($P, 'events.view_all') }}
             </a>
         </div>
     </div>
 </section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 5: About ASEANAPOL --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'about'))
 <section id="about" class="py-20 bg-white dark:bg-dark-surface">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-14">
             <div class="inline-flex items-center gap-2 bg-primary/5 dark:bg-primary/20 text-primary dark:text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                 <span class="material-symbols-outlined text-base">info</span>
-                {{ __('landing.about_badge') }}
+                {{ $t('about.badge', 'landing.about_badge') }}
             </div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ __('landing.about_title') }}</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('about.title', 'landing.about_title') }}</h2>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
@@ -295,15 +318,19 @@
                     <div class="w-14 h-14 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
                         <span class="material-symbols-outlined text-white text-3xl">visibility</span>
                     </div>
-                    <h3 class="text-2xl font-bold text-primary dark:text-white">{{ __('landing.vision') }}</h3>
+                    <h3 class="text-2xl font-bold text-primary dark:text-white">{{ $t('about.vision_heading', 'landing.vision') }}</h3>
                 </div>
                 <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    @if(\App\Support\SiteCms::isDefault($P, ['about.vision_before', 'about.vision_strong', 'about.vision_after']) && app()->getLocale() !== 'en')
                     {!! __('landing.vision_text') !!}
+                    @else
+                    {{ cms($P, 'about.vision_before') }} <strong class="text-primary dark:text-accent">{{ cms($P, 'about.vision_strong') }}</strong> {{ cms($P, 'about.vision_after') }}
+                    @endif
                 </p>
                 <div class="mt-6 pt-6 border-t border-primary/10 dark:border-primary/30">
                     <p class="text-sm text-primary/70 dark:text-accent/80 italic flex items-center gap-2">
                         <span class="material-symbols-outlined text-accent text-lg">format_quote</span>
-                        {{ __('landing.vision_quote') }}
+                        {{ $t('about.vision_quote', 'landing.vision_quote') }}
                     </p>
                 </div>
             </div>
@@ -314,10 +341,10 @@
                     <div class="w-14 h-14 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/30">
                         <span class="material-symbols-outlined text-primary text-3xl">track_changes</span>
                     </div>
-                    <h3 class="text-2xl font-bold text-primary dark:text-white">{{ __('landing.mission') }}</h3>
+                    <h3 class="text-2xl font-bold text-primary dark:text-white">{{ $t('about.mission_heading', 'landing.mission') }}</h3>
                 </div>
                 <ul class="space-y-4">
-                    @foreach([__('landing.mission_1'), __('landing.mission_2'), __('landing.mission_3'), __('landing.mission_4')] as $mission)
+                    @foreach((app()->getLocale() !== 'en' && \App\Support\SiteCms::isDefault($P, ['about.missions'])) ? [__('landing.mission_1'), __('landing.mission_2'), __('landing.mission_3'), __('landing.mission_4')] : cms($P, 'about.missions') as $mission)
                         <li class="flex gap-3">
                             <span class="material-symbols-outlined text-accent text-xl flex-shrink-0 mt-0.5">check_circle</span>
                             <span class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ $mission }}</span>
@@ -328,35 +355,25 @@
         </div>
     </div>
 </section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 6: Member Countries Grid --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'members'))
 <section id="members" class="py-20 bg-background dark:bg-dark">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-14">
             <div class="inline-flex items-center gap-2 bg-primary/5 dark:bg-primary/20 text-primary dark:text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                 <span class="material-symbols-outlined text-base">public</span>
-                {{ __('landing.members_badge') }}
+                {{ $t('members.badge', 'landing.members_badge') }}
             </div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ __('landing.members_title') }}</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ __('landing.members_subtitle') }}</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('members.title', 'landing.members_title') }}</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ $t('members.subtitle', 'landing.members_subtitle') }}</p>
         </div>
 
         @php
-            $countries = [
-                ['code' => 'bn', 'name' => 'Brunei Darussalam', 'logo' => 'brunei-rbpf.png',       'short' => 'RBPF', 'since' => '1984'],
-                ['code' => 'kh', 'name' => 'Cambodia',          'logo' => 'cambodia-cnp.png',       'short' => 'CNP',  'since' => '2000'],
-                ['code' => 'id', 'name' => 'Indonesia',         'logo' => 'indonesia-polri.png',    'short' => 'INP',  'since' => '1981'],
-                ['code' => 'la', 'name' => 'Lao PDR',           'logo' => 'laos-lpp.png',           'short' => 'LPF',  'since' => '1998'],
-                ['code' => 'my', 'name' => 'Malaysia',          'logo' => 'malaysia-pdrm.png',      'short' => 'RMP',  'since' => '1981'],
-                ['code' => 'mm', 'name' => 'Myanmar',           'logo' => 'myanmar-mpf.png',        'short' => 'MPF',  'since' => '1998'],
-                ['code' => 'ph', 'name' => 'Philippines',       'logo' => 'philippines-pnp.png',    'short' => 'PNP',  'since' => '1981'],
-                ['code' => 'sg', 'name' => 'Singapore',         'logo' => 'singapore-spf.png',      'short' => 'SPF',  'since' => '1981'],
-                ['code' => 'th', 'name' => 'Thailand',          'logo' => 'thailand-rtp.png',       'short' => 'RTP',  'since' => '1981'],
-                ['code' => 'vn', 'name' => 'Viet Nam',          'logo' => 'vietnam-mps.png',        'short' => 'OIPA, VPF', 'since' => '1996'],
-                ['code' => 'tl', 'name' => 'Timor-Leste',       'logo' => 'timorleste-pntl.png',    'short' => 'PNTL', 'since' => '2026'],
-            ];
+            $countries = cms($P, 'members.items');
         @endphp
 
         {{-- Infinite slider: overflow hidden + CSS marquee, duplicated for seamless loop --}}
@@ -366,7 +383,7 @@
                 @foreach($countries as $country)
                     <div class="bg-white dark:bg-dark-card rounded-xl p-5 text-center shadow-sm dark:shadow-black/20 group cursor-default border border-transparent dark:border-gray-700/50 flex-shrink-0 w-44 hover:-translate-y-1 transition-transform duration-300">
                         <div class="w-16 h-16 mx-auto mb-3">
-                            <img src="/media/police-logo/{{ $country['logo'] }}"
+                            <img src="{{ \App\Support\SiteCms::logo('/media/police-logo/', $country['logo']) }}"
                                  alt="{{ $country['name'] }} police logo"
                                  class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
@@ -378,7 +395,7 @@
                             <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                         </div>
                         @if(!empty($country['since']))
-                        <span class="mt-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent">Since {{ $country['since'] }}</span>
+                        <span class="mt-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent">{{ cms($P, 'members.since_word') }} {{ $country['since'] }}</span>
                         @endif
                     </div>
                 @endforeach
@@ -386,7 +403,7 @@
                 @foreach($countries as $country)
                     <div class="bg-white dark:bg-dark-card rounded-xl p-5 text-center shadow-sm dark:shadow-black/20 group cursor-default border border-transparent dark:border-gray-700/50 flex-shrink-0 w-44 hover:-translate-y-1 transition-transform duration-300" aria-hidden="true">
                         <div class="w-16 h-16 mx-auto mb-3">
-                            <img src="/media/police-logo/{{ $country['logo'] }}"
+                            <img src="{{ \App\Support\SiteCms::logo('/media/police-logo/', $country['logo']) }}"
                                  alt=""
                                  class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
@@ -398,7 +415,7 @@
                             <h4 class="text-xs font-semibold text-primary dark:text-white leading-tight">{{ $country['name'] }}</h4>
                         </div>
                         @if(!empty($country['since']))
-                        <span class="mt-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent">Since {{ $country['since'] }}</span>
+                        <span class="mt-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent">{{ cms($P, 'members.since_word') }} {{ $country['since'] }}</span>
                         @endif
                     </div>
                 @endforeach
@@ -419,19 +436,21 @@
         </style>
     </div>
 </section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 7: Member Directory Table --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'directory'))
 <section id="directory" class="py-20 bg-white dark:bg-dark-surface">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-14">
             <div class="inline-flex items-center gap-2 bg-primary/5 dark:bg-primary/20 text-primary dark:text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                 <span class="material-symbols-outlined text-base">contacts</span>
-                {{ __('landing.dir_badge') }}
+                {{ $t('directory.badge', 'landing.dir_badge') }}
             </div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ __('landing.dir_title') }}</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ __('landing.dir_subtitle') }}</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('directory.title', 'landing.dir_title') }}</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ $t('directory.subtitle', 'landing.dir_subtitle') }}</p>
         </div>
 
         <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm dark:shadow-black/20 overflow-hidden border border-gray-100 dark:border-gray-700/50">
@@ -439,28 +458,16 @@
                 <table class="w-full text-sm">
                     <thead>
                         <tr class="bg-primary text-white">
-                            <th class="px-5 py-4 text-left font-semibold">{{ __('landing.dir_country') }}</th>
-                            <th class="px-5 py-4 text-left font-semibold">{{ __('landing.dir_organisation') }}</th>
-                            <th class="px-5 py-4 text-left font-semibold hidden md:table-cell">{{ __('landing.dir_telephone') }}</th>
-                            <th class="px-5 py-4 text-left font-semibold hidden lg:table-cell">{{ __('landing.dir_fax') }}</th>
-                            <th class="px-5 py-4 text-left font-semibold hidden sm:table-cell">{{ __('landing.dir_email') }}</th>
+                            <th class="px-5 py-4 text-left font-semibold">{{ $t('directory.col_country', 'landing.dir_country') }}</th>
+                            <th class="px-5 py-4 text-left font-semibold">{{ $t('directory.col_org', 'landing.dir_organisation') }}</th>
+                            <th class="px-5 py-4 text-left font-semibold hidden md:table-cell">{{ $t('directory.col_tel', 'landing.dir_telephone') }}</th>
+                            <th class="px-5 py-4 text-left font-semibold hidden lg:table-cell">{{ $t('directory.col_fax', 'landing.dir_fax') }}</th>
+                            <th class="px-5 py-4 text-left font-semibold hidden sm:table-cell">{{ $t('directory.col_email', 'landing.dir_email') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
                         @php
-                            $directory = [
-                                ['code' => 'bn', 'logo' => 'brunei-rbpf.png',    'country' => 'Brunei Darussalam', 'org' => 'Royal Brunei Police Force (RBPF)', 'tel' => '+673-2459 500', 'fax' => '+673 245 9527', 'email' => 'rbpf@aseanapol.org'],
-                                ['code' => 'kh', 'logo' => 'cambodia-cnp.png',   'country' => 'Cambodia',          'org' => 'Cambodian National Police (CNP)', 'tel' => '+855 23216585', 'fax' => '+855 2321 6585', 'email' => 'cnp@aseanapol.org'],
-                                ['code' => 'id', 'logo' => 'indonesia-polri.png','country' => 'Indonesia',         'org' => 'Indonesia National Police (INP)', 'tel' => '+021 739 3650', 'fax' => '+021 720 1402', 'email' => 'inp@aseanapol.org'],
-                                ['code' => 'la', 'logo' => 'laos-lpp.png',       'country' => 'Lao PDR',           'org' => 'Lao Police Force (LPF)', 'tel' => '+85 6213 16323', 'fax' => '+856 2131 6323', 'email' => 'lpf@aseanapol.org'],
-                                ['code' => 'my', 'logo' => 'malaysia-pdrm.png',  'country' => 'Malaysia',          'org' => 'Royal Malaysia Police (RMP)', 'tel' => '+603 2266 2222', 'fax' => '+603 2070 7500', 'email' => 'rmp@aseanapol.org'],
-                                ['code' => 'mm', 'logo' => 'myanmar-mpf.png',    'country' => 'Myanmar',           'org' => 'Myanmar Police Force (MPF)', 'tel' => '+95 6741 2066', 'fax' => '+95 6741 2188', 'email' => 'mpf@aseanapol.org'],
-                                ['code' => 'ph', 'logo' => 'philippines-pnp.png','country' => 'Philippines',       'org' => 'Philippines National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '+632 7218549', 'email' => 'pnp@aseanapol.org'],
-                                ['code' => 'sg', 'logo' => 'singapore-spf.png',  'country' => 'Singapore',         'org' => 'Singapore Police Force (SPF)', 'tel' => '1800 358 000', 'fax' => '+65 6256 1296', 'email' => 'spf@aseanapol.org'],
-                                ['code' => 'th', 'logo' => 'thailand-rtp.png',   'country' => 'Thailand',          'org' => 'Royal Thai Police (RTP)', 'tel' => '+6622053001', 'fax' => '+6622533856', 'email' => 'rtp@aseanapol.org'],
-                                ['code' => 'vn', 'logo' => 'vietnam-mps.png',    'country' => 'Viet Nam',          'org' => 'Office of Investigation Police Agency, Vietnam Police Force (OIPA, VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'vpf@aseanapol.org'],
-                                ['code' => 'tl', 'logo' => 'timorleste-pntl.png','country' => 'Timor-Leste',       'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => 'pntl@aseanapol.org'],
-                            ];
+                            $directory = cms($P, 'directory.items');
                         @endphp
                         @foreach($directory as $entry)
                             <tr class="hover:bg-primary/[0.02] dark:hover:bg-white/[0.03] transition-colors">
@@ -472,7 +479,7 @@
                                 </td>
                                 <td class="px-5 py-4 text-gray-600 dark:text-gray-300">
                                     <div class="flex items-center gap-2">
-                                        <img src="/media/police-logo/{{ $entry['logo'] }}" alt="" class="w-6 h-6 object-contain flex-shrink-0">
+                                        <img src="{{ \App\Support\SiteCms::logo('/media/police-logo/', $entry['logo']) }}" alt="" class="w-6 h-6 object-contain flex-shrink-0">
                                         {{ $entry['org'] }}
                                     </div>
                                 </td>
@@ -496,31 +503,28 @@
 
     </div>
 </section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 8: Quick Resources --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'resources'))
 <section id="resources" class="py-20 bg-background dark:bg-dark">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-14">
             <div class="inline-flex items-center gap-2 bg-primary/5 dark:bg-primary/20 text-primary dark:text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                 <span class="material-symbols-outlined text-base">folder_open</span>
-                {{ __('landing.quick_resources') }}
+                {{ $t('resources.badge', 'landing.quick_resources') }}
             </div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ __('landing.quick_resources') }}</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('resources.title', 'landing.quick_resources') }}</h2>
         </div>
 
         @php
-            $resources = [
-                ['title' => __('landing.res_eads'), 'icon' => 'database', 'desc' => 'ASEAN Electronic Alert & Data System'],
-                ['title' => __('landing.res_annual'), 'icon' => 'description', 'desc' => 'Yearly operational and statistical reports'],
-                ['title' => __('landing.res_constitution'), 'icon' => 'gavel', 'desc' => 'Founding charter and governing rules'],
-                ['title' => __('landing.res_media'), 'icon' => 'photo_library', 'desc' => 'Photos, videos, and press materials'],
-            ];
+            $resources = \App\Support\SiteCms::rows($P, 'resources.items', ['title' => ['landing.res_eads', 'landing.res_annual', 'landing.res_constitution', 'landing.res_media']]);
         @endphp
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($resources as $resource)
-                <a href="#" class="group bg-white dark:bg-dark-card rounded-2xl p-6 border border-gray-100 dark:border-gray-700/50 shadow-sm dark:shadow-black/20 flex flex-col items-center text-center card-hover">
+                <a href="{{ $L($resource['link'] ?? '') }}" class="group bg-white dark:bg-dark-card rounded-2xl p-6 border border-gray-100 dark:border-gray-700/50 shadow-sm dark:shadow-black/20 flex flex-col items-center text-center card-hover">
                     <div class="w-14 h-14 rounded-xl bg-primary/5 dark:bg-primary/20 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-300">
                         <span class="material-symbols-outlined text-primary dark:text-accent text-2xl group-hover:text-white transition-colors duration-300">{{ $resource['icon'] }}</span>
                     </div>
@@ -531,56 +535,29 @@
         </div>
     </div>
 </section>
+@endif
 
 {{-- ============================================= --}}
 {{-- SECTION 9: Partners --}}
 {{-- ============================================= --}}
+@if(cms_on($P, 'partners'))
 <section id="partners" class="py-20 bg-white dark:bg-dark-surface">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-14">
             <div class="inline-flex items-center gap-2 bg-primary/5 dark:bg-primary/20 text-primary dark:text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                 <span class="material-symbols-outlined text-base">handshake</span>
-                {{ __('landing.footer_partners_label') }}
+                {{ $t('partners.badge', 'landing.footer_partners_label') }}
             </div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ __('landing.footer_partners_label') }}</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ __('landing.stats_partners') }}</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('partners.title', 'landing.footer_partners_label') }}</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ $t('partners.subtitle', 'landing.stats_partners') }}</p>
         </div>
 
         @php
-            $partners = [
-                [
-                    'name' => 'INTERPOL',
-                    'full' => 'International Criminal Police Organization',
-                    'icon' => 'policy',
-                    'url' => 'https://www.interpol.int',
-                    'desc' => 'Global police cooperation organisation enabling law enforcement worldwide to work together to make the world a safer place.',
-                ],
-                [
-                    'name' => 'Europol',
-                    'full' => 'European Union Agency for Law Enforcement Cooperation',
-                    'icon' => 'shield',
-                    'url' => 'https://www.europol.europa.eu',
-                    'desc' => 'The EU\'s law enforcement agency supporting EU member states in their fight against terrorism, cybercrime and other serious crime.',
-                ],
-                [
-                    'name' => 'UNODC',
-                    'full' => 'United Nations Office on Drugs and Crime',
-                    'icon' => 'balance',
-                    'url' => 'https://www.unodc.org',
-                    'desc' => 'The global leader in the fight against illicit drugs, international crime, corruption, and terrorism.',
-                ],
-                [
-                    'name' => 'ACCBP',
-                    'full' => 'ASEAN Chiefs of Customs & Border Police',
-                    'icon' => 'security',
-                    'url' => '#',
-                    'desc' => 'Regional cooperation body focused on customs and border enforcement across ASEAN member states.',
-                ],
-            ];
+            $partners = cms($P, 'partners.items');
         @endphp
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($partners as $partner)
-                <a href="{{ $partner['url'] }}" {{ $partner['url'] !== '#' ? 'target="_blank" rel="noopener"' : '' }} class="group bg-primary/[0.04] dark:bg-primary/20 border border-primary/10 dark:border-primary/30 rounded-2xl p-6 flex flex-col card-hover">
+                <a href="{{ $L($partner['url'] ?? '') }}" {{ $L($partner['url'] ?? '') !== '#' ? 'target="_blank" rel="noopener"' : '' }} class="group bg-primary/[0.04] dark:bg-primary/20 border border-primary/10 dark:border-primary/30 rounded-2xl p-6 flex flex-col card-hover">
                     <div class="w-14 h-14 rounded-xl bg-primary flex items-center justify-center mb-5 shadow-lg shadow-primary/30 group-hover:bg-accent transition-colors duration-300">
                         <span class="material-symbols-outlined text-white text-3xl">{{ $partner['icon'] }}</span>
                     </div>
@@ -592,5 +569,6 @@
         </div>
     </div>
 </section>
+@endif
 
 @endsection

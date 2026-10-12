@@ -15,15 +15,14 @@
         <div class="w-20 h-20 bg-accent/10 dark:bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <span class="material-symbols-outlined text-4xl text-accent">construction</span>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Coming Soon</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ cms('site.coming-soon', 'content.heading') }}</h2>
         <p class="text-gray-500 dark:text-gray-400 mb-8">
-            The <strong class="text-gray-700 dark:text-gray-200">{{ $title }}</strong> section is currently being prepared.
-            Please check back soon.
+            {{ cms('site.coming-soon', 'content.intro_before') }} <strong class="text-gray-700 dark:text-gray-200">{{ $title }}</strong> {{ cms('site.coming-soon', 'content.intro_after') }}
         </p>
         <a href="{{ route('landing', ['locale' => app()->getLocale()]) }}"
            class="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
             <span class="material-symbols-outlined text-lg">arrow_back</span>
-            Back to Home
+            {{ cms('site.coming-soon', 'content.button') }}
         </a>
     </div>
 </div>

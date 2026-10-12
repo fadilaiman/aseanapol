@@ -2,12 +2,12 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'Digital Library',
-    'subtitle' => 'Official documents, guidelines, and publications from ASEANAPOL.',
+    'title'    => cms('data.digital-library', 'hero.title'),
+    'subtitle' => cms('data.digital-library', 'hero.subtitle'),
     'breadcrumbs' => [
         ['label' => 'Home',             'url' => route('landing',                ['locale' => app()->getLocale()])],
-        ['label' => 'Data & Resources', 'url' => route('data-resources.index',   ['locale' => app()->getLocale()])],
-        ['label' => 'Digital Library',  'url' => ''],
+        ['label' => cms('data.hub', 'hero.title'), 'url' => route('data-resources.index',   ['locale' => app()->getLocale()])],
+        ['label' => cms('data.digital-library', 'hero.title'),  'url' => ''],
     ],
 ])
 @endsection
@@ -29,9 +29,9 @@
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 dark:bg-dark-surface border-b border-gray-100 dark:border-gray-700">
                         <tr>
-                            <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">Document</th>
-                            <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 hidden sm:table-cell w-24">Format</th>
-                            <th class="px-6 py-3 text-right font-semibold text-gray-700 dark:text-gray-300 w-40">Action</th>
+                            <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">{{ cms('data.digital-library', 'table.col_document') }}</th>
+                            <th class="px-6 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 hidden sm:table-cell w-24">{{ cms('data.digital-library', 'table.col_format') }}</th>
+                            <th class="px-6 py-3 text-right font-semibold text-gray-700 dark:text-gray-300 w-40">{{ cms('data.digital-library', 'table.col_action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
@@ -49,7 +49,7 @@
                             <td class="px-6 py-4 hidden sm:table-cell">
                                 <span class="text-xs font-semibold px-2 py-0.5 rounded-full
                                     {{ $isPdf ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' }}">
-                                    {{ $isPdf ? 'PDF' : 'Web' }}
+                                    {{ $isPdf ? cms('data.digital-library', 'table.badge_pdf') : cms('data.digital-library', 'table.badge_web') }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
@@ -57,19 +57,19 @@
                                     @if($isPdf)
                                         <a href="{{ $doc->url }}" target="_blank" rel="noopener"
                                            class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
-                                            <span class="material-symbols-outlined text-base">download</span> Download PDF
+                                            <span class="material-symbols-outlined text-base">download</span> {{ cms('data.digital-library', 'table.btn_download') }}
                                         </a>
                                     @else
                                         <div class="flex items-center justify-end gap-3">
                                             @if($doc->pdf_url)
                                                 <a href="{{ $doc->pdf_url }}" target="_blank" rel="noopener"
                                                    class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
-                                                    <span class="material-symbols-outlined text-base">download</span> Download PDF
+                                                    <span class="material-symbols-outlined text-base">download</span> {{ cms('data.digital-library', 'table.btn_download') }}
                                                 </a>
                                             @endif
                                             <a href="{{ $doc->url }}"
                                                class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline whitespace-nowrap">
-                                                View
+                                                {{ cms('data.digital-library', 'table.btn_view') }}
                                                 <span class="material-symbols-outlined text-base">arrow_forward</span>
                                             </a>
                                         </div>
@@ -87,7 +87,7 @@
         @empty
         <div class="text-center py-16 text-gray-400">
             <span class="material-symbols-outlined text-4xl mb-3 block">library_books</span>
-            <p>Documents will be published here shortly.</p>
+            <p>{{ cms('data.digital-library', 'empty.text') }}</p>
         </div>
         @endforelse
 

@@ -26,3 +26,7 @@ Thumbs.db
 /docs/
 /.claude/
 CLAUDE.md
+/tests/e2e/baseline/
+/tests/e2e/_*
+/tests/e2e/out/
+/tests/e2e/shots/

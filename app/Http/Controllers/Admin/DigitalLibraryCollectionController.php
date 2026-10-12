@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\DigitalLibraryCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DigitalLibraryCollectionController extends Controller
 {
@@ -62,6 +63,11 @@ class DigitalLibraryCollectionController extends Controller
 
     public function destroy(DigitalLibraryCollection $collection)
     {
+        // Items are removed by the DB cascade; their uploaded PDFs would otherwise be orphaned on disk.
+        foreach ($collection->items()->whereNotNull('file_path')->pluck('file_path') as $path) {
+            Storage::disk('public')->delete($path);
+        }
+
         $collection->delete();
 
         return redirect()->route('admin.digital-library.collections.index')

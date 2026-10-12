@@ -2,12 +2,12 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'Leadership',
-    'subtitle' => 'The ASEANAPOL Secretariat is led by an Executive Director nominated by a member country on a rotational two-year basis.',
+    'title'    => cms('about-people.leadership', 'hero.title'),
+    'subtitle' => cms('about-people.leadership', 'hero.subtitle'),
     'breadcrumbs' => [
         ['label' => 'Home',             'url' => route('landing',              ['locale' => app()->getLocale()])],
         ['label' => 'About ASEANAPOL',  'url' => route('about.index',          ['locale' => app()->getLocale()])],
-        ['label' => 'Leadership',       'url' => ''],
+        ['label' => cms('about-people.leadership', 'hero.title'), 'url' => ''],
     ],
 ])
 @endsection
@@ -17,108 +17,94 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 lightbox-zone">
 
         {{-- ── Current Executive Director ────────────────────────────── --}}
+        @if(cms_on('about-people.leadership', 'current'))
         <div>
-            <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-8">Current Executive Director</h2>
+            <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-8">{{ cms('about-people.leadership', 'current.heading') }}</h2>
             <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div class="flex flex-col sm:flex-row gap-0">
                     {{-- Photo --}}
+                    @if(cms_img('about-people.leadership', 'current.photo'))
                     <div class="sm:w-56 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                        <img src="{{ asset('media/ed/9.jpg') }}"
-                             alt="Executive Director"
+                        <img src="{{ cms_img('about-people.leadership', 'current.photo') }}"
+                             alt="{{ cms('about-people.leadership', 'current.alt') }}"
                              class="w-full sm:h-full object-cover object-top max-h-64 sm:max-h-none">
                     </div>
+                    @endif
                     {{-- Info --}}
                     <div class="p-8 flex flex-col justify-center">
-                        <span class="text-xs font-bold uppercase tracking-widest text-accent mb-2">9th Executive Director · 2026–2027</span>
-                        <h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-1">Police Senior Colonel Kongkrissada Kittithiraphong</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Royal Thai Police (RTP) &nbsp;·&nbsp; 🇹🇭 Thailand</p>
+                        <span class="text-xs font-bold uppercase tracking-widest text-accent mb-2">{{ cms('about-people.leadership', 'current.badge') }}</span>
+                        <h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-1">{{ cms('about-people.leadership', 'current.name') }}</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ cms('about-people.leadership', 'current.force') }} &nbsp;·&nbsp; {{ cms('about-people.leadership', 'current.country') }}</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                            Police Senior Colonel Kongkrissada Kittithiraphong serves as the 9th Executive Director of the ASEANAPOL Secretariat,
-                            nominated by the Royal Thai Police for the term 2026–2027. He oversees the operations of the
-                            Secretariat and leads ASEANAPOL's efforts in strengthening regional cooperation to combat transnational crime.
+                            {{ cms('about-people.leadership', 'current.bio') }}
                         </p>
                     </div>
                 </div>
             </div>
         </div>
+        @endif
 
         {{-- ── Secretariat Directors ──────────────────────────────────── --}}
+        @if(cms_on('about-people.leadership', 'directors'))
         <div>
-            <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-8">Secretariat Directors</h2>
+            <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-8">{{ cms('about-people.leadership', 'directors.heading') }}</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <a href="{{ route('about.leadership.dps', ['locale' => app()->getLocale()]) }}"
+                @foreach(cms('about-people.leadership', 'directors.cards') as $card)
+                <a href="{{ route(($card['target'] ?? 'dps') === 'dpp' ? 'about.leadership.dpp' : 'about.leadership.dps', ['locale' => app()->getLocale()]) }}"
                    class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-primary/40 hover:shadow-md transition-all group">
                     <div class="w-10 h-10 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center mb-4">
-                        <span class="material-symbols-outlined text-primary dark:text-accent text-xl">shield_person</span>
+                        <span class="material-symbols-outlined text-primary dark:text-accent text-xl">{{ $card['icon'] }}</span>
                     </div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Director for Police Services</p>
-                    <h3 class="font-bold text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-accent transition-colors">Police Senior Superintendent Huntal Tambunan</h3>
-                    <p class="text-xs text-gray-400 mt-1">Indonesian National Police &nbsp;·&nbsp; 🇮🇩 Indonesia</p>
-                    <p class="text-xs text-primary dark:text-accent mt-3 font-medium">View all directors →</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">{{ $card['role'] }}</p>
+                    <h3 class="font-bold text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-accent transition-colors">{{ $card['name'] }}</h3>
+                    <p class="text-xs text-gray-400 mt-1">{{ $card['force'] }} &nbsp;·&nbsp; {{ $card['country'] }}</p>
+                    <p class="text-xs text-primary dark:text-accent mt-3 font-medium">{{ $card['link'] }}</p>
                 </a>
-                <a href="{{ route('about.leadership.dpp', ['locale' => app()->getLocale()]) }}"
-                   class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-primary/40 hover:shadow-md transition-all group">
-                    <div class="w-10 h-10 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center mb-4">
-                        <span class="material-symbols-outlined text-primary dark:text-accent text-xl">analytics</span>
-                    </div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Director for Plans and Programmes</p>
-                    <h3 class="font-bold text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-accent transition-colors">Police Colonel Jean Mary A. Mangahis</h3>
-                    <p class="text-xs text-gray-400 mt-1">Philippine National Police &nbsp;·&nbsp; 🇵🇭 Philippines</p>
-                    <p class="text-xs text-primary dark:text-accent mt-3 font-medium">View all directors →</p>
-                </a>
+                @endforeach
             </div>
         </div>
+        @endif
 
-        {{-- ── Past Executive Directors ────────────────────────────────── --}}
+        {{-- ── Past holders ────────────────────────────────── --}}
+        @if(cms_on('about-people.leadership', 'past'))
         <div>
-            <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-2">Past Executive Directors</h2>
+            <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-2">{{ cms('about-people.leadership', 'past.heading') }}</h2>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
-                The Executive Director post rotates among ASEANAPOL member countries on a two-year term,
-                beginning with the establishment of the Secretariat on 1 January 2010.
+                {{ cms('about-people.leadership', 'past.intro') }}
             </p>
             <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <table class="w-full text-sm">
                     <thead>
                         <tr class="bg-gray-50 dark:bg-gray-800 text-left">
-                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 w-12">#</th>
+                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 w-12">{{ cms('about-people.leadership', 'past.col_no') }}</th>
                             <th class="px-3 py-3 font-semibold text-gray-600 dark:text-gray-300 w-16"></th>
-                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Name &amp; Rank</th>
-                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">Country</th>
-                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">Term</th>
+                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">{{ cms('about-people.leadership', 'past.col_name') }}</th>
+                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ cms('about-people.leadership', 'past.col_country') }}</th>
+                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ cms('about-people.leadership', 'past.col_term') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                        @php
-                        $directors = [
-                            ['no'=>'9th','name'=>'Police Senior Colonel Kongkrissada Kittithiraphong',             'force'=>'Royal Thai Police (RTP)',           'flag'=>'🇹🇭','term'=>'2026–2027','photo'=>asset('media/ed/9.jpg')],
-                            ['no'=>'8th','name'=>'Pol. Col. David Martinez Vinluan',                              'force'=>'Philippines National Police (PNP)', 'flag'=>'🇵🇭','term'=>'2024–2025','photo'=>asset('media/ed/8.jpg')],
-                            ['no'=>'7th','name'=>'Police Brigadier General Zaw Lin Tun',                          'force'=>'Myanmar Police Force (MPF)',         'flag'=>'🇲🇲','term'=>'2022–2023','photo'=>asset('media/ed/7.jpg')],
-                            ['no'=>'6th','name'=>'DAC Jim Wee',                                                   'force'=>'Singapore Police Force (SPF)',       'flag'=>'🇸🇬','term'=>'2020–2021','photo'=>asset('media/ed/6.jpg')],
-                            ['no'=>'5th','name'=>'Pol. Col. Kenechanh Phommachack',                               'force'=>'Lao Police Force (LPF)',             'flag'=>'🇱🇦','term'=>'2018–2019','photo'=>asset('media/ed/5.jpg')],
-                            ['no'=>'4th','name'=>'Police Inspector General Yohanes Agus Mulyono',                  'force'=>'Indonesia National Police (INP)',    'flag'=>'🇮🇩','term'=>'2016–2017','photo'=>asset('media/ed/4.jpg')],
-                            ['no'=>'3rd','name'=>'SAC Pengiran Dato\' Paduka Hj Abdul Wahab bin Pengiran Hj Omar', 'force'=>'Royal Brunei Police Force (RBPF)',   'flag'=>'🇧🇳','term'=>'2014–2015','photo'=>asset('media/ed/3.png')],
-                            ['no'=>'2nd','name'=>'Lt. Gen. Sar Moline',                                           'force'=>'Cambodian National Police (CNP)',    'flag'=>'🇰🇭','term'=>'2012–2013','photo'=>asset('media/ed/2.jpg')],
-                            ['no'=>'1st','name'=>'ACP Mohd Nadzri b. Zainal Abidin',                             'force'=>'Royal Malaysia Police (RMP)',        'flag'=>'🇲🇾','term'=>'2010–2011','photo'=>asset('media/ed/1.jpg')],
-                        ];
-                        @endphp
-                        @foreach($directors as $d)
+                        @foreach(cms('about-people.leadership', 'past.rows') as $d)
                         <tr class="hover:bg-gray-50 dark:hover:bg-dark-surface transition-colors">
                             <td class="px-5 py-3 font-bold text-primary dark:text-accent">{{ $d['no'] }}</td>
                             <td class="px-3 py-3">
-                                <img src="{{ $d['photo'] }}" alt="{{ $d['name'] }}" class="w-10 h-12 object-cover object-top rounded-lg shadow-sm">
+                                @if(cms_url($d['photo'] ?? ''))
+                                <img src="{{ cms_url($d['photo'] ?? '') }}" alt="{{ $d['name'] }}" class="w-10 h-12 object-cover object-top rounded-lg shadow-sm">
+                                @endif
                             </td>
                             <td class="px-5 py-3">
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $d['name'] }}</span>
                                 <div class="text-xs text-gray-400 mt-0.5">{{ $d['force'] }}</div>
                             </td>
                             <td class="px-5 py-3 text-gray-600 dark:text-gray-300">{{ $d['flag'] }}</td>
-                            <td class="px-5 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $d['term'] }}</td>
+                            <td class="px-5 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $d['term'] ?? '' }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+        @endif
 
     </div>
 </section>

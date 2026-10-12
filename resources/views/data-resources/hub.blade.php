@@ -2,43 +2,18 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'Data & Resources',
-    'subtitle' => 'Publications, statistics, and official documents from ASEANAPOL.',
+    'title'    => cms('data.hub', 'hero.title'),
+    'subtitle' => cms('data.hub', 'hero.subtitle'),
     'breadcrumbs' => [
         ['label' => 'Home',             'url' => route('landing',             ['locale' => app()->getLocale()])],
-        ['label' => 'Data & Resources', 'url' => ''],
+        ['label' => cms('data.hub', 'hero.title'), 'url' => ''],
     ],
 ])
 @endsection
 
 @section('content')
 @php
-$sections = [
-    [
-        'icon'   => 'bar_chart',
-        'title'  => 'Crime Statistics',
-        'desc'   => 'Public crime data dashboard covering transnational crime trends across ASEAN member states.',
-        'route'  => 'data-resources.crime-statistics',
-        'label'  => 'View Statistics',
-        'status' => 'active',
-    ],
-    [
-        'icon'   => 'menu_book',
-        'title'  => 'Publications',
-        'desc'   => 'The official ASEANAPOL Bulletin and Magazine series — editions from the 8th (2015) through the 13th (2023).',
-        'route'  => 'data-resources.publications',
-        'label'  => 'Browse Publications',
-        'status' => 'active',
-    ],
-    [
-        'icon'   => 'library_books',
-        'title'  => 'Digital Library',
-        'desc'   => 'Downloadable guidelines, policy documents, and reference materials from ASEANAPOL.',
-        'route'  => 'data-resources.digital-library',
-        'label'  => 'Open Library',
-        'status' => 'active',
-    ],
-];
+$sections = cms('data.hub', 'cards.items');
 @endphp
 
 <section class="py-16 bg-background dark:bg-dark-surface">
@@ -53,7 +28,7 @@ $sections = [
                         <span class="material-symbols-outlined {{ $s['status'] === 'active' ? 'text-primary dark:text-accent' : 'text-gray-400 dark:text-gray-500' }} text-2xl">{{ $s['icon'] }}</span>
                     </div>
                     @if($s['status'] === 'soon')
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 uppercase tracking-wider">Coming Soon</span>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 uppercase tracking-wider">{{ cms('data.hub', 'cards.soon_label') }}</span>
                     @else
                     <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 group-hover:text-primary dark:group-hover:text-accent transition-colors">arrow_forward</span>
                     @endif

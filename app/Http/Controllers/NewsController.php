@@ -9,7 +9,7 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $q = trim(request()->query('q', ''));
+        $q = is_string(request()->query('q')) ? trim(request()->query('q')) : '';
 
         $query = NewsItem::orderBy('published_at', 'desc');
 
