@@ -138,10 +138,10 @@ class PageController extends Controller
             'website'     => 'https://www.polri.go.id',
             'route'       => 'about.member.indonesia',
             'description' => 'The Indonesian National Police (INP) is the national police force of the Republic of Indonesia, responsible for law enforcement, maintaining public order, and combating crime throughout the archipelago.',
-            'chief_name'        => 'Drs. Listyo Sigit Prabowo, M.Si',
+            'chief_name'        => 'Suyudi Ario Seto',
             'chief_rank'        => 'Police General',
             'chief_designation' => 'Chief of Police',
-            'chief_photo'       => 'media/chiefs/indonesia.jpg',
+            'chief_photo'       => 'media/chiefs/indonesia-2026.jpg',
             'logo'              => 'media/police-logo/indonesia-polri.png',
             'contact_person'    => [
                 'name'        => 'Pol. Snr Supt Dhany Aryanda',
