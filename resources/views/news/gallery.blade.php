@@ -102,7 +102,13 @@ function loadMoreGallery(albumKey, btn) {
             data.images.forEach(src => {
                 const cell = document.createElement('div');
                 cell.className = 'relative aspect-square overflow-hidden rounded-lg group bg-gray-100 dark:bg-dark-card lightbox-zone';
-                cell.innerHTML = '<img src="' + src + '" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">';
+                // DOM API (not innerHTML): a src containing a quote must never become attribute/markup injection
+                const img = document.createElement('img');
+                img.setAttribute('src', src);
+                img.setAttribute('alt', '');
+                img.setAttribute('loading', 'lazy');
+                img.className = 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300';
+                cell.appendChild(img);
                 grid.appendChild(cell);
             });
             section.dataset.offset = offset + data.images.length;

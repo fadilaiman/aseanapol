@@ -32,11 +32,14 @@ const fname = u => u.replace(/[^a-z0-9]+/gi, '_') + '.html';
 let bad = 0;
 for (const u of urls) {
   const r = await fetch(BASE + u, { redirect: 'manual' });
-  const body = normalize(`STATUS ${r.status} ${r.headers.get('location') || ''}\n` + (await r.text()));
+  const bodyRaw = normalize(`STATUS ${r.status} ${r.headers.get('location') || ''}\n` + (await r.text()));
   const f = path.join(dir, fname(u));
-  if (mode === 'baseline') { fs.writeFileSync(f, body); continue; }
+  if (mode === 'baseline') { fs.writeFileSync(f, bodyRaw); continue; }
   if (!fs.existsSync(f)) { console.log('NOBASE ' + u); continue; }
-  const base = fs.readFileSync(f, 'utf8');
+  // Vite asset hashes change on every front-end rebuild; they are not content.
+  const sb = t => t.replace(/ integrity="[^"]*"/g, '').replace(/ crossorigin="[^"]*"/g, '').replace(/\/build\/assets\/([a-z0-9-]+?)-[A-Za-z0-9_-]{6,}\.(css|js)/gi, '/build/assets/$1.$2');
+  const base = sb(fs.readFileSync(f, 'utf8'));
+  const body = sb(bodyRaw);
   if (base === body) { console.log('SAME   ' + u); continue; }
   bad++;
   const a = base.split('\n'), b = body.split('\n');

@@ -15,25 +15,53 @@ class MemberPages
         'philippines', 'singapore', 'thailand', 'vietnam', 'timor-leste',
     ];
 
-    /** Cards for the Member Countries list page (hidden cards are skipped). */
+    /**
+     * Replaces the count tokens editors can use in wording: {count} => "eleven", {Count} => "Eleven",
+     * {count_num} => "11" (from Shared facts > Organisation > Counts).
+     */
+    public static function fill(string $text): string
+    {
+        if (!str_contains($text, '{count')  && !str_contains($text, '{Count')) {
+            return $text;
+        }
+        $word = (string) Shared::org('counts.member_count_word', 'eleven');
+        $num = (string) Shared::org('counts.member_count_num', 11);
+
+        return str_replace(['{count_num}', '{count}', '{Count}'], [$num, $word, ucfirst($word)], $text);
+    }
+
+    /** Shared member row for a slug; unlike Shared::member() it also returns a row hidden in Shared (the country page stays reachable). */
+    private static function row(string $slug): array
+    {
+        if ($m = Shared::member($slug)) {
+            return $m;
+        }
+        foreach ((array) Cms::raw('shared.members', 'list.rows', []) as $r) {
+            if (is_array($r) && ($r['key'] ?? null) === $slug) {
+                $r['tels'] = array_values(array_filter([$r['tel'] ?? '', $r['tel2'] ?? ''], fn ($v) => trim((string) $v) !== ''));
+
+                return $r;
+            }
+        }
+
+        return [];
+    }
+
+    /** Cards for the Member Countries list page (members hidden in Shared facts are skipped). */
     public static function cards(): array
     {
         $out = [];
-        foreach (self::SLUGS as $slug) {
-            if (!Cms::visible('members.index', $slug)) {
+        foreach (Shared::members() as $m) {
+            if (!in_array($m['key'] ?? '', self::SLUGS, true)) {
                 continue;
             }
-            $key = 'members.' . $slug;
-            $force = (string) Cms::get($key, 'identity.force');
-            $abbr = (string) Cms::get($key, 'identity.abbreviation');
-            $name = (string) Cms::get('members.index', $slug . '.name');
             $out[] = [
-                'name'    => $name !== '' ? $name : ($abbr !== '' ? $force . ' (' . $abbr . ')' : $force),
-                'country' => (string) Cms::get($key, 'identity.country'),
-                'iso'     => (string) Cms::get($key, 'identity.iso'),
-                'since'   => (string) Cms::get('members.index', $slug . '.since'),
-                'badge'   => (string) Cms::get('members.index', $slug . '.badge'),
-                'route'   => 'about.member.' . $slug,
+                'name'    => (string) $m['name'],
+                'country' => (string) ($m['country'] ?? ''),
+                'iso'     => (string) ($m['iso'] ?? ''),
+                'since'   => (string) ($m['joined_year'] ?? ''),
+                'badge'   => (string) ($m['badge'] ?? ''),
+                'route'   => 'about.member.' . $m['key'],
             ];
         }
 
@@ -47,23 +75,24 @@ class MemberPages
         $p = 'members.' . $slug;
         $rows = fn (string $section, string $field) => Cms::visible($p, $section) ? (array) Cms::get($p, "$section.$field", []) : [];
 
+        $m = self::row($slug);
         $labels = [];
         foreach (['members.labels', 'members.labels-pending'] as $labelPage) {
             foreach (Cms::page($labelPage)['sections'] as $sKey => $section) {
                 foreach (array_keys($section['fields']) as $fKey) {
-                    $labels[$fKey] = (string) Cms::get($labelPage, "$sKey.$fKey");
+                    $labels[$fKey] = self::fill((string) Cms::get($labelPage, "$sKey.$fKey"));
                 }
             }
         }
 
         return [
-            'country'           => (string) Cms::get($p, 'identity.country'),
-            'force'             => (string) Cms::get($p, 'identity.force'),
-            'abbreviation'      => (string) Cms::get($p, 'identity.abbreviation'),
-            'iso'               => (string) Cms::get($p, 'identity.iso'),
+            'country'           => (string) ($m['country'] ?? ''),
+            'force'             => (string) ($m['force'] ?? ''),
+            'abbreviation'      => (string) ($m['abbreviation'] ?? ''),
+            'iso'               => (string) ($m['iso'] ?? ''),
             'badge_label'       => (string) Cms::get($p, 'identity.badge_label'),
             'observer_note'     => (string) Cms::get($p, 'identity.note'),
-            'logo'              => Cms::url((string) Cms::get($p, 'identity.logo')),
+            'logo'              => Cms::url((string) ($m['logo'] ?? '')),
             'description'       => (string) Cms::get($p, 'overview.description'),
             'history'           => $rows('history', 'items'),
             'chief_name'        => (string) Cms::get($p, 'chief.name'),
@@ -77,10 +106,10 @@ class MemberPages
                 fn ($c) => $c + ['photo_url' => Cms::url((string) ($c['photo'] ?? ''))],
                 $rows('contacts', 'items')
             ),
-            'tel'               => (array) Cms::get($p, 'contact.tel', []),
-            'fax'               => (string) Cms::get($p, 'contact.fax'),
-            'email'             => (string) Cms::get($p, 'contact.email'),
-            'website'           => (string) Cms::get($p, 'contact.website'),
+            'tel'               => (array) ($m['tels'] ?? []),
+            'fax'               => (string) ($m['fax'] ?? ''),
+            'email'             => (string) ($m['ncb_email'] ?? ''),
+            'website'           => (string) ($m['website'] ?? ''),
             'L'                 => $labels,
             'list_title'        => (string) Cms::get('members.index', 'hero.title'),
         ];

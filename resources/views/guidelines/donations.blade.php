@@ -38,8 +38,8 @@
                 @include('guidelines._document', ['key' => 'guidelines.donations'])
 
                 <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-4 items-center justify-between">
-                    @if(cms('guidelines.donations', 'foot.email'))
-                    <p class="text-sm text-gray-400">{{ cms('guidelines.donations', 'foot.label') }} <a href="mailto:{{ cms('guidelines.donations', 'foot.email') }}" class="text-primary dark:text-accent hover:underline">{{ cms('guidelines.donations', 'foot.email') }}</a></p>
+                    @if(shared('secretariat', 'contact.email_secretariat'))
+                    <p class="text-sm text-gray-400">{{ cms('guidelines.donations', 'foot.label') }} @if(shared('secretariat', 'contact.email_secretariat'))<a href="mailto:{{ shared('secretariat', 'contact.email_secretariat') }}" class="text-primary dark:text-accent hover:underline">{{ shared('secretariat', 'contact.email_secretariat') }}</a>@endif</p>
                     @endif
                     <a href="{{ route('guidelines.index', ['locale' => app()->getLocale()]) }}"
                        class="inline-flex items-center gap-2 text-primary dark:text-accent hover:underline text-sm font-medium">

@@ -59,7 +59,7 @@ class SyncFacebookNews extends Command
                     'post_id' => $post['post_id'] ?? '?',
                     'error' => $e->getMessage(),
                 ]);
-                $this->error("  FAILED {$post['post_id']}: {$e->getMessage()} (left pending, will retry)");
+                $this->error("  FAILED " . ($post['post_id'] ?? '?') . ": {$e->getMessage()} (left pending, will retry)");
             }
         }
 
@@ -73,7 +73,18 @@ class SyncFacebookNews extends Command
 
     private function processPost(string $base, array $post): bool
     {
-        $fbId = $post['post_id'];
+        $fbId = (string) ($post['post_id'] ?? '');
+
+        // The id and image file names are interpolated into gateway URLs and file paths: accept plain tokens only
+        // (a hostile/compromised gateway must not be able to steer requests with "../" or query strings).
+        if (! preg_match('/^[A-Za-z0-9_.-]{1,64}$/', $fbId) || str_contains($fbId, '..')) {
+            throw new \RuntimeException('invalid post_id from gateway');
+        }
+        foreach ((array) ($post['images'] ?? []) as $img) {
+            if (! is_string($img) || ! preg_match('/^[A-Za-z0-9_.-]{1,120}$/', $img) || str_contains($img, '..')) {
+                throw new \RuntimeException('invalid image file name from gateway');
+            }
+        }
 
         if (FacebookPost::where('fb_post_id', $fbId)->exists()) {
             $this->line("  already ingested: {$fbId} — acking.");

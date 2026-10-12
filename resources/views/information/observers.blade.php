@@ -42,18 +42,19 @@
         @if(cms_on('about-people.observers', 'list'))
         <h2 class="text-xl font-bold text-primary dark:text-white mb-5">{{ cms('about-people.observers', 'list.heading') }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-            @foreach(cms('about-people.observers', 'list.items') as $obs)
+            @foreach(\App\Support\Shared::dialogue('observer') as $obs)
             <div class="bg-white dark:bg-dark-card rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
                 <div class="w-10 h-10 bg-primary/8 dark:bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                    @if(!empty($obs['flag']))
-                    <span class="text-2xl leading-none">{{ $obs['flag'] }}</span>
+                    @php $__flag = preg_match('/[^ -~]/', (string) ($obs['badge'] ?? '')) ? $obs['badge'] : ''; @endphp
+                    @if($__flag !== '')
+                    <span class="text-2xl leading-none">{{ $__flag }}</span>
                     @else
                     <span class="material-symbols-outlined text-primary dark:text-accent text-xl">groups</span>
                     @endif
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{{ $obs['name'] }}</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5 mb-2">{{ cms('about-people.observers', 'list.since_label') }} {{ $obs['since'] }} &middot; {{ $obs['conference'] }}</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5 mb-2">{{ cms('about-people.observers', 'list.since_label') }} {{ $obs['observer_since'] }} &middot; {{ $obs['observer_conference'] }}</p>
                     <div class="flex items-center gap-3">
                         @if(!empty($obs['q']))
                         <a href="{{ route('news.index', ['locale' => app()->getLocale(), 'q' => $obs['q']]) }}"
@@ -61,8 +62,8 @@
                             <span class="material-symbols-outlined text-sm">open_in_new</span> {{ cms('about-people.observers', 'list.activities_label') }}
                         </a>
                         @endif
-                        @if(!empty($obs['url']))
-                        <a href="{{ $obs['url'] }}" target="_blank" rel="noopener noreferrer"
+                        @if(!empty($obs['website']))
+                        <a href="{{ $obs['website'] }}" target="_blank" rel="noopener noreferrer"
                            class="inline-flex items-center gap-1 text-[11px] font-semibold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-accent hover:underline">
                             <span class="material-symbols-outlined text-sm">language</span> {{ cms('about-people.observers', 'list.website_label') }}
                         </a>

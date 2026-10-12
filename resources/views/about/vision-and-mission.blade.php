@@ -30,7 +30,7 @@
                 <blockquote class="text-xl sm:text-2xl font-light text-white/90 leading-relaxed italic border-l-4 border-accent pl-6 mb-6">
                     {{ cms('about.vision-mission', 'vision.quote') }}
                 </blockquote>
-                <p class="text-accent font-semibold text-sm tracking-wider uppercase">{{ cms('about.vision-mission', 'vision.tagline') }}</p>
+                <p class="text-accent font-semibold text-sm tracking-wider uppercase">"{{ \App\Support\Shared::org('identity.tagline') }}"</p>
             </div>
         </div>
 

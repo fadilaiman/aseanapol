@@ -135,5 +135,21 @@ const get = async u => await (await page.request.get(BASE + u)).text();
   await revertPage(page, KEY);
 }
 
+// ============ 4. Shared-fact relinks: duplicated fields are gone from the about editors, headings stay local ============
+{
+  const KEY = 'about.permanent-secretariat', U = '/en/about-aseanapol/permanent-secretariat';
+  await revertPage(page, KEY);
+  await openEditor(page, KEY);
+  check(R, 'shared: no roster rows editor on Secretariat page', (await page.locator('[name^="f[dir_ed][rows]"]').count()) === 0);
+  check(R, 'shared: no logo field on Secretariat intro', (await page.locator('[name="f[intro][logo]"]').count()) === 0);
+  await page.fill('input[name="f[dir_ed][heading]"]', 'QA ED heading');
+  await save(page);
+  const html = await get(U);
+  check(R, 'shared: local column heading still editable, roster rows still shown', html.includes('QA ED heading') && html.includes('Kongkrissada Kittithiraphong'));
+  await revertPage(page, KEY);
+  await openEditor(page, 'about.vision-mission');
+  check(R, 'shared: no tagline field on Vision page', (await page.locator('[name="f[vision][tagline]"]').count()) === 0);
+}
+
 finish(R, errors);
 await browser.close();

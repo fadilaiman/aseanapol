@@ -118,6 +118,11 @@ class ReindexGallery extends Command
         if (! str_starts_with($src, 'media/') || ! preg_match(self::IMAGE_EXT_RE, $src)) {
             return null;
         }
+        // Paths come from admin-editable article HTML/thumbnails and end up in <img src> / JSON: refuse traversal,
+        // quotes, angle brackets, backslashes, query/fragment and control characters.
+        if (str_contains($src, '..') || preg_match('/[\x00-\x1F"\'<>`\\\\?#]/', $src)) {
+            return null;
+        }
 
         return $src;
     }

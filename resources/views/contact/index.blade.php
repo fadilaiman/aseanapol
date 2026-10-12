@@ -14,7 +14,13 @@
 @section('content')
 @php
 $P = 'site.contact';
-$members = cms($P, 'directory.items');
+// from Shared facts -> Member countries (hidden members already removed)
+$members = array_map(fn ($m) => [
+    'flag' => $m['iso'], 'country' => $m['country'], 'org' => $m['name'],
+    'tel' => trim((string) $m['tel']) !== '' ? $m['tel'] : '—', 'fax' => trim((string) $m['fax']) !== '' ? $m['fax'] : '—',
+    'email' => $m['ncb_email'], 'web' => $m['website'],
+], \App\Support\Shared::members());
+$SEC = fn ($f) => \App\Support\Shared::secretariat('contact.' . $f);
 @endphp
 
 <section class="py-16 bg-background dark:bg-dark-surface">
@@ -31,57 +37,65 @@ $members = cms($P, 'directory.items');
                 </div>
 
                 <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-700/50 overflow-hidden">
+                    @if(trim((string) $SEC('address')) !== '')
                     {{-- Address --}}
                     <div class="p-5 flex gap-4">
                         <span class="material-symbols-outlined text-accent text-xl flex-shrink-0 mt-0.5">location_on</span>
                         <div>
                             <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{{ cms($P, 'secretariat.address_label') }}</div>
                             <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {!! implode("<br>\n", array_map('e', preg_split('/\R/', (string) cms($P, 'secretariat.address')))) !!}
+                                {!! implode("<br>\n", array_map('e', preg_split('/\R/', (string) $SEC('address')))) !!}
                             </p>
                         </div>
                     </div>
+                    @endif
+                    @if($SEC('phone'))
                     {{-- Phone --}}
                     <div class="p-5 flex gap-4">
                         <span class="material-symbols-outlined text-accent text-xl flex-shrink-0 mt-0.5">call</span>
                         <div>
                             <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{{ cms($P, 'secretariat.phone_label') }}</div>
-                            <a href="{{ cms($P, 'secretariat.phone_link') }}" class="text-sm text-primary dark:text-accent hover:underline">{{ cms($P, 'secretariat.phone') }}</a>
+                            @if($SEC('phone_link'))<a href="{{ $SEC('phone_link') }}" class="text-sm text-primary dark:text-accent hover:underline">{{ $SEC('phone') }}</a>@else<span class="text-sm text-gray-700 dark:text-gray-300">{{ $SEC('phone') }}</span>@endif
                         </div>
                     </div>
+                    @endif
+                    @if($SEC('fax'))
                     {{-- Fax --}}
                     <div class="p-5 flex gap-4">
                         <span class="material-symbols-outlined text-accent text-xl flex-shrink-0 mt-0.5">fax</span>
                         <div>
                             <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{{ cms($P, 'secretariat.fax_label') }}</div>
-                            <span class="text-sm text-gray-700 dark:text-gray-300">{{ cms($P, 'secretariat.fax') }}</span>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">{{ $SEC('fax') }}</span>
                         </div>
                     </div>
+                    @endif
+                    @if($SEC('email_secretariat'))
                     {{-- Email --}}
                     <div class="p-5 flex gap-4">
                         <span class="material-symbols-outlined text-accent text-xl flex-shrink-0 mt-0.5">mail</span>
                         <div>
                             <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{{ cms($P, 'secretariat.email_label') }}</div>
-                            <a href="mailto:{{ cms($P, 'secretariat.email') }}" class="text-sm text-primary dark:text-accent hover:underline">{{ cms($P, 'secretariat.email') }}</a>
+                            <a href="mailto:{{ $SEC('email_secretariat') }}" class="text-sm text-primary dark:text-accent hover:underline">{{ $SEC('email_secretariat') }}</a>
                         </div>
                     </div>
+                    @endif
                 </div>
 
                 {{-- Office Hours note --}}
-                @if(cms_on($P, 'hours'))
+                @if(cms_on($P, 'hours') && trim((string) $SEC('office_hours')) !== '')
                 <div class="bg-primary/5 dark:bg-primary/15 rounded-xl p-4 border border-primary/10 dark:border-primary/20 text-sm text-gray-600 dark:text-gray-300">
                     <span class="material-symbols-outlined text-base text-primary dark:text-accent align-middle mr-1">schedule</span>
-                    {{ cms($P, 'hours.text') }}
+                    {{ $SEC('office_hours') }}
                 </div>
                 @endif
             </div>
 
             {{-- Google Maps --}}
-            @if(cms_on($P, 'map'))
+            @if(cms_on($P, 'map') && trim((string) $SEC('map_embed_src')) !== '')
             <div class="lg:col-span-3">
                 <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden h-full min-h-[420px]">
                     <iframe
-                        src="{{ cms($P, 'map.src') }}"
+                        src="{{ $SEC('map_embed_src') }}"
                         width="100%"
                         height="100%"
                         style="min-height: 420px; border: 0;"
@@ -140,7 +154,7 @@ $members = cms($P, 'directory.items');
                 </div>
                 <div>
                     <h2 class="text-xl font-bold text-primary dark:text-white">{{ cms($P, 'directory.heading') }}</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ cms($P, 'directory.subheading') }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ \App\Support\SiteCms::tpl(cms($P, 'directory.subheading')) }}</p>
                 </div>
             </div>
 

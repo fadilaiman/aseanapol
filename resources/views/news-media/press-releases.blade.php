@@ -24,7 +24,7 @@
             <span class="material-symbols-outlined text-primary dark:text-accent text-xl flex-shrink-0 mt-0.5">info</span>
             <p class="text-sm text-gray-600 dark:text-gray-300">
                 {{ cms('newsmedia.press-releases', 'banner.text') }}
-                <a href="mailto:{{ cms('newsmedia.press-releases', 'banner.email') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ cms('newsmedia.press-releases', 'banner.email') }}</a>{{ cms('newsmedia.press-releases', 'banner.after') }}
+                @if(shared('secretariat', 'contact.email_general'))<a href="mailto:{{ shared('secretariat', 'contact.email_general') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ shared('secretariat', 'contact.email_general') }}</a>@endif{{ cms('newsmedia.press-releases', 'banner.after') }}
             </p>
         </div>
         @endif

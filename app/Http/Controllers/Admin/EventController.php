@@ -141,7 +141,7 @@ class EventController extends Controller
             'city'         => 'nullable|string|max:255',
             'country'      => 'nullable|string|max:255',
             'description'  => 'nullable|string|max:5000',
-            'link'         => 'nullable|url|max:500',
+            'link'         => 'nullable|url:http,https|max:500',
             'link_label'   => 'nullable|string|max:120',
             'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'sort_order'   => 'nullable|integer|min:-100000|max:100000',

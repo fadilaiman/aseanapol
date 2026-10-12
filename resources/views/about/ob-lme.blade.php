@@ -29,20 +29,20 @@
         @endif
 
         {{-- LME Grid --}}
-        @if(cms_on('about-people.ob-lme', 'entities'))
+        @if(cms_on('about-people.ob-lme', 'entities') && \App\Support\Shared::partners('lme'))
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-            @foreach(cms('about-people.ob-lme', 'entities.items') as $lme)
+            @foreach(\App\Support\Shared::partners('lme') as $lme)
             <div class="bg-white dark:bg-dark-card rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center text-center gap-3">
                 <div class="w-full h-20 flex items-center justify-center">
                     @if(cms_url($lme['logo'] ?? ''))
                     <img src="{{ cms_url($lme['logo'] ?? '') }}"
-                         alt="{{ $lme['short'] }} logo"
+                         alt="{{ $lme['short_name'] }} logo"
                          class="max-h-20 max-w-full object-contain">
                     @endif
                 </div>
                 <div>
-                    <p class="font-bold text-xs text-primary dark:text-accent">{{ $lme['short'] }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 leading-snug mt-0.5">{{ $lme['name'] }}</p>
+                    <p class="font-bold text-xs text-primary dark:text-accent">{{ $lme['short_name'] }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 leading-snug mt-0.5">{{ $lme['full_name'] }}</p>
                 </div>
                 @if(!empty($lme['website']))
                 <a href="{{ $lme['website'] }}" target="_blank" rel="noopener"

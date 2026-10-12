@@ -6,6 +6,7 @@ const MY = 'members.malaysia',   MY_URL = BASE + '/en/about-aseanapol/member-cou
 const BN = 'members.brunei',     BN_URL = BASE + '/en/about-aseanapol/member-countries/royal-brunei-police-force';
 const LA = 'members.lao',        LA_URL = BASE + '/en/about-aseanapol/member-countries/lao-police-force';
 const KH = 'members.cambodia',   KH_URL = BASE + '/en/about-aseanapol/member-countries/cambodian-national-police';
+const TL = 'members.timor-leste', TL_URL = BASE + '/en/about-aseanapol/member-countries/national-police-of-timor-leste';
 const IDX = 'members.index',     IDX_URL = BASE + '/en/about-aseanapol/member-countries';
 const SHOT = process.env.SHOT_DIR || '.';
 
@@ -142,21 +143,18 @@ check(R, 'admin-added history block appears for lao', /mb-6">History<\/h3>/.test
 await revertPage(page, LA);
 check(R, 'revert removes added block', !/mb-6">History<\/h3>/.test(await getHtml(LA_URL)));
 
-// ---- 7. placeholders + shared labels
-html = await getHtml(KH_URL);
-check(R, 'cambodia default shows "Telephone: pending"', html.includes('Telephone: pending'));
+// ---- 7. placeholders (Timor-Leste has no phone in Shared facts; phone/email/fax live in shared.members now)
+html = await getHtml(TL_URL);
+check(R, 'timor-leste default shows "Telephone: pending"', html.includes('Telephone: pending'));
 await openEditor(page, KH);
-await page.fill('input[name="f[contact][email]"]', '');
-await save(page);
-check(R, 'empty email shows "Email: pending"', (await getHtml(KH_URL)).includes('Email: pending'));
+check(R, 'country editor no longer has the shared identity/contact fields', (await page.locator('input[name="f[identity][force]"], input[name="f[contact][email]"], input[name="f[identity][logo]"]').count()) === 0);
 await openEditor(page, 'members.labels-pending');
 await page.fill('input[name="f[placeholders][email_pending]"]', 'QA email missing');
 await page.fill('input[name="f[placeholders][tel_pending]"]', 'QA tel missing');
 await save(page);
-html = await getHtml(KH_URL);
-check(R, 'placeholder wording editable', html.includes('QA email missing') && html.includes('QA tel missing'));
+html = await getHtml(TL_URL);
+check(R, 'placeholder wording editable', html.includes('QA tel missing'));
 await revertPage(page, 'members.labels-pending');
-await revertPage(page, KH);
 
 await openEditor(page, 'members.labels');
 await page.fill('textarea[name="f[general][membership_note]"]', 'QA note about {country}.');
@@ -165,22 +163,15 @@ html = await getHtml(SG_URL);
 check(R, 'membership note label with {country} placeholder', html.includes('QA note about Singapore.'));
 await revertPage(page, 'members.labels');
 
-// ---- 8. list page = single source of truth
-await openEditor(page, SG);
-await page.fill('input[name="f[identity][force]"]', 'QA Singapore Force');
-await save(page);
-html = await getHtml(IDX_URL);
-check(R, 'list card follows country page force name', html.includes('QA Singapore Force (SPF)'));
+// ---- 8. list page: cards come from Shared facts; page-level wording stays local
 await openEditor(page, IDX);
-await page.uncheck('[data-testid=vis-brunei]');
 await page.fill('input[name="f[hero][title]"]', 'QA Members Title');
 await save(page);
 html = await getHtml(IDX_URL);
-check(R, 'list: hidden card gone, others stay', !html.includes('Brunei Darussalam') && html.includes('Cambodia'));
 check(R, 'list: hero title edited', html.includes('QA Members Title'));
+check(R, 'list: all 11 cards still present', (html.match(/card-hover group/g) || []).length >= 11 && html.includes('Brunei Darussalam'));
 check(R, 'country page breadcrumb follows list title', (await getHtml(SG_URL)).includes('QA Members Title'));
 await revertPage(page, IDX);
-await revertPage(page, SG);
 
 // ---- 9. everything reverted to the baseline default
 html = await getHtml(SG_URL);

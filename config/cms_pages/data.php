@@ -65,11 +65,11 @@ return [
             'notice' => [
                 'label'  => 'Status notice',
                 'toggle' => true,
+                'help'   => 'Contact e-mail is managed in Shared facts → Secretariat.',
                 'fields' => [
                     'icon'    => ['type' => 'icon',     'label' => 'Icon', 'default' => 'construction'],
                     'heading' => ['type' => 'text',     'label' => 'Heading', 'default' => 'Coming Soon'],
                     'body'    => ['type' => 'textarea', 'label' => 'Text (before the e-mail link)', 'rows' => 4, 'default' => 'The public crime statistics dashboard is currently being developed. Aggregated crime data across ASEAN member states will be published here once validated. For data enquiries, contact'],
-                    'email'   => ['type' => 'text',     'label' => 'Enquiries e-mail', 'default' => 'info@aseanapol.org'],
                 ],
             ],
             'library' => [
@@ -199,13 +199,13 @@ return [
             ],
             'download' => [
                 'label' => 'Download box',
+                'help'  => 'The request e-mail address is managed in Shared facts → Secretariat.',
                 'fields' => [
                     'heading'       => ['type' => 'text', 'label' => 'Heading', 'default' => 'Download PDF'],
                     'available'     => ['type' => 'text', 'label' => 'Text when a PDF exists', 'default' => 'This edition is available for download.'],
                     'size_format'   => ['type' => 'text', 'label' => 'File size text ({size})', 'default' => '(PDF, {size})'],
                     'button'        => ['type' => 'text', 'label' => 'Download button', 'default' => 'Download PDF'],
                     'unavailable'   => ['type' => 'textarea', 'label' => 'Text when no PDF exists', 'rows' => 2, 'default' => 'To request a copy of this publication, please contact the ASEANAPOL Permanent Secretariat.', 'audit' => false /* shown only on an edition page without a PDF; the audited edition has one */],
-                    'request_email' => ['type' => 'text', 'label' => 'Request e-mail address', 'default' => 'aseanapolsec@aseanapol.org', 'audit' => false /* shown only on an edition page without a PDF; the audited edition has one */],
                     'request_subject' => ['type' => 'text', 'label' => 'Request e-mail subject ({title})', 'default' => 'Request: {title}', 'audit' => false /* shown only on an edition page without a PDF; the audited edition has one */],
                     'request_button'  => ['type' => 'text', 'label' => 'Request button', 'default' => 'Request This Publication', 'audit' => false /* shown only on an edition page without a PDF; the audited edition has one */],
                 ],

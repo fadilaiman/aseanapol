@@ -12,13 +12,29 @@ class NewsItem extends Model
     protected $fillable = [
         'id', 'title', 'summary', 'content', 'author',
         'published_at', 'slug', 'views_count', 'thumbnail',
-        'is_upcoming_event',
+        'is_upcoming_event', 'sponsors',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
         'is_upcoming_event' => 'boolean',
+        'sponsors' => 'array',
     ];
+
+    /** Sponsor rows safe to render: [['name','logo','url'?]]; empty when none. */
+    public function sponsorItems(): array
+    {
+        $items = is_array($this->sponsors) ? ($this->sponsors['items'] ?? []) : [];
+
+        return array_values(array_filter($items, fn ($i) => is_array($i) && ! empty($i['logo'])));
+    }
+
+    public function sponsorLabel(): ?string
+    {
+        $l = is_array($this->sponsors) ? ($this->sponsors['label'] ?? null) : null;
+
+        return is_string($l) && trim($l) !== '' ? trim($l) : null;
+    }
 
     /**
      * Hash of the translatable source fields. A stored translation is only

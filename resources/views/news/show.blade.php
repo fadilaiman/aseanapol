@@ -31,6 +31,13 @@
                 {{ $article->author }}
             </span>
             @endif
+            @if($article->sponsorItems())
+            <div class="flex items-center gap-2 sm:ml-auto flex-shrink-0" data-testid="news-meta-sponsors">
+                @foreach($article->sponsorItems() as $sp)
+                <img src="{{ asset($sp['logo']) }}" alt="{{ $sp['name'] ?? '' }}" title="{{ $sp['name'] ?? '' }}" class="h-8 w-auto">
+                @endforeach
+            </div>
+            @endif
         </div>
 
         {{-- Hero image: only shown when the content has no embedded images.
@@ -58,6 +65,23 @@
                 <p class="text-gray-500 dark:text-gray-400 italic">{{ cms('newsmedia.news-article', 'labels.no_content') }}</p>
             @endif
         </div>
+
+        {{-- Supported by --}}
+        @if($article->sponsorItems())
+        <div class="mt-6 bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 px-8 sm:px-10 py-5 flex flex-wrap items-center gap-x-6 gap-y-3" data-testid="news-sponsors">
+            <span class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ $article->sponsorLabel() ?? cms('newsmedia.news-article', 'labels.supported_by') }}</span>
+            <div class="flex flex-wrap items-center gap-4">
+                @foreach($article->sponsorItems() as $sp)
+                    @php $href = (!empty($sp['url']) && preg_match('#^https?://#i', $sp['url'])) ? $sp['url'] : null; @endphp
+                    @if($href)
+                    <a href="{{ $href }}" target="_blank" rel="noopener noreferrer" title="{{ $sp['name'] ?? '' }}"><img src="{{ asset($sp['logo']) }}" alt="{{ $sp['name'] ?? '' }}" class="h-10 w-auto"></a>
+                    @else
+                    <img src="{{ asset($sp['logo']) }}" alt="{{ $sp['name'] ?? '' }}" title="{{ $sp['name'] ?? '' }}" class="h-10 w-auto">
+                    @endif
+                @endforeach
+            </div>
+        </div>
+        @endif
 
         {{-- Navigation --}}
         <div class="mt-8 flex items-center justify-between">

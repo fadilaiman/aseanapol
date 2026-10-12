@@ -25,7 +25,7 @@ class VideoGalleryController extends Controller
         $data = $request->validate([
             'title'          => 'required|string|max:255',
             'description'    => 'nullable|string',
-            'embed_url'      => 'nullable|url|max:500',
+            'embed_url'      => 'nullable|url:http,https|max:500',
             'file_url'       => ['nullable', 'string', 'max:500', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
             'thumbnail_url'  => ['nullable', 'string', 'max:500', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
             'category'       => 'required|string|max:50',
@@ -52,7 +52,7 @@ class VideoGalleryController extends Controller
         $data = $request->validate([
             'title'          => 'required|string|max:255',
             'description'    => 'nullable|string',
-            'embed_url'      => 'nullable|url|max:500',
+            'embed_url'      => 'nullable|url:http,https|max:500',
             'file_url'       => ['nullable', 'string', 'max:500', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
             'thumbnail_url'  => ['nullable', 'string', 'max:500', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
             'category'       => 'required|string|max:50',

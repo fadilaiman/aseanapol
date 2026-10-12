@@ -108,11 +108,10 @@ return [
                     ],
                 ],
             ]],
-            'updates' => ['label' => 'Stay updated box', 'toggle' => true, 'fields' => [
+            'updates' => ['label' => 'Stay updated box', 'toggle' => true, 'help' => 'Contact e-mail is managed in Shared facts → Secretariat.', 'fields' => [
                 'icon'        => ['type' => 'icon', 'label' => 'Icon', 'default' => 'notifications'],
                 'heading'     => ['type' => 'text', 'label' => 'Heading', 'default' => 'Stay Updated'],
                 'text_before' => ['type' => 'textarea', 'label' => 'Text before email', 'rows' => 2, 'default' => 'To be notified of future openings or to submit a general enquiry, contact the ASEANAPOL Permanent Secretariat at'],
-                'email'       => ['type' => 'text', 'label' => 'Email address', 'default' => 'info@aseanapol.org'],
                 'text_after'  => ['type' => 'textarea', 'label' => 'Text after email', 'rows' => 2, 'default' => '. Nominations for seconded officer positions are coordinated through member country focal points.'],
             ]],
         ],

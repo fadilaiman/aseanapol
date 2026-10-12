@@ -8,7 +8,6 @@
 
 // Compact row builders (defaults only — the admin always edits full structured rows).
 $conf = fn (array $r) => ['num' => (string) $r[0], 'dates' => $r[1], 'year' => (string) $r[2], 'city' => $r[3], 'country' => $r[4]];
-$dir  = fn (array $r) => ['name' => $r[0], 'force' => $r[1], 'flag' => $r[2], 'term' => $r[3]];
 $callout = fn (string $title, array $lines, int $gap, int $x1, int $y1, int $x2, int $y2, int $ty) => [
     'title' => $title, 'lines' => $lines, 'gap' => $gap, 'x1' => $x1, 'y1' => $y1, 'x2' => $x2, 'y2' => $y2, 'ty' => $ty,
 ];
@@ -21,12 +20,6 @@ $calloutFields = [
     'x2'    => ['type' => 'number', 'label' => 'Arrow end X (layout)'],
     'y2'    => ['type' => 'number', 'label' => 'Arrow end Y (layout)'],
     'ty'    => ['type' => 'number', 'label' => 'Label Y position (layout)'],
-];
-$directorFields = [
-    'flag'  => ['type' => 'text', 'label' => 'Flag (emoji)'],
-    'name'  => ['type' => 'text', 'label' => 'Name / rank'],
-    'force' => ['type' => 'text', 'label' => 'Police force (abbrev.)'],
-    'term'  => ['type' => 'text', 'label' => 'Term'],
 ];
 $backSection = fn (string $label = 'Back to About ASEANAPOL') => [
     'label' => 'Back link', 'toggle' => true, 'fields' => [
@@ -46,17 +39,19 @@ return [
                 'label' => 'Page header',
                 'fields' => [
                     'title'    => ['type' => 'text',     'label' => 'Title',    'default' => 'About ASEANAPOL'],
-                    'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => 'The ASEAN Chiefs of Police — promoting police professionalism and regional cooperation since 1981.'],
+                    'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => 'The ASEAN Chiefs of Police — promoting police professionalism and regional cooperation since {founded_year}.'],
                 ],
             ],
             'intro' => [
                 'label' => 'Introduction', 'toggle' => true,
+                'help' => 'Shared facts can be inserted with tokens: {founded_year}, {founded_date}, {first_conference_date}, {first_conference_place}, {secretariat_established}, {member_count_word}, {member_count_num}, {conference_count}; they are filled from Shared facts > Organisation.',
                 'fields' => [
-                    'text' => ['type' => 'textarea', 'label' => 'Intro paragraph', 'rows' => 5, 'default' => 'ASEANAPOL (Association of Southeast Asian Nations Chiefs of Police) is a regional police organisation established in 1981. It serves as the primary platform for police cooperation among the eleven ASEAN member states, working to combat transnational crime and promote public safety across the region.'],
+                    'text' => ['type' => 'textarea', 'label' => 'Intro paragraph', 'rows' => 5, 'default' => 'ASEANAPOL (Association of Southeast Asian Nations Chiefs of Police) is a regional police organisation established in {founded_year}. It serves as the primary platform for police cooperation among the {member_count_word} ASEAN member states, working to combat transnational crime and promote public safety across the region.'],
                 ],
             ],
             'cards' => [
                 'label' => 'Sub-page cards', 'toggle' => true,
+                'help' => 'Shared facts can be inserted with tokens: {founded_year}, {founded_date}, {first_conference_date}, {first_conference_place}, {secretariat_established}, {member_count_word}, {member_count_num}, {conference_count}; they are filled from Shared facts > Organisation.',
                 'fields' => [
                     'learn_more' => ['type' => 'text', 'label' => 'Card link text', 'default' => 'Learn more'],
                     'items' => [
@@ -80,12 +75,12 @@ return [
                             'desc'   => ['type' => 'textarea', 'label' => 'Description', 'rows' => 3],
                         ],
                         'default' => [
-                            ['title' => 'History', 'icon' => 'history', 'route' => 'about.chronology', 'desc' => "A timeline of ASEANAPOL's history from its founding in 1981 to the present day."],
+                            ['title' => 'History', 'icon' => 'history', 'route' => 'about.chronology', 'desc' => "A timeline of ASEANAPOL's history from its founding in {founded_year} to the present day."],
                             ['title' => 'Vision and Mission', 'icon' => 'visibility', 'route' => 'about.vision-mission', 'desc' => "ASEANAPOL's vision as the premier regional police organisation and our guiding mission."],
                             ['title' => 'Governance', 'icon' => 'account_balance', 'route' => 'about.governance', 'desc' => "ASEANAPOL's governance structure — the Conference, Executive Committee, and Permanent Secretariat."],
                             ['title' => 'Permanent Secretariat', 'icon' => 'domain', 'route' => 'about.permanent-secretariat', 'desc' => 'Learn about the ASEANAPOL Secretariat based in Kuala Lumpur, Malaysia.'],
                             ['title' => 'Objectives and Functions', 'icon' => 'flag', 'route' => 'about.objectives-and-functions', 'desc' => "The core objectives and functions that guide ASEANAPOL's work across the region."],
-                            ['title' => 'Member Countries', 'icon' => 'public', 'route' => 'about.member-countries', 'desc' => 'The eleven ASEAN member police forces that form the ASEANAPOL network.'],
+                            ['title' => 'Member Countries', 'icon' => 'public', 'route' => 'about.member-countries', 'desc' => 'The {member_count_word} ASEAN member police forces that form the ASEANAPOL network.'],
                             ['title' => 'Dialogue Partners', 'icon' => 'forum', 'route' => 'about.dialogue-partners', 'desc' => 'Countries and organisations that maintain formal dialogue partner status with ASEANAPOL.'],
                             ['title' => 'Observers', 'icon' => 'groups', 'route' => 'about.observers', 'desc' => 'International organisations and countries with observer status in ASEANAPOL.'],
                             ['title' => 'ASEANAPOL Logo', 'icon' => 'stars', 'route' => 'about.logo', 'desc' => 'The symbolism and design elements behind the official ASEANAPOL logo.'],
@@ -112,12 +107,11 @@ return [
             ],
             'intro' => [
                 'label' => 'Introduction', 'toggle' => true,
+                'help' => 'The logo shown here is the organisation logo from Shared facts > Organisation (identity). Shared facts can be inserted with tokens: {founded_year}, {founded_date}, {first_conference_date}, {first_conference_place}, {secretariat_established}, {member_count_word}, {member_count_num}, {conference_count}; they are filled from Shared facts > Organisation.',
                 'fields' => [
-                    'logo'        => ['type' => 'image', 'label' => 'Logo image', 'default' => 'images/aseanapol-logo.png'],
-                    'logo_alt'    => ['type' => 'text',  'label' => 'Logo alt text', 'default' => 'ASEANAPOL Logo'],
                     'heading'     => ['type' => 'text',  'label' => 'Heading', 'default' => 'Introduction'],
                     'preface'     => ['type' => 'text',  'label' => 'Sub-heading', 'default' => 'Preface'],
-                    'body_top'    => ['type' => 'richtext', 'label' => 'Opening paragraphs', 'default' => '<p>The first formal meeting of the Chiefs of ASEAN Police was held in Manila, Philippines on 21 to 23 October 1981, to discuss matters of law enforcement and crime control. This annual meeting was called the <strong>ASEANAPOL Conference</strong>.</p><p>The basic requirement for a country to become a member of ASEANAPOL is that the country shall first be a member of ASEAN and the application shall be tabled at the conference for approval.</p><p>The founding members were <strong>Malaysia, Singapore, Thailand, Indonesia and the Philippines</strong>. Membership grew over the years:</p>'],
+                    'body_top'    => ['type' => 'richtext', 'label' => 'Opening paragraphs', 'default' => '<p>The first formal meeting of the Chiefs of ASEAN Police was held in {first_conference_place} on {first_conference_date}, to discuss matters of law enforcement and crime control. This annual meeting was called the <strong>ASEANAPOL Conference</strong>.</p><p>The basic requirement for a country to become a member of ASEANAPOL is that the country shall first be a member of ASEAN and the application shall be tabled at the conference for approval.</p><p>The founding members were <strong>Malaysia, Singapore, Thailand, Indonesia and the Philippines</strong>. Membership grew over the years:</p>'],
                     'milestones'  => [
                         'type' => 'repeater', 'label' => 'Membership timeline', 'item_label' => 'year', 'add_label' => 'Add milestone',
                         'fields' => [
@@ -143,6 +137,7 @@ return [
             ],
             'history' => [
                 'label' => 'History', 'toggle' => true,
+                'help' => 'Shared facts can be inserted with tokens: {founded_year}, {founded_date}, {first_conference_date}, {first_conference_place}, {secretariat_established}, {member_count_word}, {member_count_num}, {conference_count}; they are filled from Shared facts > Organisation.',
                 'fields' => [
                     'heading'     => ['type' => 'text', 'label' => 'Heading', 'default' => 'History'],
                     'intro'       => ['type' => 'richtext', 'label' => 'Opening paragraphs', 'default' => '<p>Prior to the establishment of the Permanent Secretariat, the ASEANAPOL Secretariat operated on a rotational basis, with member countries taking turns to host the ASEANAPOL Conference and automatically assuming the role of the Secretariat for that year.</p><p>The 25th Joint Communiqué signed by the ASEAN Chiefs of Police during the 25th ASEANAPOL Conference held in Bali, Indonesia, expressly stated the need to establish a Permanent ASEANAPOL Secretariat.</p>'],
@@ -158,7 +153,7 @@ return [
                         'The Secretariat shall be administered based on the Terms of Reference;',
                         'The Head of the Secretariat is an Executive Director and he is assisted by 2 Directors.',
                     ]],
-                    'closing'     => ['type' => 'richtext', 'label' => 'Closing paragraphs', 'default' => '<p>The tenure of services are: <strong>Executive Director — 2 years</strong>; <strong>Directors — 2 to 3 years</strong>.</p><p>During the 29th ASEANAPOL Conference in Hanoi, Vietnam in 2009, the Terms of Reference on the establishment of the ASEANAPOL Secretariat was endorsed. Kuala Lumpur, Malaysia was made the permanent seat for the Secretariat.</p><p>The ASEANAPOL Secretariat was fully operational from <strong>1 January 2010</strong>.</p>'],
+                    'closing'     => ['type' => 'richtext', 'label' => 'Closing paragraphs', 'default' => '<p>The tenure of services are: <strong>Executive Director — 2 years</strong>; <strong>Directors — 2 to 3 years</strong>.</p><p>During the 29th ASEANAPOL Conference in Hanoi, Vietnam in 2009, the Terms of Reference on the establishment of the ASEANAPOL Secretariat was endorsed. Kuala Lumpur, Malaysia was made the permanent seat for the Secretariat.</p><p>The ASEANAPOL Secretariat was fully operational from <strong>{secretariat_established}</strong>.</p>'],
                 ],
             ],
             'functions' => [
@@ -192,61 +187,23 @@ return [
             ],
             'dir_ps' => [
                 'label' => 'Directors: Police Services', 'toggle' => true,
+                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), newest first. Only the column heading is local.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Director for Police Services'],
-                    'rows' => [
-                        'type' => 'repeater', 'label' => 'Office holders (shown in this order)', 'item_label' => 'name', 'add_label' => 'Add office holder',
-                        'fields' => $directorFields,
-                        'default' => array_map($dir, array_reverse([
-                            ['DACP Lim Kim Tak', 'SPF', '🇸🇬', '2010–2012'],
-                            ['ACP Mohamad Anil Shah bin Abdullah', 'RMP', '🇲🇾', '2013–2015'],
-                            ['PSSUPT. Ferdinand R.P. Bartolome', 'PNP', '🇵🇭', '2016–2017'],
-                            ['DAC Jim Wee', 'SPF', '🇸🇬', '2018–2019'],
-                            ['Pol. Snr. Supt. Joni Getamala', 'INP', '🇮🇩', '2020–2022'],
-                            ['ACP Dr. Bakri Haji Zainal Abidin', 'RMP', '🇲🇾', '2023–2024'],
-                            ['Pol. Snr. Supt. Huntal Tambunan', 'INP', '🇮🇩', '2024–present'],
-                        ])),
-                    ],
                 ],
             ],
             'dir_ed' => [
                 'label' => 'Directors: Executive Director', 'toggle' => true,
+                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), newest first. Only the column heading is local.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Executive Director'],
-                    'rows' => [
-                        'type' => 'repeater', 'label' => 'Office holders (shown in this order)', 'item_label' => 'name', 'add_label' => 'Add office holder',
-                        'fields' => $directorFields,
-                        'default' => array_map($dir, array_reverse([
-                            ['ACP Mohd Nadzri bin Zainal Abidin', 'RMP', '🇲🇾', '2010–2011'],
-                            ['Lt. General Sar Moline', 'CNP', '🇰🇭', '2012–2013'],
-                            ["SAC Pengiran Dato' Paduka Hj. Abdul Wahab bin Pengiran Hj. Omar", 'RBPF', '🇧🇳', '2014–2015'],
-                            ['Pol. Insp. General Yohanes Agus Mulyono', 'INP', '🇮🇩', '2016–2017'],
-                            ['Pol. Colonel Kenechanh Phommachack', 'LPF', '🇱🇦', '2018–2019'],
-                            ['DAC Jim Wee', 'SPF', '🇸🇬', '2020–2021'],
-                            ['Pol. Brigadier General Zaw Lin Tun', 'MPF', '🇲🇲', '2022–2023'],
-                            ['Pol. Colonel David Martinez Vinluan', 'PNP', '🇵🇭', '2024–2025'],
-                            ['Police Senior Colonel Kongkrissada Kittithiraphong', 'RTP', '🇹🇭', '2026–present'],
-                        ])),
-                    ],
                 ],
             ],
             'dir_plans' => [
                 'label' => 'Directors: Plans and Programmes', 'toggle' => true,
+                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), newest first. Only the column heading is local.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Director for Plans and Programmes'],
-                    'rows' => [
-                        'type' => 'repeater', 'label' => 'Office holders (shown in this order)', 'item_label' => 'name', 'add_label' => 'Add office holder',
-                        'fields' => $directorFields,
-                        'default' => array_map($dir, array_reverse([
-                            ['Supt. Desy Adriani', 'INP', '🇮🇩', '2010–2012'],
-                            ['Supt. Reinhard Hutagaol', 'INP', '🇮🇩', '2013–2014'],
-                            ['Supt. Yuli Cahyanti', 'INP', '🇮🇩', '2015–2016'],
-                            ['ACP Aidah binti Othman', 'RMP', '🇲🇾', '2017–2019'],
-                            ['Supt. Tang Yik Tung', 'RBPF', '🇧🇳', '2020–2022'],
-                            ['Pol. Snr. Lt. Col. Nguyen Huu Ngoc', 'OIPA, VPF', '🇻🇳', '2023–2025'],
-                            ['Police Colonel Jean Mary A. Mangahis', 'PNP', '🇵🇭', '2026–present'],
-                        ])),
-                    ],
                 ],
             ],
         ],
@@ -295,8 +252,9 @@ return [
             ],
             'conferences' => [
                 'label' => 'Conference history table', 'toggle' => true,
+                'help' => 'The heading accepts the tokens {founded_year} and {conference_count} (from Shared facts > Organisation).',
                 'fields' => [
-                    'heading'     => ['type' => 'text', 'label' => 'Heading', 'default' => 'ASEANAPOL Conference (since 1981)'],
+                    'heading'     => ['type' => 'text', 'label' => 'Heading', 'default' => 'ASEANAPOL Conference (since {founded_year})'],
                     'col_num'     => ['type' => 'text', 'label' => 'Column title: number', 'default' => '#'],
                     'col_dates'   => ['type' => 'text', 'label' => 'Column title: dates', 'default' => 'Dates'],
                     'col_year'    => ['type' => 'text', 'label' => 'Column title: year', 'default' => 'Year'],
@@ -432,11 +390,12 @@ return [
                 'label' => 'Page header',
                 'fields' => [
                     'title'    => ['type' => 'text',     'label' => 'Title',    'default' => 'Chronology'],
-                    'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => 'The history of ASEANAPOL from its founding in 1981 to the present day.'],
+                    'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => 'The history of ASEANAPOL from its founding in {founded_year} to the present day.'],
                 ],
             ],
             'timeline' => [
                 'label' => 'Timeline', 'toggle' => true,
+                'help' => 'Shared facts can be inserted with tokens: {founded_year}, {founded_date}, {first_conference_date}, {first_conference_place} (from Shared facts > Organisation).',
                 'fields' => [
                     'dot_icon' => ['type' => 'icon', 'label' => 'Timeline marker icon', 'default' => 'radio_button_checked'],
                     'items' => [
@@ -447,7 +406,7 @@ return [
                             'desc'  => ['type' => 'textarea', 'label' => 'Description', 'rows' => 4],
                         ],
                         'default' => [
-                            ['year' => '1981', 'title' => '1st ASEANAPOL Conference — Manila, Philippines', 'desc' => 'ASEANAPOL was founded on 21 October 1981 at the 1st ASEANAPOL Conference held in Manila, Philippines. The founding member states were Brunei Darussalam, Indonesia, Malaysia, the Philippines, Singapore, and Thailand.'],
+                            ['year' => '1981', 'title' => '1st ASEANAPOL Conference — {first_conference_place}', 'desc' => 'ASEANAPOL was founded on {founded_date} at the 1st ASEANAPOL Conference held in {first_conference_place}. The founding member states were Brunei Darussalam, Indonesia, Malaysia, the Philippines, Singapore, and Thailand.'],
                             ['year' => '1984', 'title' => 'Expansion of Membership', 'desc' => "ASEANAPOL continued to grow in membership as additional ASEAN nations formalised their participation in the organisation's cooperative framework."],
                             ['year' => '1997', 'title' => 'Admission of New Members', 'desc' => "Following ASEAN's expansion, Myanmar, Lao PDR, and Vietnam joined ASEANAPOL, broadening the regional police cooperation network across mainland Southeast Asia."],
                             ['year' => '1999', 'title' => 'Cambodia Joins ASEANAPOL', 'desc' => 'The Cambodian National Police formally joined ASEANAPOL, completing the full ten-member configuration of the organisation aligned with all ASEAN member states.'],
@@ -477,10 +436,9 @@ return [
             ],
             'diagram' => [
                 'label' => 'Annotated logogramme diagram', 'toggle' => true,
-                'help' => 'Arrow/label positions are SVG coordinates (layout). When adding a callout copy the numbers from an existing one and adjust.',
+                'help' => 'The logo in the centre is the organisation logo from Shared facts > Organisation. Arrow/label positions are SVG coordinates (layout). When adding a callout copy the numbers from an existing one and adjust.',
                 'fields' => [
                     'heading' => ['type' => 'text',  'label' => 'Heading', 'default' => 'Logogramme'],
-                    'logo'    => ['type' => 'image', 'label' => 'Logo image (centre of the diagram)', 'default' => 'images/aseanapol-logo.png'],
                     'left' => [
                         'type' => 'repeater', 'label' => 'Callouts — left side', 'item_label' => 'title', 'add_label' => 'Add left callout',
                         'fields' => $calloutFields,
@@ -544,10 +502,10 @@ return [
             'vision' => [
                 'label'  => 'Vision statement',
                 'toggle' => true,
+                'help'   => 'The tagline under the quote comes from Shared facts > Organisation (identity), shown in quotation marks.',
                 'fields' => [
                     'heading' => ['type' => 'text',     'label' => 'Heading',        'default' => 'Vision'],
                     'quote'   => ['type' => 'textarea', 'label' => 'Vision quote',   'rows' => 3, 'default' => '"To be the premier regional police organisation that fosters cooperation in policing among ASEAN Member States and beyond, ensuring a safe and secure region for all."'],
-                    'tagline' => ['type' => 'text',     'label' => 'Tagline',        'default' => '"Toward a peaceful and crime-free ASEAN region"'],
                 ],
             ],
             'mission' => [

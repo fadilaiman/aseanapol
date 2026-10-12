@@ -38,7 +38,7 @@
                         <div class="text-white font-extrabold text-4xl">{{ $pub->edition }}</div>
                         <div class="text-white/80 text-sm mt-1">{{ $pub->type }}</div>
                     </div>
-                    <img src="{{ asset('images/aseanapol-logo.png') }}" alt="" class="absolute bottom-3 right-3 w-10 h-10 object-contain opacity-20">
+                    @if(cms_img('shared.organisation', 'identity.logo'))<img src="{{ cms_img('shared.organisation', 'identity.logo') }}" alt="" class="absolute bottom-3 right-3 w-10 h-10 object-contain opacity-20">@endif
                 </div>
 
                 <div class="p-5 flex flex-col flex-1">

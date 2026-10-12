@@ -108,9 +108,9 @@ return [
     // ------------------------------------------------------------------ single article
     'news-article' => [
         'label' => 'News article (labels)',
-        // any published article works; the editor links to this one for preview only
+        // any published article works; this one carries sponsors so the "Supported by" label is visible to the audit
         'route' => 'news.show',
-        'route_params' => ['slug' => 'aseanapol-6p-ecosystem-approach-counter-scams-2026-10-06'],
+        'route_params' => ['slug' => 'anti-scam-study-visit-ep01-warm-asean-welcome-to-thailand-2026-09-20'],
         'sections' => [
             'labels' => [
                 'label'  => 'Breadcrumbs & labels',
@@ -120,6 +120,7 @@ return [
                     'breadcrumb_article' => ['type' => 'text', 'label' => 'Breadcrumb: current article', 'default' => 'Article'],
                     'no_content'         => ['type' => 'text', 'label' => 'Message when an article has no body', 'default' => 'Content not available.', 'audit' => false /* shown only for an article with an empty body; the audited article has content */],
                     'back'               => ['type' => 'text', 'label' => 'Back link label', 'default' => 'Back to News'],
+                    'supported_by'       => ['type' => 'text', 'label' => 'Sponsors strip label (when an article sets no label of its own)', 'default' => 'Supported by'],
                 ],
             ],
         ],
@@ -140,9 +141,9 @@ return [
             'banner' => [
                 'label'  => 'Media enquiries banner',
                 'toggle' => true,
+                'help'   => 'Contact e-mail is managed in Shared facts → Secretariat.',
                 'fields' => [
                     'text'  => ['type' => 'textarea', 'label' => 'Text before the email', 'rows' => 2, 'default' => 'For media enquiries or to request a full press kit, contact the ASEANAPOL Permanent Secretariat at'],
-                    'email' => ['type' => 'text',     'label' => 'Email address', 'default' => 'info@aseanapol.org'],
                     'after' => ['type' => 'text',     'label' => 'Text after the email', 'default' => '.'],
                 ],
             ],
@@ -247,10 +248,9 @@ return [
             'banner' => [
                 'label'  => 'Banner shown while there are no videos',
                 'toggle' => true,
-                'help'   => 'Only appears when no video is published (Admin > Video Gallery).',
+                'help'   => 'Only appears when no video is published (Admin > Video Gallery). Contact e-mail is managed in Shared facts → Secretariat.',
                 'fields' => [
                     'text'  => ['type' => 'textarea', 'label' => 'Text before the email', 'rows' => 3, 'default' => 'Video recordings of ASEANAPOL events and activities are being compiled and will be published here shortly. For media enquiries, contact the ASEANAPOL Permanent Secretariat at', 'audit' => false],
-                    'email' => ['type' => 'text', 'label' => 'Email address', 'default' => 'info@aseanapol.org', 'audit' => false],
                     'after' => ['type' => 'text', 'label' => 'Text after the email', 'default' => '.', 'audit' => false],
                 ],
             ],
@@ -280,9 +280,9 @@ return [
             'banner' => [
                 'label'  => 'Information banner',
                 'toggle' => true,
+                'help'   => 'Contact e-mail is managed in Shared facts → Secretariat.',
                 'fields' => [
                     'text'  => ['type' => 'textarea', 'label' => 'Text before the email', 'rows' => 3, 'default' => 'Digital copies of ASEANAPOL newsletters will be made available for download as they are cleared for public release. Enquiries can be directed to'],
-                    'email' => ['type' => 'text', 'label' => 'Email address', 'default' => 'info@aseanapol.org'],
                     'after' => ['type' => 'text', 'label' => 'Text after the email', 'default' => '.'],
                 ],
             ],

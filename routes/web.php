@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Route;
 // =====================================================
 // ADMIN (no locale prefix)
 // =====================================================
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::get('sitemap.xml', \App\Http\Controllers\SitemapController::class)->name('sitemap');
+
+Route::prefix('admin')->name('admin.')->middleware('admin.ip')->group(function () {
     Route::get('login', [Admin\AuthController::class, 'login'])->name('login');
-    Route::post('login', [Admin\AuthController::class, 'authenticate'])->middleware('throttle:6,1')->name('authenticate');
+    Route::post('login', [Admin\AuthController::class, 'authenticate'])->name('authenticate');
     Route::post('logout', [Admin\AuthController::class, 'logout'])->name('logout');
 
     Route::middleware('admin.auth')->group(function () {
@@ -201,3 +203,6 @@ Route::middleware([SetLocale::class])
         Route::get('/guidelines/policy-guidelines-for-accepting-observers-and-dialogue-partners-with-aseanapol', [PageController::class, 'guidelinesObserversDialogue'])->name('guidelines.observers-dialogue');
 
     });
+
+// Any unmatched URL (incl. /admin/*) gets the standard 404 through the web middleware stack (security headers).
+Route::any('{any}', fn () => abort(404))->where('any', '.*');

@@ -78,10 +78,11 @@
                            class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
                             {{ cms('newsmedia.news-list', 'labels.read_more') }} <span class="material-symbols-outlined text-base">arrow_forward</span>
                         </a>
-                        @if(str_starts_with($article->title, 'ASEANAPOL Anti-Scam Study Visit'))
+                        @if($article->sponsorItems())
                         <div class="flex items-center gap-2 flex-shrink-0">
-                            <img src="{{ asset('media/logos/jaif-cooperation.png') }}" alt="Japan-ASEAN Cooperation (JAIF)" class="h-8 w-auto">
-                            <img src="{{ asset('media/logos/japan-flag.png') }}" alt="Japan" class="h-8 w-auto">
+                            @foreach($article->sponsorItems() as $sp)
+                            <img src="{{ asset($sp['logo']) }}" alt="{{ $sp['name'] ?? '' }}" class="h-8 w-auto">
+                            @endforeach
                         </div>
                         @endif
                     </div>

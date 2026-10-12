@@ -58,7 +58,7 @@
                 <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">{{ cms('careers.vacancies', 'updates.heading') }}</p>
                 <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                     {{ cms('careers.vacancies', 'updates.text_before') }}
-                    <a href="mailto:{{ cms('careers.vacancies', 'updates.email') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ cms('careers.vacancies', 'updates.email') }}</a>{{ cms('careers.vacancies', 'updates.text_after') }}
+                    @if(shared('secretariat', 'contact.email_general'))<a href="mailto:{{ shared('secretariat', 'contact.email_general') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ shared('secretariat', 'contact.email_general') }}</a>@endif{{ cms('careers.vacancies', 'updates.text_after') }}
                 </p>
             </div>
         </div>

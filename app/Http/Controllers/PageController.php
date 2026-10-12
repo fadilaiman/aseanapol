@@ -359,7 +359,7 @@ class PageController extends Controller
             'message' => ['required', 'string', 'min:10', 'max:5000'],
         ]);
 
-        Mail::to(cms('site.contact-form', 'settings.recipient') ?: 'aseanapolsec@aseanapol.org')
+        Mail::to(\App\Support\Shared::secretariat('contact.email_secretariat') ?: 'aseanapolsec@aseanapol.org')
             ->send(new ContactInquiryMail(
                 senderName:     $validated['name'],
                 senderEmail:    $validated['email'],

@@ -133,14 +133,13 @@ return [
             'intro' => [
                 'label'  => 'Introduction note',
                 'toggle' => true,
-                'help'   => 'The paragraph is built from text + two links (to the Event Calendar and to an e-mail address).',
+                'help'   => 'The paragraph is built from text + two links (to the Event Calendar and to an e-mail address). Contact e-mail is managed in Shared facts → Secretariat. Write {members} where the number of member countries (in words) should appear.',
                 'fields' => [
                     'icon'        => ['type' => 'icon', 'label' => 'Icon', 'default' => 'school'],
-                    'before'      => ['type' => 'textarea', 'label' => 'Text before the calendar link', 'rows' => 3, 'default' => 'ASEANAPOL training programs are open to police officers from all ten member countries. Training schedules are confirmed at the annual ATCM and published in the'],
+                    'before'      => ['type' => 'textarea', 'label' => 'Text before the calendar link', 'rows' => 3, 'default' => 'ASEANAPOL training programs are open to police officers from all {members} member countries. Training schedules are confirmed at the annual ATCM and published in the'],
                     'calendar'    => ['type' => 'text', 'label' => 'Calendar link text', 'default' => 'Event Calendar'],
                     'after_cal'   => ['type' => 'text', 'label' => 'Punctuation after the calendar link', 'default' => '.'],
                     'middle'      => ['type' => 'textarea', 'label' => 'Text before the e-mail link', 'rows' => 2, 'default' => 'For nominations and enquiries, contact your national ASEANAPOL focal point or the Secretariat at'],
-                    'email'       => ['type' => 'text', 'label' => 'E-mail address', 'default' => 'info@aseanapol.org'],
                     'after_email' => ['type' => 'text', 'label' => 'Punctuation after the e-mail', 'default' => '.'],
                 ],
             ],

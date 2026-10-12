@@ -36,11 +36,31 @@
         </div>
         @endif
 
-        @if(cms_on('cooperation.index', 'partners'))
+        @if(cms_on('cooperation.index', 'partners') && \App\Support\Shared::partners('cooperation'))
         <h2 class="text-xl font-bold text-primary dark:text-white mb-6">{{ cms('cooperation.index', 'partners.heading') }}</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            @foreach(cms('cooperation.index', 'partners.items') as $partner)
+            @php
+                // Name / full name / website / order come from Shared facts; icon, category, logo, description are local presentation.
+                $coopCards = [];
+                foreach ((array) \App\Support\Cms::raw('cooperation.index', 'partners.items', []) as $c) {
+                    if (is_array($c) && !empty($c['key'])) { $coopCards[$c['key']] = $c; }
+                }
+            @endphp
+            @foreach(\App\Support\Shared::partners('cooperation') as $sp)
+            @php
+                $local = $coopCards[$sp['key']] ?? [];
+                if (!empty($local['_hide'])) { continue; }
+                $partner = [
+                    'name'     => $sp['name'],
+                    'full'     => $sp['full_name'],
+                    'website'  => $sp['website'],
+                    'category' => $local['category'] ?? '',
+                    'icon'     => ($local['icon'] ?? '') !== '' ? $local['icon'] : ($sp['icon'] ?? ''),
+                    'logo'     => $local['logo'] ?? '',
+                    'desc'     => $local['desc'] ?? '',
+                ];
+            @endphp
             <div class="bg-white dark:bg-dark-card rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
                 <div class="flex items-start gap-3 mb-3">
                     <div class="w-10 h-10 bg-primary/8 dark:bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">

@@ -69,38 +69,12 @@ foreach ([
     $quick[] = ['label' => $l, 'link' => $k];
 }
 
-$directory = [
-    ['code' => 'bn', 'logo' => 'brunei-rbpf.png',    'country' => 'Brunei Darussalam', 'org' => 'Royal Brunei Police Force (RBPF)', 'tel' => '+673-2459 500', 'fax' => '+673 245 9527', 'email' => 'rbpf@aseanapol.org'],
-    ['code' => 'kh', 'logo' => 'cambodia-cnp.png',   'country' => 'Cambodia',          'org' => 'Cambodian National Police (CNP)', 'tel' => '+855 23216585', 'fax' => '+855 2321 6585', 'email' => 'cnp@aseanapol.org'],
-    ['code' => 'id', 'logo' => 'indonesia-polri.png', 'country' => 'Indonesia',         'org' => 'Indonesia National Police (INP)', 'tel' => '+021 739 3650', 'fax' => '+021 720 1402', 'email' => 'inp@aseanapol.org'],
-    ['code' => 'la', 'logo' => 'laos-lpp.png',       'country' => 'Lao PDR',           'org' => 'Lao Police Force (LPF)', 'tel' => '+85 6213 16323', 'fax' => '+856 2131 6323', 'email' => 'lpf@aseanapol.org'],
-    ['code' => 'my', 'logo' => 'malaysia-pdrm.png',  'country' => 'Malaysia',          'org' => 'Royal Malaysia Police (RMP)', 'tel' => '+603 2266 2222', 'fax' => '+603 2070 7500', 'email' => 'rmp@aseanapol.org'],
-    ['code' => 'mm', 'logo' => 'myanmar-mpf.png',    'country' => 'Myanmar',           'org' => 'Myanmar Police Force (MPF)', 'tel' => '+95 6741 2066', 'fax' => '+95 6741 2188', 'email' => 'mpf@aseanapol.org'],
-    ['code' => 'ph', 'logo' => 'philippines-pnp.png', 'country' => 'Philippines',       'org' => 'Philippines National Police (PNP)', 'tel' => '+632 8723 0401', 'fax' => '+632 7218549', 'email' => 'pnp@aseanapol.org'],
-    ['code' => 'sg', 'logo' => 'singapore-spf.png',  'country' => 'Singapore',         'org' => 'Singapore Police Force (SPF)', 'tel' => '1800 358 000', 'fax' => '+65 6256 1296', 'email' => 'spf@aseanapol.org'],
-    ['code' => 'th', 'logo' => 'thailand-rtp.png',   'country' => 'Thailand',          'org' => 'Royal Thai Police (RTP)', 'tel' => '+6622053001', 'fax' => '+6622533856', 'email' => 'rtp@aseanapol.org'],
-    ['code' => 'vn', 'logo' => 'vietnam-mps.png',    'country' => 'Viet Nam',          'org' => 'Office of Investigation Police Agency, Vietnam Police Force (OIPA, VPF)', 'tel' => '+8424 3938 7173', 'fax' => '+8424 3938 7176', 'email' => 'vpf@aseanapol.org'],
-    ['code' => 'tl', 'logo' => 'timorleste-pntl.png', 'country' => 'Timor-Leste',       'org' => 'National Police of Timor-Leste (PNTL)', 'tel' => '—', 'fax' => '—', 'email' => 'pntl@aseanapol.org'],
-];
-
-// Contact page directory (same data, flag file instead of logo)
-$contactMembers = array_map(fn ($d) => [
-    'flag' => $d['code'], 'country' => $d['country'], 'org' => $d['org'], 'tel' => $d['tel'], 'fax' => $d['fax'], 'email' => $d['email'],
-], $directory);
-
-$countries = [
-    ['code' => 'bn', 'name' => 'Brunei Darussalam', 'logo' => 'brunei-rbpf.png', 'short' => 'RBPF', 'since' => '1984'],
-    ['code' => 'kh', 'name' => 'Cambodia', 'logo' => 'cambodia-cnp.png', 'short' => 'CNP', 'since' => '2000'],
-    ['code' => 'id', 'name' => 'Indonesia', 'logo' => 'indonesia-polri.png', 'short' => 'INP', 'since' => '1981'],
-    ['code' => 'la', 'name' => 'Lao PDR', 'logo' => 'laos-lpp.png', 'short' => 'LPF', 'since' => '1998'],
-    ['code' => 'my', 'name' => 'Malaysia', 'logo' => 'malaysia-pdrm.png', 'short' => 'RMP', 'since' => '1981'],
-    ['code' => 'mm', 'name' => 'Myanmar', 'logo' => 'myanmar-mpf.png', 'short' => 'MPF', 'since' => '1998'],
-    ['code' => 'ph', 'name' => 'Philippines', 'logo' => 'philippines-pnp.png', 'short' => 'PNP', 'since' => '1981'],
-    ['code' => 'sg', 'name' => 'Singapore', 'logo' => 'singapore-spf.png', 'short' => 'SPF', 'since' => '1981'],
-    ['code' => 'th', 'name' => 'Thailand', 'logo' => 'thailand-rtp.png', 'short' => 'RTP', 'since' => '1981'],
-    ['code' => 'vn', 'name' => 'Viet Nam', 'logo' => 'vietnam-mps.png', 'short' => 'OIPA, VPF', 'since' => '1996'],
-    ['code' => 'tl', 'name' => 'Timor-Leste', 'logo' => 'timorleste-pntl.png', 'short' => 'PNTL', 'since' => '2026'],
-];
+// Partner choices for the footer links / landing cards: the rows of shared.partners (names/websites live there).
+$sharedReg = (static fn () => require __DIR__ . '/shared.php')();
+$partnerOptions = [];
+foreach (($sharedReg['partners']['sections']['list']['fields']['rows']['default'] ?? []) as $pr) {
+    $partnerOptions[$pr['key']] = $pr['name'];
+}
 
 $social = [];
 foreach ([
@@ -127,9 +101,7 @@ return [
                 'title_suffix' => ['type' => 'text', 'label' => 'Title text after the site name', 'default' => 'ASEAN Chiefs of Police', 'help' => 'Shown as "ASEANAPOL - <this text>" in the browser tab.'],
                 'description'  => ['type' => 'textarea', 'label' => 'Meta description', 'rows' => 2, 'default' => 'ASEANAPOL - ASEAN Chiefs of Police official portal. Together we keep this region safe.'],
             ]],
-            'brand' => ['label' => 'Logo & name', 'columns' => 2, 'fields' => [
-                'logo'     => ['type' => 'image', 'label' => 'Logo (header and footer)', 'default' => 'images/aseanapol-logo.png'],
-                'logo_alt' => ['type' => 'text', 'label' => 'Header logo alt text', 'default' => 'ASEANAPOL Logo'],
+            'brand' => ['label' => 'Logo & name', 'columns' => 2, 'help' => 'The logo image and its header alt text are managed in Shared facts → Organisation (identity).', 'fields' => [
                 'footer_logo_alt' => ['type' => 'text', 'label' => 'Footer logo alt text', 'default' => 'ASEANAPOL'],
                 'name'     => ['type' => 'text', 'label' => 'Name next to logo', 'default' => 'ASEANAPOL'],
                 'tagline'  => ['type' => 'text', 'label' => 'Small text under the name', 'default' => 'Secretariat'],
@@ -161,8 +133,8 @@ return [
             'sidebar' => ['label' => 'Right floating sidebar', 'fields' => [
                 'share_title' => ['type' => 'text', 'label' => 'Share button tooltip', 'default' => 'Share this page'],
             ]],
-            'footer_about' => ['label' => 'Footer — about column', 'fields' => [
-                'description' => ['type' => 'textarea', 'label' => 'Description', 'rows' => 3, 'default' => 'ASEANAPOL is the association of the national police forces of the eleven ASEAN member states, working together to enhance regional security and combat transnational crime.'],
+            'footer_about' => ['label' => 'Footer — about column', 'help' => 'Write {count_word} where the number of member states belongs (e.g. "eleven"); it is filled from Shared facts → Member countries.', 'fields' => [
+                'description' => ['type' => 'textarea', 'label' => 'Description', 'rows' => 3, 'default' => 'ASEANAPOL is the association of the national police forces of the {count_word} ASEAN member states, working together to enhance regional security and combat transnational crime.'],
             ]],
             'footer_links' => ['label' => 'Footer — link columns', 'fields' => [
                 'quick_title' => ['type' => 'text', 'label' => 'Quick links heading', 'default' => 'Quick Links'],
@@ -171,15 +143,14 @@ return [
                     'link'  => ['type' => 'text', 'label' => 'Link', 'help' => $linkHelp],
                 ], 'default' => $quick],
                 'partners_title' => ['type' => 'text', 'label' => 'Partners heading', 'default' => 'Partners'],
-                'partner_links' => ['type' => 'repeater', 'label' => 'Partner links', 'item_label' => 'label', 'add_label' => 'Add partner link', 'fields' => [
-                    'label'   => ['type' => 'text', 'label' => 'Label'],
-                    'link'    => ['type' => 'text', 'label' => 'Link', 'help' => $linkHelp],
+                'partner_links' => ['type' => 'repeater', 'label' => 'Partner links (names and websites come from Shared facts → Partner organisations)', 'item_label' => 'partner', 'add_label' => 'Add partner link', 'fields' => [
+                    'partner' => ['type' => 'select', 'label' => 'Partner organisation', 'options' => $partnerOptions],
                     'new_tab' => ['type' => 'boolean', 'label' => 'Open in a new tab'],
                 ], 'default' => [
-                    ['label' => 'INTERPOL', 'link' => 'https://www.interpol.int', 'new_tab' => true],
-                    ['label' => 'Europol', 'link' => 'https://www.europol.europa.eu', 'new_tab' => true],
-                    ['label' => 'UNODC', 'link' => 'https://www.unodc.org', 'new_tab' => true],
-                    ['label' => 'ACCBP', 'link' => '#', 'new_tab' => false],
+                    ['partner' => 'interpol', 'new_tab' => true],
+                    ['partner' => 'europol', 'new_tab' => true],
+                    ['partner' => 'unodc', 'new_tab' => true],
+                    ['partner' => 'accbp', 'new_tab' => false],
                 ]],
                 'resources_title' => ['type' => 'text', 'label' => 'Resources heading', 'default' => 'Resources'],
                 'resource_links' => ['type' => 'repeater', 'label' => 'Resource links', 'item_label' => 'label', 'add_label' => 'Add resource link', 'fields' => [
@@ -191,12 +162,8 @@ return [
                     ['label' => 'ASEANAPOL Database', 'link' => '#', 'new_tab' => false],
                 ]],
             ]],
-            'footer_contact' => ['label' => 'Footer — Secretariat contact block', 'columns' => 2, 'fields' => [
+            'footer_contact' => ['label' => 'Footer — Secretariat contact block', 'help' => 'Address, phone, fax and e-mail are managed in Shared facts → Secretariat contact & e-ADS.', 'fields' => [
                 'title'   => ['type' => 'text', 'label' => 'Heading', 'default' => 'Contact Us'],
-                'address' => ['type' => 'textarea', 'label' => 'Address', 'rows' => 3, 'default' => 'Level 13, Tower 2, Bank Rakyat Twin Tower, No 33, Jalan Rakyat, 50470 Kuala Lumpur, Malaysia'],
-                'phone'   => ['type' => 'text', 'label' => 'Phone', 'default' => '+603-22602222'],
-                'fax'     => ['type' => 'text', 'label' => 'Fax', 'default' => '+603-22602205'],
-                'email'   => ['type' => 'text', 'label' => 'Email', 'default' => 'aseanapolsec@aseanapol.org'],
             ]],
             'newsletter' => ['label' => 'Footer — "Stay updated" box', 'toggle' => true, 'columns' => 2, 'fields' => [
                 'title'       => ['type' => 'text', 'label' => 'Heading', 'default' => 'Stay Updated'],
@@ -238,16 +205,17 @@ return [
             'slider' => ['label' => 'News slider (latest news, automatic)', 'toggle' => true, 'help' => 'The slides come from the News module; here you can only hide the slider or change how many slides appear.', 'fields' => [
                 'max_slides' => ['type' => 'number', 'label' => 'Maximum slides', 'default' => 10],
             ]],
-            'stats' => ['label' => 'Statistics bar', 'toggle' => true, 'fields' => [
+            'stats' => ['label' => 'Statistics bar', 'toggle' => true, 'help' => 'The numbers for members, dialogue partners, conferences and founding year are counted/read from Shared facts (Member countries, Dialogue partners, Organisation); only the labels and icons are edited here. Pick "Custom" to type a number yourself.', 'fields' => [
                 'items' => ['type' => 'repeater', 'label' => 'Counters', 'item_label' => 'label', 'add_label' => 'Add counter', 'fields' => [
-                    'value' => ['type' => 'text', 'label' => 'Number / value'],
+                    'kind'  => ['type' => 'select', 'label' => 'Number comes from', 'options' => ['members' => 'Member countries (count)', 'dialogue' => 'Dialogue partners (count)', 'conferences' => 'Annual conferences (Shared > Organisation)', 'founded' => 'Founding year (Shared > Organisation)', 'custom' => 'Custom (type below)'], 'default' => 'custom'],
+                    'value' => ['type' => 'text', 'label' => 'Custom number / value (only for "Custom")', 'audit' => false /* shown only for kind=custom rows (verified in site.mjs); the default rows are all shared-derived */],
                     'label' => ['type' => 'text', 'label' => 'Label'],
                     'icon'  => ['type' => 'icon', 'label' => 'Icon'],
                 ], 'default' => [
-                    ['value' => '11', 'label' => 'Member States', 'icon' => 'public'],
-                    ['value' => '12', 'label' => 'Dialogue Partners', 'icon' => 'handshake'],
-                    ['value' => '44+', 'label' => 'Annual Conferences', 'icon' => 'groups'],
-                    ['value' => '1981', 'label' => 'Established', 'icon' => 'calendar_month'],
+                    ['kind' => 'members', 'value' => '', 'label' => 'Member States', 'icon' => 'public'],
+                    ['kind' => 'dialogue', 'value' => '', 'label' => 'Dialogue Partners', 'icon' => 'handshake'],
+                    ['kind' => 'conferences', 'value' => '', 'label' => 'Annual Conferences', 'icon' => 'groups'],
+                    ['kind' => 'founded', 'value' => '', 'label' => 'Established', 'icon' => 'calendar_month'],
                 ]],
             ]],
             'news' => ['label' => 'Latest news block (cards are automatic)', 'toggle' => true, 'columns' => 2, 'fields' => [
@@ -282,14 +250,13 @@ return [
                     ['month' => 'JUL', 'day' => '22', 'year' => '2026', 'end_day' => '26', 'end_month' => 'JUL', 'title' => '44th ASEANAPOL Conference', 'location' => 'Manila, Philippines'],
                 ]],
             ]],
-            'about' => ['label' => 'About — vision & mission', 'toggle' => true, 'fields' => [
+            'about' => ['label' => 'About — vision & mission', 'toggle' => true, 'help' => 'The quoted vision tagline under the Vision card is managed in Shared facts → Organisation (identity → tagline).', 'fields' => [
                 'badge'          => ['type' => 'text', 'label' => 'Badge', 'default' => 'About ASEANAPOL'],
                 'title'          => ['type' => 'text', 'label' => 'Heading', 'default' => 'Our Vision & Mission'],
                 'vision_heading' => ['type' => 'text', 'label' => 'Vision heading', 'default' => 'Vision'],
                 'vision_before'  => ['type' => 'text', 'label' => 'Vision text — before highlighted words', 'default' => 'To be the'],
                 'vision_strong'  => ['type' => 'text', 'label' => 'Vision text — highlighted words', 'default' => 'premier regional police organisation'],
                 'vision_after'   => ['type' => 'textarea', 'label' => 'Vision text — after highlighted words', 'rows' => 2, 'default' => 'that fosters cooperation in policing among ASEAN Member States and beyond, ensuring a safe and secure region for all.'],
-                'vision_quote'   => ['type' => 'text', 'label' => 'Vision quote', 'default' => '"Toward a peaceful and crime-free ASEAN region"'],
                 'mission_heading' => ['type' => 'text', 'label' => 'Mission heading', 'default' => 'Mission'],
                 'missions' => ['type' => 'list', 'label' => 'Mission points (one per line)', 'default' => [
                     'Enhance regional police cooperation in combating transnational crime',
@@ -298,20 +265,13 @@ return [
                     'Build strategic partnerships with international law enforcement organisations',
                 ]],
             ]],
-            'members' => ['label' => 'Member countries strip', 'toggle' => true, 'fields' => [
+            'members' => ['label' => 'Member countries strip', 'toggle' => true, 'help' => 'The countries, police acronyms, logos and "member since" years come from Shared facts → Member countries (hide a member there to remove it here). Write {Count_word} in the subtitle for the number of members.', 'fields' => [
                 'badge'    => ['type' => 'text', 'label' => 'Badge', 'default' => 'Our Members'],
                 'title'    => ['type' => 'text', 'label' => 'Heading', 'default' => 'Member Countries'],
-                'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => 'Eleven ASEAN member states united in promoting police professionalism and regional security cooperation.'],
+                'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => '{Count_word} ASEAN member states united in promoting police professionalism and regional security cooperation.'],
                 'since_word' => ['type' => 'text', 'label' => '"Since" word on the cards', 'default' => 'Since'],
-                'items' => ['type' => 'repeater', 'label' => 'Countries', 'item_label' => 'name', 'add_label' => 'Add country', 'columns' => 2, 'fields' => [
-                    'code'  => ['type' => 'text', 'label' => 'Flag code (2 letters, e.g. my)'],
-                    'name'  => ['type' => 'text', 'label' => 'Country name'],
-                    'logo'  => ['type' => 'text', 'label' => 'Logo file (in /media/police-logo/) or URL'],
-                    'short' => ['type' => 'text', 'label' => 'Police acronym'],
-                    'since' => ['type' => 'text', 'label' => 'Member since (year)'],
-                ], 'default' => $countries],
             ]],
-            'directory' => ['label' => 'Member directory table', 'toggle' => true, 'fields' => [
+            'directory' => ['label' => 'Member directory table', 'toggle' => true, 'help' => 'The rows (country, police force, telephone, fax, e-mail, logo) come from Shared facts → Member countries; only the headings and column titles are edited here.', 'fields' => [
                 'badge'    => ['type' => 'text', 'label' => 'Badge', 'default' => 'Directory'],
                 'title'    => ['type' => 'text', 'label' => 'Heading', 'default' => 'Member Directory'],
                 'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => 'Contact information for all ASEANAPOL member country national police forces.'],
@@ -320,15 +280,6 @@ return [
                 'col_tel'     => ['type' => 'text', 'label' => 'Column: telephone', 'default' => 'Telephone'],
                 'col_fax'     => ['type' => 'text', 'label' => 'Column: fax', 'default' => 'Fax'],
                 'col_email'   => ['type' => 'text', 'label' => 'Column: email', 'default' => 'Email'],
-                'items' => ['type' => 'repeater', 'label' => 'Directory rows', 'item_label' => 'country', 'add_label' => 'Add row', 'columns' => 2, 'fields' => [
-                    'code'    => ['type' => 'text', 'label' => 'Flag code'],
-                    'logo'    => ['type' => 'text', 'label' => 'Logo file (in /media/police-logo/) or URL'],
-                    'country' => ['type' => 'text', 'label' => 'Country'],
-                    'org'     => ['type' => 'text', 'label' => 'Organisation'],
-                    'tel'     => ['type' => 'text', 'label' => 'Telephone'],
-                    'fax'     => ['type' => 'text', 'label' => 'Fax'],
-                    'email'   => ['type' => 'text', 'label' => 'Email (or www. address)'],
-                ], 'default' => $directory],
             ]],
             'resources' => ['label' => 'Quick resources', 'toggle' => true, 'fields' => [
                 'badge' => ['type' => 'text', 'label' => 'Badge', 'default' => 'Quick Resources'],
@@ -349,17 +300,14 @@ return [
                 'badge'    => ['type' => 'text', 'label' => 'Badge', 'default' => 'Partners'],
                 'title'    => ['type' => 'text', 'label' => 'Heading', 'default' => 'Partners'],
                 'subtitle' => ['type' => 'text', 'label' => 'Subtitle', 'default' => 'Dialogue Partners'],
-                'items' => ['type' => 'repeater', 'label' => 'Partner cards', 'item_label' => 'name', 'add_label' => 'Add partner', 'fields' => [
-                    'name' => ['type' => 'text', 'label' => 'Short name'],
-                    'full' => ['type' => 'text', 'label' => 'Full name'],
-                    'icon' => ['type' => 'icon', 'label' => 'Icon'],
-                    'url'  => ['type' => 'text', 'label' => 'Website', 'help' => $linkHelp],
+                'items' => ['type' => 'repeater', 'label' => 'Partner cards (name, full name, icon and website come from Shared facts → Partner organisations)', 'item_label' => 'partner', 'add_label' => 'Add partner', 'fields' => [
+                    'partner' => ['type' => 'select', 'label' => 'Partner organisation', 'options' => $partnerOptions],
                     'desc' => ['type' => 'textarea', 'label' => 'Description', 'rows' => 3],
                 ], 'default' => [
-                    ['name' => 'INTERPOL', 'full' => 'International Criminal Police Organization', 'icon' => 'policy', 'url' => 'https://www.interpol.int', 'desc' => 'Global police cooperation organisation enabling law enforcement worldwide to work together to make the world a safer place.'],
-                    ['name' => 'Europol', 'full' => 'European Union Agency for Law Enforcement Cooperation', 'icon' => 'shield', 'url' => 'https://www.europol.europa.eu', 'desc' => "The EU's law enforcement agency supporting EU member states in their fight against terrorism, cybercrime and other serious crime."],
-                    ['name' => 'UNODC', 'full' => 'United Nations Office on Drugs and Crime', 'icon' => 'balance', 'url' => 'https://www.unodc.org', 'desc' => 'The global leader in the fight against illicit drugs, international crime, corruption, and terrorism.'],
-                    ['name' => 'ACCBP', 'full' => 'ASEAN Chiefs of Customs & Border Police', 'icon' => 'security', 'url' => '#', 'desc' => 'Regional cooperation body focused on customs and border enforcement across ASEAN member states.'],
+                    ['partner' => 'interpol', 'desc' => 'Global police cooperation organisation enabling law enforcement worldwide to work together to make the world a safer place.'],
+                    ['partner' => 'europol', 'desc' => "The EU's law enforcement agency supporting EU member states in their fight against terrorism, cybercrime and other serious crime."],
+                    ['partner' => 'unodc', 'desc' => 'The global leader in the fight against illicit drugs, international crime, corruption, and terrorism.'],
+                    ['partner' => 'accbp', 'desc' => 'Regional cooperation body focused on customs and border enforcement across ASEAN member states.'],
                 ]],
             ]],
         ],
@@ -374,42 +322,25 @@ return [
                 'title'    => ['type' => 'text', 'label' => 'Title', 'default' => 'Contact Us'],
                 'subtitle' => ['type' => 'textarea', 'label' => 'Subtitle', 'rows' => 2, 'default' => 'Get in touch with the ASEANAPOL Permanent Secretariat.'],
             ]],
-            'secretariat' => ['label' => 'Secretariat contact details', 'columns' => 2, 'fields' => [
+            'secretariat' => ['label' => 'Secretariat contact details', 'columns' => 2, 'help' => 'The address, phone, fax and e-mail values are managed in Shared facts → Secretariat contact & e-ADS; only the headings and labels are edited here.', 'fields' => [
                 'heading'    => ['type' => 'text', 'label' => 'Heading', 'default' => 'Permanent Secretariat'],
                 'subheading' => ['type' => 'text', 'label' => 'Sub-heading', 'default' => 'ASEANAPOL Headquarters, Kuala Lumpur'],
                 'address_label' => ['type' => 'text', 'label' => 'Address label', 'default' => 'Address'],
-                'address'    => ['type' => 'textarea', 'label' => 'Address (one line per row)', 'rows' => 3, 'default' => "Level 13, Tower 2, Bank Rakyat Twin Tower\nNo. 33, Jalan Rakyat\n50470 Kuala Lumpur, Malaysia"],
                 'phone_label' => ['type' => 'text', 'label' => 'Phone label', 'default' => 'Phone'],
-                'phone'      => ['type' => 'text', 'label' => 'Phone (displayed)', 'default' => '+603-22602222'],
-                'phone_link' => ['type' => 'text', 'label' => 'Phone link (tel:)', 'default' => 'tel:+60322602222'],
                 'fax_label'  => ['type' => 'text', 'label' => 'Fax label', 'default' => 'Fax'],
-                'fax'        => ['type' => 'text', 'label' => 'Fax', 'default' => '+603-22602205'],
                 'email_label' => ['type' => 'text', 'label' => 'Email label', 'default' => 'Email'],
-                'email'      => ['type' => 'text', 'label' => 'Email', 'default' => 'aseanapolsec@aseanapol.org'],
             ]],
-            'hours' => ['label' => 'Office hours note', 'toggle' => true, 'fields' => [
-                'text' => ['type' => 'text', 'label' => 'Text', 'default' => 'Office hours: Monday–Friday, 8:30 AM – 5:30 PM (MYT, UTC+8)'],
-            ]],
-            'map' => ['label' => 'Map', 'toggle' => true, 'fields' => [
-                'src' => ['type' => 'url', 'label' => 'Map embed URL (Google Maps "output=embed" link)', 'default' => 'https://maps.google.com/maps?q=Menara+Kembar+Bank+Rakyat,+33+Jalan+Rakyat,+Kuala+Lumpur&output=embed&z=17'],
-            ]],
-            'directory' => ['label' => 'Member country directory', 'toggle' => true, 'fields' => [
+            'hours' => ['label' => 'Office hours note', 'toggle' => true, 'help' => 'The text is managed in Shared facts → Secretariat contact & e-ADS (office hours). Here you can only show or hide the note.', 'fields' => []],
+            'map' => ['label' => 'Map', 'toggle' => true, 'help' => 'The map location is managed in Shared facts → Secretariat contact & e-ADS (map embed URL). Here you can only show or hide the map.', 'fields' => []],
+            'directory' => ['label' => 'Member country directory', 'toggle' => true, 'help' => 'The rows come from Shared facts → Member countries. Write {count_num} in the sub-heading for the number of members.', 'fields' => [
                 'heading'    => ['type' => 'text', 'label' => 'Heading', 'default' => 'Member Country Directory'],
-                'subheading' => ['type' => 'text', 'label' => 'Sub-heading', 'default' => 'INTERPOL/ASEANAPOL liaison contact points for all 11 member states.'],
+                'subheading' => ['type' => 'text', 'label' => 'Sub-heading', 'default' => 'INTERPOL/ASEANAPOL liaison contact points for all {count_num} member states.'],
                 'col_country' => ['type' => 'text', 'label' => 'Column: country', 'default' => 'Country'],
                 'col_org'     => ['type' => 'text', 'label' => 'Column: organisation', 'default' => 'Org.'],
                 'col_phone'   => ['type' => 'text', 'label' => 'Column: phone', 'default' => 'Phone'],
                 'col_fax'     => ['type' => 'text', 'label' => 'Column: fax', 'default' => 'Fax'],
                 'col_contact' => ['type' => 'text', 'label' => 'Column: contact', 'default' => 'Contact'],
-                'portal_label' => ['type' => 'text', 'label' => 'Link text for rows that have a web link instead of an e-mail', 'default' => 'e-Services portal'],
-                'items' => ['type' => 'repeater', 'label' => 'Directory rows', 'item_label' => 'country', 'add_label' => 'Add row', 'columns' => 2, 'fields' => [
-                    'flag'    => ['type' => 'text', 'label' => 'Flag code (2 letters)'],
-                    'country' => ['type' => 'text', 'label' => 'Country'],
-                    'org'     => ['type' => 'text', 'label' => 'Organisation'],
-                    'tel'     => ['type' => 'text', 'label' => 'Phone'],
-                    'fax'     => ['type' => 'text', 'label' => 'Fax'],
-                    'email'   => ['type' => 'text', 'label' => 'Email'],
-                ], 'default' => $contactMembers],
+                'portal_label' => ['type' => 'text', 'label' => 'Link text for rows that have a web link instead of an e-mail', 'default' => 'e-Services portal', 'audit' => false /* only for a member with a website but no e-mail (Shared facts); every default member has an e-mail */],
             ]],
             'form' => ['label' => 'Inquiry form (hidden until a heading is entered)', 'columns' => 2, 'help' => 'The public inquiry form is not currently shown on the page. Enter a heading to display it; clear the heading to hide it. Delivery settings are on the "Contact form delivery" page.', 'fields' => [
                 'heading'    => ['type' => 'text', 'label' => 'Heading (blank = form hidden)', 'default' => ''],
@@ -431,8 +362,7 @@ return [
     'contact-form' => [
         'label' => 'Contact form delivery',
         'sections' => [
-            'settings' => ['label' => 'Delivery settings', 'fields' => [
-                'recipient' => ['type' => 'text', 'label' => 'Send inquiries to (email address)', 'default' => 'aseanapolsec@aseanapol.org'],
+            'settings' => ['label' => 'Delivery settings', 'help' => 'Inquiries are sent to the Secretariat e-mail managed in Shared facts → Secretariat contact & e-ADS.', 'fields' => [
                 'success_message' => ['type' => 'textarea', 'label' => 'Success message', 'rows' => 2, 'default' => 'Thank you, :name. Your message has been sent. We will respond within 2–3 business days.', 'help' => 'Use :name where the sender\'s name should appear.'],
             ]],
         ],

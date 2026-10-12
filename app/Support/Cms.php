@@ -114,6 +114,11 @@ class Cms
                 return $def['default'] ?? [];
             }
 
+            // a scalar field (text, url, number, ...) must never hold an array (corrupt row) - it would 500 every page that prints it
+            if ($def && is_array($blocks[$path]) && !in_array($def['type'] ?? '', ['repeater', 'list'], true)) {
+                return $def['default'] ?? $default;
+            }
+
             return $blocks[$path];
         }
 

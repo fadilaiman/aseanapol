@@ -18,7 +18,12 @@ const tmp = (n, extra) => { const f = `${process.env.TEMP || '.'}/${n}`; fs.writ
 await openEditor(page, HF);
 await page.fill('input[name="f[footer_links][quick_links][0][link]"]', '/en/qa-footer-target');
 await page.fill('input[name="f[footer_links][quick_links][0][label]"]', 'QA Footer Label');
-await page.fill('input[name="f[footer_contact][phone]"]', '+60 QA 12345');
+await save(page);
+// footer phone is a shared fact (shared.secretariat) - edited there, restored at the end of this file
+await openEditor(page, 'shared.secretariat');
+const SEC_PHONE0 = await page.inputValue('input[name="f[contact][phone]"]');
+const SEC_EMAIL0 = await page.inputValue('input[name="f[contact][email_secretariat]"]');
+await page.fill('input[name="f[contact][phone]"]', '+60 QA 12345');
 await save(page);
 for (const u of ['/en/news-media/news', '/en/contact-us']) {
   const h = await get(u);
@@ -84,11 +89,12 @@ check(R, 'hiding slider removes hero slides', !(await get('/en')).includes('id="
 // ---------- contact: show form, submit it
 await openEditor(page, CON);
 await page.fill('input[name="f[form][heading]"]', 'Send an inquiry');
-await page.fill('input[name="f[secretariat][phone]"]', '+603 QA PHONE');
 await save(page);
-await openEditor(page, CF);
-await page.fill('input[name="f[settings][recipient]"]', 'qa-recipient@example.test');
+await openEditor(page, 'shared.secretariat');
+await page.fill('input[name="f[contact][phone]"]', '+603 QA PHONE');
+await page.fill('input[name="f[contact][email_secretariat]"]', 'qa-recipient@example.test');
 await save(page);
+check(R, 'contact-form page has no recipient field any more (shared)', (await (async () => { await openEditor(page, CF); return page.locator('input[name="f[settings][recipient]"]').count(); })()) === 0);
 await page.goto(BASE + '/en/contact-us');
 check(R, 'contact form visible once heading set', (await page.locator('form[action*="contact-us"] textarea[name=message]').count()) === 1);
 check(R, 'contact phone edit visible', (await page.content()).includes('+603 QA PHONE'));
@@ -112,6 +118,21 @@ for (const k of [HF, LAND, CON]) {
 }
 
 for (const k of [HF, LAND, CON, CF]) await revertPage(page, k);
-check(R, 'revert restores default footer', !(await get('/en')).includes('QA Footer Label'));
+await openEditor(page, 'shared.secretariat');
+await page.fill('input[name="f[contact][phone]"]', SEC_PHONE0);
+await page.fill('input[name="f[contact][email_secretariat]"]', SEC_EMAIL0);
+await save(page);
+check(R, 'revert restores default footer', !(await get('/en')).includes('QA Footer Label') && !(await get('/en')).includes('+60 QA 12345'));
+
+// ---------- landing stats: derived numbers + a custom row keeps its own value
+h = await get('/en');
+check(R, 'stats derive 11 / 12 / 44+ / 1981 from shared', /text-4xl[^>]*>11<[\s\S]*?>12<[\s\S]*?>44\+<[\s\S]*?>1981</.test(h));
+await openEditor(page, LAND);
+const kindSel = 'select[name="f[stats][items][0][kind]"]';
+await page.selectOption(kindSel, 'custom');
+await page.fill('input[name="f[stats][items][0][value]"]', '99');
+await save(page);
+check(R, 'stats row switched to Custom shows its typed value', /text-4xl[^>]*>99</.test(await get('/en')));
+await revertPage(page, LAND);
 finish(R, errors);
 await browser.close();

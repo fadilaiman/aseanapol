@@ -41,11 +41,11 @@ try {
   guest = await pwRequest.newContext({ baseURL: BASE, maxRedirects: 0 });
   for (const r of ['/admin', '/admin/site-content', `/admin/site-content/${KEY}`, '/admin/news', '/admin/events', '/admin/publications', '/admin/newsletters', '/admin/video-gallery', '/admin/digital-library/items', '/admin/zz-qa-preview']) {
     const x = await guest.get(r);
-    check(R, `guest GET ${r} -> login`, x.status() === 302 && /\/admin\/login$/.test(x.headers().location || ''), x.status());
+    check(R, `guest GET ${r} -> 404 (admin hidden)`, x.status() === 404, x.status());
   }
   for (const [m, r] of [['put', `/admin/site-content/${KEY}`], ['post', `/admin/site-content/${KEY}/reset`], ['delete', '/admin/news/1'], ['post', '/admin/events/1/toggle']]) {
     const x = await guest[m](r);
-    check(R, `guest ${m} ${r} refused`, [405, 419, 302].includes(x.status()), x.status());
+    check(R, `guest ${m} ${r} refused`, [404, 405, 419, 302].includes(x.status()), x.status());
   }
   sql("delete from users where username='zz-qa-user'");
   const hash = execFileSync('php', ['-r', 'echo password_hash("NonAdmin#2026", PASSWORD_BCRYPT);'], { encoding: 'utf8' });
@@ -56,7 +56,7 @@ try {
   await nctx.click('button[type=submit]'); await nctx.waitForLoadState('networkidle');
   check(R, 'non-admin user cannot log in to /admin', /\/admin\/login/.test(nctx.url()), nctx.url());
   const nr = await nctx.request.get(BASE + '/admin/site-content', { maxRedirects: 0 });
-  check(R, 'non-admin session still redirected', nr.status() === 302, nr.status());
+  check(R, 'non-admin session gets 404', nr.status() === 404, nr.status());
   await nctx.context().close();
   sql("delete from users where username='zz-qa-user'");
   for (const [m, r] of [['put', EDIT], ['post', EDIT + '/reset'], ['post', `${BASE}/admin/events/1/toggle`], ['delete', `${BASE}/admin/news/zzz`], ['post', `${BASE}/admin/logout`]]) {

@@ -22,7 +22,7 @@
             <span class="material-symbols-outlined text-primary dark:text-accent text-xl flex-shrink-0 mt-0.5">info</span>
             <p class="text-sm text-gray-600 dark:text-gray-300">
                 {{ cms('newsmedia.newsletters', 'banner.text') }}
-                <a href="mailto:{{ cms('newsmedia.newsletters', 'banner.email') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ cms('newsmedia.newsletters', 'banner.email') }}</a>{{ cms('newsmedia.newsletters', 'banner.after') }}
+                @if(shared('secretariat', 'contact.email_general'))<a href="mailto:{{ shared('secretariat', 'contact.email_general') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ shared('secretariat', 'contact.email_general') }}</a>@endif{{ cms('newsmedia.newsletters', 'banner.after') }}
             </p>
         </div>
         @endif

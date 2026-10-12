@@ -24,7 +24,7 @@
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ cms('data.crime-statistics', 'notice.heading') }}</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-8">
             {{ cms('data.crime-statistics', 'notice.body') }}
-            <a href="mailto:{{ cms('data.crime-statistics', 'notice.email') }}" class="font-semibold text-primary dark:text-accent underline hover:no-underline">{{ cms('data.crime-statistics', 'notice.email') }}</a>.
+            @if(shared('secretariat', 'contact.email_general'))<a href="mailto:{{ shared('secretariat', 'contact.email_general') }}" class="font-semibold text-primary dark:text-accent underline hover:no-underline">{{ shared('secretariat', 'contact.email_general') }}</a>@endif.
         </p>
         @endif
 

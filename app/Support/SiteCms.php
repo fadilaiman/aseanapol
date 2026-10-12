@@ -61,6 +61,89 @@ class SiteCms
         return true;
     }
 
+    // ------------------------------------------------------------------ shared-fact helpers
+
+    private const NUMBER_WORDS = [1 => 'one', 2 => 'two', 3 => 'three', 4 => 'four', 5 => 'five', 6 => 'six', 7 => 'seven',
+        8 => 'eight', 9 => 'nine', 10 => 'ten', 11 => 'eleven', 12 => 'twelve', 13 => 'thirteen', 14 => 'fourteen',
+        15 => 'fifteen', 16 => 'sixteen', 17 => 'seventeen', 18 => 'eighteen', 19 => 'nineteen', 20 => 'twenty'];
+
+    /** Number of visible member forces (hidden rows excluded). */
+    public static function memberCount(): int
+    {
+        return count(Shared::members());
+    }
+
+    /** Member count in words: the stored word while it still matches the stored number, else derived from the live count. */
+    public static function memberCountWord(): string
+    {
+        $n = self::memberCount();
+        $stored = (int) Shared::org('counts.member_count_num', 0);
+        $word = trim((string) Shared::org('counts.member_count_word', ''));
+        if ($word !== '' && $stored === $n) {
+            return $word;
+        }
+
+        return self::NUMBER_WORDS[$n] ?? (string) $n;
+    }
+
+    /**
+     * Fill {count_word} / {Count_word} / {count_num} in a sentence template with the live member count.
+     * Text without placeholders (admin-edited prose, lang-file translations) passes through untouched.
+     */
+    public static function tpl(?string $text): string
+    {
+        $text = (string) $text;
+        if (!str_contains($text, '{')) {
+            return $text;
+        }
+        $word = self::memberCountWord();
+        $k = (array) (Shared::all('organisation')['key_dates'] ?? []);
+        $fc = explode(',', (string) ($k['first_conference_label'] ?? ''), 2);
+
+        return strtr($text, [
+            '{count_word}' => $word,
+            '{Count_word}' => ucfirst($word),
+            '{count_num}'  => (string) self::memberCount(),
+            // organisation key dates (Shared facts > Organisation)
+            '{founded_year}'            => (string) ($k['founded_year'] ?? ''),
+            '{founded_date}'            => (string) ($k['founded_date_label'] ?? ''),
+            '{first_conference_date}'   => trim($fc[0]),
+            '{first_conference_place}'  => trim($fc[1] ?? ''),
+            '{secretariat_established}' => (string) ($k['secretariat_established_label'] ?? ''),
+            '{conference_count}'        => (string) ($k['conference_count_label'] ?? ''),
+        ]);
+    }
+
+    /** "https://x.org/" -> "https://x.org" (shared websites carry a trailing slash on bare hosts; the site never showed it). */
+    public static function bareUrl(?string $url): string
+    {
+        return (string) preg_replace('#^(https?://[^/]+)/$#i', '$1', trim((string) $url));
+    }
+
+    /**
+     * A local list of partner references ([partner => key, ...]) joined with the shared partner facts.
+     * Each result row: name (short), full, icon, url (bare, '' when none), plus the original local fields.
+     * Rows pointing to an unknown/hidden partner are skipped.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public static function partnerRows(array $rows): array
+    {
+        $out = [];
+        foreach ($rows as $r) {
+            $p = Shared::partner((string) ($r['partner'] ?? ''));
+            if (!$p) {
+                continue;
+            }
+            $out[] = $r + [
+                'name' => $p['short'], 'full' => $p['full_name'] ?? '', 'icon' => $p['icon'] ?? '',
+                'url' => self::bareUrl($p['website'] ?? ''),
+            ];
+        }
+
+        return $out;
+    }
+
     public static function link(?string $value): string
     {
         $v = trim((string) $value);

@@ -2,7 +2,7 @@
 @section('title', $def['label'] . ' — Page Content')
 
 @section('content')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" integrity="sha384-ecIckRi4QlKYya/FQUbBUjS4qp65jF/J87Guw5uzTbO1C1Jfa/6kYmd6dXUF6D7i" crossorigin="anonymous">
 <style>
     .cms-rt .ql-editor { min-height: 120px; font-size: 14px; }
     .cms-section-hidden .cms-section-body { opacity: .45; }
@@ -94,7 +94,7 @@
 
 <form id="cms-reset-form" method="POST" action="{{ route('admin.cms.reset', $pageKey) }}">@csrf</form>
 
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" integrity="sha384-utBUCeG4SYaCm4m7GQZYr8Hy8Fpy3V4KGjBZaf4WTKOcwhCYpt/0PfeEe3HNlwx8" crossorigin="anonymous"></script>
 <script>
 (function () {
     var form = document.getElementById('cms-form');

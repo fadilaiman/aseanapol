@@ -12,7 +12,7 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
 {{-- Optional welcome banner (only when a headline is set) --}}
 @if(trim((string) cms($P, 'banner.headline')) !== '')
 <section class="relative overflow-hidden bg-primary text-white"
-         style="padding-top: calc(var(--header-h, 5rem) + 3rem); padding-bottom: 4rem;@if(cms_img($P, 'banner.image')) background-image: url('{{ cms_img($P, 'banner.image') }}'); background-size: cover; background-position: center;@endif">
+         style="padding-top: calc(var(--header-h, 5rem) + 3rem); padding-bottom: 4rem;@if(cms_img($P, 'banner.image')) background-image: url('{{ css_url(cms_img($P, 'banner.image')) }}'); background-size: cover; background-position: center;@endif">
     <div class="absolute inset-0 hero-gradient"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight max-w-3xl">{{ cms($P, 'banner.headline') }}</h1>
@@ -38,7 +38,7 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
         @if($item->thumbnail)
         {{-- Blurred full-bleed backdrop so no empty space ever shows --}}
         <div class="absolute inset-0 bg-cover bg-center scale-110 blur-2xl opacity-70"
-             style="background-image: url('{{ asset($item->thumbnail) }}');"></div>
+             style="background-image: url('{{ css_url(asset($item->thumbnail)) }}');"></div>
         {{-- Full image, always shown uncropped --}}
         <img src="{{ asset($item->thumbnail) }}"
              alt="{{ $item->title }}"
@@ -150,12 +150,22 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
                 @php
                     $stats = \App\Support\SiteCms::rows($P, 'stats.items', ['label' => ['landing.stats_members', 'landing.stats_partners', 'landing.stats_conferences', 'landing.stats_established']]);
                 @endphp
+                @php
+                    // counts/dates come from Shared facts; "custom" rows (and rows saved before this existed) keep their typed value
+                    $statValue = fn ($stat) => match ($stat['kind'] ?? 'custom') {
+                        'members'     => (string) \App\Support\SiteCms::memberCount(),
+                        'dialogue'    => (string) count(\App\Support\Shared::dialogue('dialogue')),
+                        'conferences' => (string) \App\Support\Shared::org('key_dates.conference_count_label'),
+                        'founded'     => (string) \App\Support\Shared::org('key_dates.founded_year'),
+                        default       => (string) ($stat['value'] ?? ''),
+                    };
+                @endphp
                 @foreach($stats as $stat)
                     <div class="text-center">
                         <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/5 dark:bg-primary/20 mb-3">
                             <span class="material-symbols-outlined text-primary dark:text-accent text-2xl">{{ $stat['icon'] }}</span>
                         </div>
-                        <div class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $stat['value'] }}</div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $statValue($stat) }}</div>
                         <div class="text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">{{ $stat['label'] }}</div>
                     </div>
                 @endforeach
@@ -322,7 +332,8 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
                 </div>
                 <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
                     @if(\App\Support\SiteCms::isDefault($P, ['about.vision_before', 'about.vision_strong', 'about.vision_after']) && app()->getLocale() !== 'en')
-                    {!! __('landing.vision_text') !!}
+                    {{-- lang-file text may be machine-translated: escape everything, then restore only the one known highlight tag --}}
+                    {!! str_replace(['&lt;strong class=&quot;text-primary dark:text-accent&quot;&gt;', '&lt;/strong&gt;'], ['<strong class="text-primary dark:text-accent">', '</strong>'], e(__('landing.vision_text'))) !!}
                     @else
                     {{ cms($P, 'about.vision_before') }} <strong class="text-primary dark:text-accent">{{ cms($P, 'about.vision_strong') }}</strong> {{ cms($P, 'about.vision_after') }}
                     @endif
@@ -330,7 +341,7 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
                 <div class="mt-6 pt-6 border-t border-primary/10 dark:border-primary/30">
                     <p class="text-sm text-primary/70 dark:text-accent/80 italic flex items-center gap-2">
                         <span class="material-symbols-outlined text-accent text-lg">format_quote</span>
-                        {{ $t('about.vision_quote', 'landing.vision_quote') }}
+                        {{ (app()->getLocale() !== 'en' && \App\Support\Shared::isDefault('organisation', 'identity.tagline')) ? __('landing.vision_quote') : '"' . \App\Support\Shared::org('identity.tagline') . '"' }}
                     </p>
                 </div>
             </div>
@@ -369,11 +380,14 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
                 {{ $t('members.badge', 'landing.members_badge') }}
             </div>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-primary dark:text-white">{{ $t('members.title', 'landing.members_title') }}</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ $t('members.subtitle', 'landing.members_subtitle') }}</p>
+            <p class="text-gray-500 dark:text-gray-400 mt-3 max-w-xl mx-auto">{{ \App\Support\SiteCms::tpl($t('members.subtitle', 'landing.members_subtitle')) }}</p>
         </div>
 
         @php
-            $countries = cms($P, 'members.items');
+            // from Shared facts -> Member countries (hidden members already removed)
+            $countries = array_map(fn ($m) => [
+                'code' => $m['iso'], 'name' => $m['country'], 'logo' => $m['landing_logo'], 'short' => $m['abbreviation'], 'since' => $m['joined_year'],
+            ], \App\Support\Shared::members());
         @endphp
 
         {{-- Infinite slider: overflow hidden + CSS marquee, duplicated for seamless loop --}}
@@ -467,7 +481,12 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
                         @php
-                            $directory = cms($P, 'directory.items');
+                            // from Shared facts -> Member countries; a force without a number shows a dash, as before
+                            $directory = array_map(fn ($m) => [
+                                'code' => $m['iso'], 'logo' => $m['landing_logo'], 'country' => $m['country'], 'org' => $m['name'],
+                                'tel' => trim((string) $m['tel']) !== '' ? $m['tel'] : '—', 'fax' => trim((string) $m['fax']) !== '' ? $m['fax'] : '—',
+                                'email' => $m['ncb_email'],
+                            ], \App\Support\Shared::members());
                         @endphp
                         @foreach($directory as $entry)
                             <tr class="hover:bg-primary/[0.02] dark:hover:bg-white/[0.03] transition-colors">
@@ -553,7 +572,8 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
         </div>
 
         @php
-            $partners = cms($P, 'partners.items');
+            // name / full name / icon / website come from Shared facts -> Partner organisations; descriptions stay local
+            $partners = \App\Support\SiteCms::partnerRows(cms($P, 'partners.items') ?? []);
         @endphp
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($partners as $partner)

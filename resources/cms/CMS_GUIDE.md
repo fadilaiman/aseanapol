@@ -86,3 +86,49 @@ Pattern = existing `Admin\NewsletterController` + `resources/views/admin/newslet
 
 ## 6. Reporting
 Finish with: pages/modules done, files touched, test results (regress + audit summary), anything deliberately left hardcoded and why.
+
+## 7. Shared facts (`shared.*`)
+Real-world facts that used to be restated on many pages live ONCE in registry group `shared` (`config/cms_pages/shared.php`,
+admin group "Shared facts (used across pages)", order 2). Pages must READ them, never copy them again. Defaults are the former
+hardcoded values (member pages are canonical where copies disagreed).
+
+| Page key | Content (field paths) |
+|---|---|
+| `shared.organisation` | `identity.{name_long,name_short,tagline,logo,logo_alt}`, `key_dates.{founded_year,founded_date_label,first_conference_label,secretariat_established_label,conference_count_label}`, `counts.{member_count_word,member_count_num}` |
+| `shared.secretariat` | `contact.{address (multi-line),address_oneline,phone,phone_link,fax,email_secretariat,email_general,office_hours,map_embed_src}`, `eads.{name,url}`. `email_secretariat` (aseanapolsec@) and `email_general` (info@) are different mailboxes. |
+| `shared.members` | repeater `list.rows`: key, country, iso, force, abbreviation, joined_year, logo (member-page crest), landing_logo (file in /media/police-logo/), website, ncb_email, tel, tel2, fax, badge. Keys: brunei cambodia indonesia lao malaysia myanmar philippines singapore thailand vietnam timor-leste |
+| `shared.roster` | repeater `people.rows`: post (ed/dps/dpp), ordinal ("9th"), rank, name (no rank), member_key, force_label, term_start, term_end (blank = present), photo, is_current, bio |
+| `shared.partners` | repeater `list.rows` (international orgs / LME): key, name, short_name, full_name, website, logo, icon, is_lme, is_cooperation_partner |
+| `shared.dialogue` | repeater `list.rows` (dialogue partners + observers): key, name, full_name, is_dialogue, is_observer, dialogue_since, observer_since, observer_conference, badge, website, q, desc |
+
+PHP/Blade API (`App\Support\Shared`, also the global `shared()` helper). All honour overrides and hidden rows via `Cms::get`, never throw
+(missing key => `null`/`[]`), and are memoised per request.
+```php
+Shared::get($page, $path, $default = null)       // Cms::get('shared.'.$page, $path)
+Shared::all($page)                               // [section => [field => value]]
+Shared::org(?$path)  Shared::secretariat(?$path) // e.g. Shared::secretariat('contact.phone'); no path = whole tree
+shared('secretariat', 'contact.phone')           // blade-friendly alias of Shared::get / Shared::all
+Shared::members()                                // visible rows, display order; adds name ("Force (ABBR)"), tels[], flag (emoji)
+Shared::member($key)  Shared::memberName($key)   // null when unknown or hidden
+Shared::roster(?$post, ?$current, $newestFirst=false) // adds full_name ("rank name"), term ("2024–2025" | "2026–present"), force, flag, iso
+Shared::currentHolder($post)
+Shared::partners(array|string $where = [])       // ['is_lme'=>true] | 'lme' | 'cooperation'
+Shared::partner($key)                            // adds `short`
+Shared::dialogue(array|string $where = [])       // ['is_observer'=>true] | 'dialogue' | 'observer'
+Shared::dialogueEntry($key)
+```
+Rules: do not re-declare a shared value in another registry; keep page-specific text (descriptions, categories, icons of cooperation cards) local.
+When a page field moves into shared, remove it from that page's registry (or keep it only as a non-shared label).
+
+**i18n caveat.** `SiteCms::t()` / `rows()` / `isDefault()` decide "show the lang-file translation" by comparing the value with the page's own registry
+default; a value that moved into shared no longer has such a default there. Use the shared equivalents so non-English fallbacks keep working:
+* `Shared::t('secretariat', 'contact.address', 'lang.key')` — non-en + not overridden => `__('lang.key')`; an admin edit always wins.
+* `Shared::isDefault('members', ['list.rows'])` — whole field unchanged; `Shared::rowIsDefault('members', 'lao', ['force','abbreviation'])` — one row's fields unchanged
+  (roster rows are matched by `"post|ordinal"`, e.g. `'ed|9th'`).
+
+Testing: shared pages have no `url`, so `cms-audit.mjs` skips them; wire-up tests belong to the page that starts reading them (assert the edit on that page's HTML).
+`node tests/e2e/shared.mjs` covers the editors + the Shared API; `php artisan test --filter=SharedTest` is the DB-free unit test.
+
+Dialogue rows that share a key with a partner (INTERPOL, Europol) keep name / full_name / website EMPTY by default; `Shared::dialogue()` fills them from `shared.partners` (hidden partners included), so those facts live once.
+`SiteCms::tpl()` also expands the organisation key-date tokens `{founded_year}`, `{founded_date}`, `{first_conference_date}`, `{first_conference_place}`, `{secretariat_established}`, `{conference_count}` (used by the Chronology timeline).
+Blank/removed shared values must degrade gracefully: guard every mailto/tel/img/grid with `@if(value)`. `node tests/e2e/single-source.mjs` (one edit -> every page) and `node tests/e2e/qa-shared.mjs` (add/hide/reorder/remove, blanking, orphan and corrupt rows) enforce it.

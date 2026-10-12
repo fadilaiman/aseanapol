@@ -37,8 +37,8 @@ $br = fn ($t) => new \Illuminate\Support\HtmlString(str_replace("\n", '<br>', e(
                     </defs>
 
                     {{-- Logo image centered --}}
-                    @if(cms_img('about.logo', 'diagram.logo'))
-                    <image href="{{ cms_img('about.logo', 'diagram.logo') }}" x="290" y="48" width="300" height="360" />
+                    @if(\App\Support\Cms::url((string) \App\Support\Shared::org('identity.logo')))
+                    <image href="{{ \App\Support\Cms::url((string) \App\Support\Shared::org('identity.logo')) }}" x="290" y="48" width="300" height="360" />
                     @endif
 
                     {{-- ===== LEFT SIDE ARROWS ===== --}}

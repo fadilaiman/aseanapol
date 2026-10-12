@@ -40,9 +40,8 @@ $head = fn (string $icon, string $heading) => ['label' => 'Title block', 'toggle
     'heading' => ['type' => 'text', 'label' => 'Heading', 'default' => $heading],
 ]];
 
-$foot = fn (string $label, string $email) => ['label' => 'Footer line', 'fields' => [
+$foot = fn (string $label) => ['label' => 'Footer line', 'help' => 'Contact e-mail is managed in Shared facts → Secretariat.', 'fields' => [
     'label'      => ['type' => 'text', 'label' => 'Enquiries label', 'default' => $label],
-    'email'      => ['type' => 'text', 'label' => 'Enquiries email (blank = hide line)', 'default' => $email],
     'back_label' => ['type' => 'text', 'label' => 'Back link label', 'default' => 'Back to Guidelines'],
 ]];
 
@@ -121,7 +120,7 @@ return [
                 ]),
             ]],
             'document' => $documentSection,
-            'foot' => $foot('For enquiries regarding flag use, contact:', 'aseanapolsec@aseanapol.org'),
+            'foot' => $foot('For enquiries regarding flag use, contact:'),
         ],
     ],
 
@@ -189,7 +188,7 @@ return [
                 ]),
             ]],
             'document' => $documentSection,
-            'foot' => $foot('Enquiries:', 'aseanapolsec@aseanapol.org'),
+            'foot' => $foot('Enquiries:'),
         ],
     ],
 
@@ -242,7 +241,7 @@ return [
                 'sections' => $sectionsRepeater([]),
             ]],
             'document' => $documentSection,
-            'foot' => $foot('Applications:', 'aseanapolsec@aseanapol.org'),
+            'foot' => $foot('Applications:'),
         ],
     ],
 ];

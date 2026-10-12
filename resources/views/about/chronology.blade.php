@@ -3,7 +3,7 @@
 @section('page_header')
 @include('partials.page-hero', [
     'title'    => cms('about.chronology', 'hero.title'),
-    'subtitle' => cms('about.chronology', 'hero.subtitle'),
+    'subtitle' => \App\Support\SiteCms::tpl(cms('about.chronology', 'hero.subtitle')),
     'breadcrumbs' => [
         ['label' => 'Home',            'url' => route('landing', ['locale' => app()->getLocale()])],
         ['label' => cms('about.index', 'hero.title'), 'url' => route('about.index', ['locale' => app()->getLocale()])],
@@ -34,8 +34,8 @@
                         <div class="flex items-center gap-3 mb-2">
                             <span class="inline-block bg-primary/10 dark:bg-primary/30 text-primary dark:text-accent font-bold text-sm px-3 py-1 rounded-full">{{ $item['year'] }}</span>
                         </div>
-                        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">{{ $item['title'] }}</h3>
-                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ $item['desc'] }}</p>
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">{{ \App\Support\SiteCms::tpl($item['title']) }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ \App\Support\SiteCms::tpl($item['desc']) }}</p>
                     </div>
                 </div>
                 @endforeach

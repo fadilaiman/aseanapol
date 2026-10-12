@@ -31,7 +31,7 @@
             <div class="bg-primary px-6 py-4">
                 <h2 class="text-lg font-extrabold text-white flex items-center gap-2">
                     <span class="material-symbols-outlined">{{ cms('cooperation.interpol', 'eads.icon') }}</span>
-                    {{ cms('cooperation.interpol', 'eads.heading') }}
+                    {{ \App\Support\Shared::secretariat('eads.name') }}
                 </h2>
             </div>
             <div class="p-6 space-y-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">

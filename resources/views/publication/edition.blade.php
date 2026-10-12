@@ -33,7 +33,7 @@ $pdfUrl = $pub->pdf_url;
                     @endif
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="relative z-10">
-                        <img src="{{ asset('images/aseanapol-logo.png') }}" alt="ASEANAPOL" class="w-16 h-16 object-contain mx-auto mb-4 opacity-80">
+                        @if(cms_img('shared.organisation', 'identity.logo'))<img src="{{ cms_img('shared.organisation', 'identity.logo') }}" alt="ASEANAPOL" class="w-16 h-16 object-contain mx-auto mb-4 opacity-80">@endif
                         <div class="text-white/70 text-xs uppercase tracking-widest font-semibold mb-1">{{ cms('data.publication-edition', 'cover.brand') }}</div>
                         <div class="text-white font-extrabold text-5xl mb-1">{{ $edition }}</div>
                         <div class="text-white/80 text-sm">{{ str_replace('{type}', $type, cms('data.publication-edition', 'cover.edition_label')) }}</div>
@@ -99,11 +99,13 @@ $pdfUrl = $pub->pdf_url;
                             <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
                                 {{ cms('data.publication-edition', 'download.unavailable') }}
                             </p>
-                            <a href="mailto:{{ cms('data.publication-edition', 'download.request_email') }}?subject={{ str_replace('{title}', $title, cms('data.publication-edition', 'download.request_subject')) }}"
+                            @if(shared('secretariat', 'contact.email_secretariat'))
+                            <a href="mailto:{{ shared('secretariat', 'contact.email_secretariat') }}?subject={{ str_replace('{title}', $title, cms('data.publication-edition', 'download.request_subject')) }}"
                                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
                                 <span class="material-symbols-outlined text-lg">mail</span>
                                 {{ cms('data.publication-edition', 'download.request_button') }}
                             </a>
+                            @endif
                             @endif
                         </div>
                     </div>

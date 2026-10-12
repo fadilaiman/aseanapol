@@ -3,7 +3,7 @@
 @section('page_header')
 @include('partials.page-hero', [
     'title'    => cms('members.index', 'hero.title'),
-    'subtitle' => cms('members.index', 'hero.subtitle'),
+    'subtitle' => \App\Support\MemberPages::fill((string) cms('members.index', 'hero.subtitle')),
     'breadcrumbs' => [
         ['label' => 'Home',              'url' => route('landing',             ['locale' => app()->getLocale()])],
         ['label' => 'About ASEANAPOL',   'url' => route('about.index',         ['locale' => app()->getLocale()])],
@@ -22,8 +22,8 @@
                 <span class="material-symbols-outlined text-base">public</span>
                 {{ cms('members.index', 'intro.badge') }}
             </div>
-            <h2 class="text-2xl sm:text-3xl font-bold text-primary dark:text-white">{{ cms('members.index', 'intro.heading') }}</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-2">{{ cms('members.index', 'intro.text') }}</p>
+            <h2 class="text-2xl sm:text-3xl font-bold text-primary dark:text-white">{{ \App\Support\MemberPages::fill((string) cms('members.index', 'intro.heading')) }}</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">{{ \App\Support\MemberPages::fill((string) cms('members.index', 'intro.text')) }}</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

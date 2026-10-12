@@ -14,10 +14,12 @@ class NewsController extends Controller
         $query = NewsItem::orderBy('published_at', 'desc');
 
         if ($q !== '') {
-            $query->where(function ($sub) use ($q) {
-                $sub->where('title',   'like', "%{$q}%")
-                    ->orWhere('summary', 'like', "%{$q}%")
-                    ->orWhere('content', 'like', "%{$q}%");
+            // literal search: % _ \ typed by the visitor must not act as LIKE wildcards (cheap-DoS / data-probing)
+            $like = '%' . addcslashes(mb_substr($q, 0, 200), '%_\\') . '%';
+            $query->where(function ($sub) use ($like) {
+                $sub->where('title',   'like', $like)
+                    ->orWhere('summary', 'like', $like)
+                    ->orWhere('content', 'like', $like);
             });
         }
 

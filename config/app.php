@@ -118,6 +118,9 @@ return [
     |
     */
 
+    // Optional comma-separated IP/CIDR allow-list for /admin (empty = everyone). Others get a 404.
+    'admin_allowed_ips' => env('ADMIN_ALLOWED_IPS', ''),
+
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),

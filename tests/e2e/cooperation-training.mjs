@@ -21,7 +21,7 @@ await revertPage(page, IDX);
 await openEditor(page, IDX);
 await page.screenshot({ path: path.join(tmp, 'admin-cooperation-index.png'), fullPage: false });
 const rows = page.locator('[name="f[partners][items][__present]"]').locator('xpath=ancestor::*[@data-repeater][1]').locator(':scope > .cms-rows > [data-row]');
-check(R, 'partners repeater has 17 default rows', (await rows.count()) === 17, await rows.count());
+check(R, 'card presentation repeater has 17 default rows', (await rows.count()) === 17, await rows.count());
 await rows.first().locator('input[type=file]').setInputFiles(pngA);
 await save(page);
 let html = await get(page, IDX_URL);
@@ -40,27 +40,17 @@ const m2 = html.match(/src="[^"]*(storage\/cms\/qa-logo-[^"]+\.png)"/);
 check(R, 're-upload generates a NEW filename', m2 && first && m2[1] !== first, `${first} vs ${m2 && m2[1]}`);
 check(R, 'old logo no longer referenced', !html.includes(first));
 
-// add / hide / remove / reorder
+// card presentation edits (name / full name / website now live in Shared facts, see relink-coop.mjs)
 await openEditor(page, IDX);
-await page.locator('[name="f[partners][items][__present]"]').locator('xpath=ancestor::*[@data-repeater][1]').locator(':scope > [data-act=add-row]').click();
-check(R, 'add row -> 18 rows', (await rows.count()) === 18);
-const last = rows.last();
-await last.locator('input[name$="[name]"]').fill('QA Partner Org');
-await last.locator('input[name$="[category]"]').fill('QA Category');
-await last.locator('textarea[name$="[desc]"]').fill('QA partner description');
-await last.locator('input[name$="[website]"]').fill('https://qa.example.test/partner');
-await rows.nth(1).locator('input[name$="[_hide]"]').check(); // APMLA hidden
-page.once('dialog', d => d.accept());
-await rows.nth(2).locator('[data-act=remove]').click();       // BorderPol removed
-await rows.nth(3).locator("[data-act=up]").click();           // CITES above CARICC
+await rows.nth(3).locator('input[name$="[category]"]').fill('QA Category');
+await rows.nth(3).locator('textarea[name$="[desc]"]').fill('QA partner description');
+await rows.nth(1).locator('input[name$="[_hide]"]').check(); // APMLA card hidden locally
 await save(page);
 html = await get(page, IDX_URL);
-check(R, 'new partner shown with website link', html.includes('QA Partner Org') && html.includes('https://qa.example.test/partner'));
-check(R, 'hidden partner not shown', !html.includes('Asia Pacific Medico Legal Agencies'));
-check(R, 'removed partner not shown', !html.includes('World Border Organization'));
-check(R, 'reorder: CITES before CARICC', html.indexOf('CITES Secretariat') < html.indexOf('>CARICC<'));
+check(R, 'category + description edit rendered', html.includes('QA Category') && html.includes('QA partner description'));
+check(R, 'locally hidden card not shown', !html.includes('Asia Pacific Medico Legal Agencies'));
 await openEditor(page, IDX);
-check(R, 'hidden row stays editable (still 17 rows after remove+add)', (await rows.count()) === 17, await rows.count());
+check(R, 'hidden row stays editable (still 17 rows)', (await rows.count()) === 17, await rows.count());
 
 // toggles
 await page.uncheck('[data-testid=vis-quicklinks]');
@@ -80,7 +70,7 @@ html = await get(page, IDX_URL);
 check(R, 'quick link retargeted', /href="[^"]*\/en\/international-cooperation\/unodc"[^>]*>\s*<span[^>]*>shield</.test(html));
 await revertPage(page, IDX);
 html = await get(page, IDX_URL);
-check(R, 'revert restores partners & logo gone', html.includes('Asia Pacific Medico Legal Agencies') && !html.includes('storage/cms/qa-logo'));
+check(R, 'revert restores partners & logo gone', html.includes('Asia Pacific Medico Legal Agencies') && !html.includes('storage/cms/qa-logo') && !html.includes('QA Category'));
 
 // ---------------------------------------------------------------- INTERPOL: richtext + table rows
 const IP = 'cooperation.interpol', IP_URL = '/en/international-cooperation/interpol';

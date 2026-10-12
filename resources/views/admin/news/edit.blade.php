@@ -92,6 +92,8 @@
                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 font-mono">
             </div>
 
+            @include('admin.news._sponsors')
+
             <div class="flex items-center gap-2">
                 <input type="checkbox" name="is_upcoming_event" id="is_upcoming_event" value="1" {{ old('is_upcoming_event', $news->is_upcoming_event) ? 'checked' : '' }}
                        class="rounded border-gray-300 text-blue-600 focus:ring-blue-300">

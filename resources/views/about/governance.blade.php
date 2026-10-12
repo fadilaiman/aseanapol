@@ -14,6 +14,24 @@
 
 @section('content')
 @php
+// Shared-fact tokens ({founded_year}, {member_count_word}, ...) in page text; values come from Shared facts > Organisation.
+$fx = function ($t) {
+    $k = \App\Support\Shared::all('organisation')['key_dates'] ?? [];
+    $c = \App\Support\Shared::all('organisation')['counts'] ?? [];
+    $fc = explode(',', (string) ($k['first_conference_label'] ?? ''), 2);
+    return strtr((string) $t, [
+        '{founded_year}' => (string) ($k['founded_year'] ?? ''),
+        '{founded_date}' => (string) ($k['founded_date_label'] ?? ''),
+        '{first_conference_date}' => trim($fc[0]),
+        '{first_conference_place}' => trim($fc[1] ?? ''),
+        '{secretariat_established}' => (string) ($k['secretariat_established_label'] ?? ''),
+        '{conference_count}' => (string) ($k['conference_count_label'] ?? ''),
+        '{member_count_word}' => (string) ($c['member_count_word'] ?? ''),
+        '{member_count_num}' => (string) ($c['member_count_num'] ?? ''),
+    ]);
+};
+@endphp
+@php
 $rt = function (string $path) {
     $h = (string) cms_html('about.governance', $path);
     return new \Illuminate\Support\HtmlString(preg_replace('#</(p|ul|ol)>(?=<)#', "</$1>\n", $h));
@@ -72,7 +90,7 @@ $rt = function (string $path) {
         {{-- ASEANAPOL Conference since 1981 --}}
         @if(cms_on('about.governance', 'conferences'))
         <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
-            <h2 class="text-2xl font-bold text-primary dark:text-white mb-6 uppercase">{{ cms('about.governance', 'conferences.heading') }}</h2>
+            <h2 class="text-2xl font-bold text-primary dark:text-white mb-6 uppercase">{{ $fx(cms('about.governance', 'conferences.heading')) }}</h2>
             @if(count(cms('about.governance', 'conferences.rows')))
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
