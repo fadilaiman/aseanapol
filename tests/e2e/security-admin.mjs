@@ -9,7 +9,7 @@ const norm = s => s.replace(/<meta name="csrf-token"[^>]*>/g, '').replace(/name=
   .replace(/\s+/g, ' ').replace(/\/admin\/[^\s"'<>]*/g, '/admin/X');
 
 // 1. robots.txt
-const robots = await (await get('/robots.txt')).text();
+check(results, 'robots does not advertise /admin (noindex header does the job)', !/admin/i.test(robots), robots);
 check(results, 'robots disallows /admin', /Disallow:\s*\/admin\b/.test(robots), robots);
 check(results, 'robots lists sitemap', /Sitemap:\s*\S+\/sitemap\.xml/.test(robots), robots);
 check(results, 'robots does not block everything', !/Disallow:\s*\/\s*$/m.test(robots));

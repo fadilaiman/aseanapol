@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /admin
-Disallow: /admin/
+Allow: /
 
 Sitemap: https://aseanapol.org/sitemap.xml
