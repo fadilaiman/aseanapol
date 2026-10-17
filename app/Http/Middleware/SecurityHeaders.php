@@ -16,6 +16,12 @@ class SecurityHeaders
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
+        // Admin pages carry CSRF tokens / unsaved content: never let the browser (or a proxy) cache them.
+        if ($request->is('admin', 'admin/*')) {
+            $response->headers->set('Cache-Control', 'no-store, private');
+            $response->headers->set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
+        }
+
         if ($request->secure()) {
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }

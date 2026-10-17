@@ -8,6 +8,16 @@
     </a>
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
+        @if($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-5">
+                <ul class="list-disc list-inside space-y-0.5">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('admin.news.store') }}" enctype="multipart/form-data" class="space-y-5">
             @csrf
 
@@ -15,7 +25,6 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-red-500">*</span></label>
                 <input type="text" name="title" value="{{ old('title') }}" required
                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                @error('title')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -45,8 +54,8 @@
                     </button>
                 </div>
                 <div id="panel-url">
-                    <input type="url" name="thumbnail_url" value="{{ old('thumbnail_url') }}"
-                           placeholder="https://…"
+                    <input type="text" name="thumbnail_url" value="{{ old('thumbnail_url') }}"
+                           placeholder="https://… or media/news/…"
                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
                 </div>
                 <div id="panel-file" class="hidden">
@@ -72,6 +81,8 @@
                 <input type="text" name="slug" value="{{ old('slug') }}"
                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 font-mono">
             </div>
+
+            @include('admin.news._sponsors')
 
             <div class="flex items-center gap-2">
                 <input type="checkbox" name="is_upcoming_event" id="is_upcoming_event" value="1" {{ old('is_upcoming_event') ? 'checked' : '' }}

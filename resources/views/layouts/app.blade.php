@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+@php
+$S = 'site.header-footer';
+$t = fn ($p, $l = null, $d = false) => \App\Support\SiteCms::t($S, $p, $l, $d);
+$L = fn ($v) => \App\Support\SiteCms::link($v);
+@endphp<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -11,8 +15,8 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ASEANAPOL - ASEAN Chiefs of Police official portal. Together we keep this region safe.">
-    <title>{{ config('app.name', 'ASEANAPOL') }} - ASEAN Chiefs of Police</title>
+    <meta name="description" content="{{ cms($S, 'meta.description') }}">
+    <title>{{ config('app.name', 'ASEANAPOL') }} - {{ cms($S, 'meta.title_suffix') }}</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
@@ -165,115 +169,40 @@
             <div class="flex items-center justify-between min-h-16 lg:min-h-20 py-2 lg:py-3">
                 {{-- Logo --}}
                 <a href="{{ route('landing', ['locale' => app()->getLocale()]) }}" class="flex items-center gap-3 flex-shrink-0">
-                    <img src="{{ asset('images/aseanapol-logo.png') }}" alt="ASEANAPOL Logo" class="h-10 lg:h-14 w-auto">
+                    @if(cms_img('shared.organisation', 'identity.logo'))<img src="{{ cms_img('shared.organisation', 'identity.logo') }}" alt="{{ cms('shared.organisation', 'identity.logo_alt') }}" class="h-10 lg:h-14 w-auto">@endif
                     <div class="hidden sm:block">
-                        <div class="text-white font-bold text-lg lg:text-xl tracking-wide leading-tight">ASEANAPOL</div>
-                        <div class="text-accent text-xs lg:text-sm font-medium tracking-widest uppercase">Secretariat</div>
+                        <div class="text-white font-bold text-lg lg:text-xl tracking-wide leading-tight">{{ cms($S, 'brand.name') }}</div>
+                        <div class="text-accent text-xs lg:text-sm font-medium tracking-widest uppercase">{{ cms($S, 'brand.tagline') }}</div>
                     </div>
                 </a>
+
 
                 {{-- Desktop Nav --}}
                 @php $loc = ['locale' => app()->getLocale()]; @endphp
                 <nav class="hidden xl:flex {{ app()->getLocale() === 'en' ? 'flex-nowrap' : 'flex-wrap gap-y-0.5' }} items-center justify-center gap-x-0.5 py-1">
-
-                    {{-- About ASEANAPOL --}}
+                    @php $menuItems = cms($S, 'menu.items'); @endphp
+                    @foreach($menuItems as $mi)
+                    @php $kids = $mi['children'] ?? []; @endphp
+                    @if(count($kids))
                     <div class="nav-group relative">
-                        <a href="{{ route('about.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                            About ASEANAPOL <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
+                        <a href="{{ $L($mi['link'] ?? '') }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                            {{ $mi['label'] }} <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
                         </a>
-                        <div class="nav-drop absolute top-full left-0 mt-0 w-56 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
-                            <a href="{{ route('about.chronology', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">History</a>
-                            <a href="{{ route('about.permanent-secretariat', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Permanent Secretariat</a>
-                            <a href="{{ route('about.governance', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Governance</a>
-                            <a href="{{ route('about.vision-mission', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Vision &amp; Mission</a>
-                            <a href="{{ route('about.leadership', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Leadership</a>
+                        <div class="nav-drop absolute top-full left-0 mt-0 {{ $mi['width'] ?? 'w-48' }} bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
+                            @foreach($kids as $kid)
+                            @if(!empty($kid['divider']))
                             <div class="my-1 border-t border-gray-100 dark:border-gray-700"></div>
-                            <a href="{{ route('about.member-countries', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Member Countries</a>
-                            <a href="{{ route('about.dialogue-partners', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Dialogue Partners</a>
-                            <a href="{{ route('about.observers', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Observers</a>
-                            <a href="{{ route('about.ob-lme', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Like-Minded Entities (LME)</a>
+                            @endif
+                            <a href="{{ $L($kid['link'] ?? '') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">{{ $kid['label'] }}</a>
+                            @endforeach
                         </div>
                     </div>
-
-                    {{-- News & Media --}}
-                    <div class="nav-group relative">
-                        <a href="{{ route('news-media.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                            News &amp; Media <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
-                        </a>
-                        <div class="nav-drop absolute top-full left-0 mt-0 w-52 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
-                            <a href="{{ route('news.index', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">News</a>
-                            <a href="{{ route('news-media.press-releases', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Press Releases</a>
-                            <a href="{{ route('news-media.gallery', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Photo Gallery</a>
-                            <a href="{{ route('news-media.video-gallery', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Video Gallery</a>
-                            <a href="{{ route('news-media.newsletters', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Newsletters</a>
-                        </div>
-                    </div>
-
-                    {{-- Data & Resources --}}
-                    <div class="nav-group relative">
-                        <a href="{{ route('data-resources.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                            Data &amp; Resources <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
-                        </a>
-                        <div class="nav-drop absolute top-full left-0 mt-0 w-56 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
-                            <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Crime Statistics</a>
-                            <a href="{{ route('data-resources.publications', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Publications</a>
-                            <a href="{{ route('data-resources.digital-library', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Digital Library</a>
-                        </div>
-                    </div>
-
-                    {{-- International Cooperation --}}
-                    <div class="nav-group relative">
-                        <a href="{{ route('international-cooperation', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                            Intl. Cooperation <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
-                        </a>
-                        <div class="nav-drop absolute top-full left-0 mt-0 w-48 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
-                            <a href="{{ route('international-cooperation.interpol', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">INTERPOL</a>
-                            <a href="{{ route('international-cooperation.europol', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Europol</a>
-                            <a href="{{ route('international-cooperation.unodc', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">UNODC</a>
-                            <a href="{{ route('international-cooperation.joint-projects', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Joint Projects</a>
-                        </div>
-                    </div>
-
-                    {{-- Events & Training --}}
-                    <div class="nav-group relative">
-                        <a href="{{ route('events-training.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                            Events <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
-                        </a>
-                        <div class="nav-drop absolute top-full left-0 mt-0 w-48 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
-                            <a href="{{ route('events-training.calendar', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Event Calendar</a>
-                            <a href="{{ route('events-training.conferences', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Conferences</a>
-                            <a href="{{ route('events-training.training-programs', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Training Programs</a>
-                        </div>
-                    </div>
-
-                    {{-- Training --}}
-                    <div class="nav-group relative">
-                        <a href="{{ route('training.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                            Training <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
-                        </a>
-                        <div class="nav-drop absolute top-full left-0 mt-0 w-52 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
-                            <a href="{{ route('training.online-training', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Online Training</a>
-                            <a href="{{ route('training.in-person-training', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">In-Person Training</a>
-                            <a href="{{ route('training.e-learning', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">E-Learning</a>
-                        </div>
-                    </div>
-
-                    {{-- Careers (hidden) --}}
-                    {{-- <div class="nav-group relative">
-                        <a href="{{ route('careers.index', $loc) }}" class="flex items-center gap-0.5 text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                            Careers <span class="material-symbols-outlined text-sm leading-none">expand_more</span>
-                        </a>
-                        <div class="nav-drop absolute top-full left-0 mt-0 w-48 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50">
-                            <a href="{{ route('careers.vacancies', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Vacancies</a>
-                            <a href="{{ route('careers.internships', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Internships</a>
-                            <a href="{{ route('careers.exchange-programs', $loc) }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface hover:text-primary transition-colors">Exchange Programs</a>
-                        </div>
-                    </div> --}}
-
-                    {{-- Contact Us --}}
-                    <a href="{{ route('contact-us', $loc) }}" class="text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
-                        Contact Us
+                    @else
+                    <a href="{{ $L($mi['link'] ?? '') }}" class="text-white/90 hover:text-accent text-xs font-semibold px-2.5 py-2 rounded-lg hover:bg-white/10 transition-all uppercase tracking-wide whitespace-nowrap">
+                        {{ $mi['label'] }}
                     </a>
+                    @endif
+                    @endforeach
 
                 </nav>
 
@@ -320,7 +249,7 @@
                     </div>
 
                     {{-- Dark Mode Toggle --}}
-                    <button onclick="toggleTheme()" id="theme-toggle" class="text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-all" title="{{ __('landing.theme_dark') }}">
+                    <button onclick="toggleTheme()" id="theme-toggle" class="text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-all" title="{{ $t('menu.theme_tooltip', 'landing.theme_dark') }}">
                         <span class="material-symbols-outlined text-xl" id="theme-icon">dark_mode</span>
                     </button>
 
@@ -336,102 +265,26 @@
             <div id="mobile-menu" class="mobile-menu xl:hidden pb-4">
                 <nav class="flex flex-col gap-0.5 border-t border-white/10 pt-3">
 
-                    <a href="{{ route('landing', $loc) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">Home</a>
+                    <a href="{{ route('landing', $loc) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ cms($S, 'menu.home_label') }}</a>
 
-                    {{-- About --}}
+                    @foreach($menuItems as $mi)
+                    @php $kids = $mi['children'] ?? []; $sid = ($mi['slug'] ?? '') !== '' ? $mi['slug'] : 'mob-menu-' . $loop->index; @endphp
+                    @if(count($kids))
                     <div>
-                        <button onclick="toggleMobSub('mob-about')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
-                            About ASEANAPOL <span class="material-symbols-outlined text-base">expand_more</span>
+                        <button onclick="toggleMobSub('{{ $sid }}')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
+                            {{ $mi['mobile_label'] ?? $mi['label'] }} <span class="material-symbols-outlined text-base">expand_more</span>
                         </button>
-                        <div id="mob-about" class="mob-sub pl-4 flex flex-col gap-0.5">
-                            <a href="{{ route('about.chronology', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">History</a>
-                            <a href="{{ route('about.permanent-secretariat', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Permanent Secretariat</a>
-                            <a href="{{ route('about.governance', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Governance</a>
-                            <a href="{{ route('about.vision-mission', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Vision &amp; Mission</a>
-                            <a href="{{ route('about.leadership', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Leadership</a>
-                            <a href="{{ route('about.member-countries', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Member Countries</a>
-                            <a href="{{ route('about.dialogue-partners', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Dialogue Partners</a>
-                            <a href="{{ route('about.observers', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Observers</a>
-                            <a href="{{ route('about.ob-lme', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Like-Minded Entities (LME)</a>
+                        <div id="{{ $sid }}" class="mob-sub pl-4 flex flex-col gap-0.5">
+                            @foreach($kids as $kid)
+                            <a href="{{ $L($kid['link'] ?? '') }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">{{ $kid['label'] }}</a>
+                            @endforeach
                         </div>
                     </div>
+                    @else
+                    <a href="{{ $L($mi['link'] ?? '') }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">{{ $mi['mobile_label'] ?? $mi['label'] }}</a>
+                    @endif
+                    @endforeach
 
-                    {{-- News & Media --}}
-                    <div>
-                        <button onclick="toggleMobSub('mob-news')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
-                            News &amp; Media <span class="material-symbols-outlined text-base">expand_more</span>
-                        </button>
-                        <div id="mob-news" class="mob-sub pl-4 flex flex-col gap-0.5">
-                            <a href="{{ route('news.index', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">News</a>
-                            <a href="{{ route('news-media.press-releases', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Press Releases</a>
-                            <a href="{{ route('news-media.gallery', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Photo Gallery</a>
-                            <a href="{{ route('news-media.video-gallery', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Video Gallery</a>
-                            <a href="{{ route('news-media.newsletters', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Newsletters</a>
-                        </div>
-                    </div>
-
-                    {{-- Data & Resources --}}
-                    <div>
-                        <button onclick="toggleMobSub('mob-data')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
-                            Data &amp; Resources <span class="material-symbols-outlined text-base">expand_more</span>
-                        </button>
-                        <div id="mob-data" class="mob-sub pl-4 flex flex-col gap-0.5">
-                            <a href="{{ route('data-resources.crime-statistics', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Crime Statistics</a>
-                            <a href="{{ route('data-resources.publications', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Publications</a>
-                            <a href="{{ route('data-resources.digital-library', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Digital Library</a>
-                        </div>
-                    </div>
-
-                    {{-- International Cooperation --}}
-                    <div>
-                        <button onclick="toggleMobSub('mob-intl')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
-                            International Cooperation <span class="material-symbols-outlined text-base">expand_more</span>
-                        </button>
-                        <div id="mob-intl" class="mob-sub pl-4 flex flex-col gap-0.5">
-                            <a href="{{ route('international-cooperation.interpol', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">INTERPOL</a>
-                            <a href="{{ route('international-cooperation.europol', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Europol</a>
-                            <a href="{{ route('international-cooperation.unodc', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">UNODC</a>
-                            <a href="{{ route('international-cooperation.joint-projects', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Joint Projects</a>
-                        </div>
-                    </div>
-
-                    {{-- Events & Training --}}
-                    <div>
-                        <button onclick="toggleMobSub('mob-events')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
-                            Events &amp; Training <span class="material-symbols-outlined text-base">expand_more</span>
-                        </button>
-                        <div id="mob-events" class="mob-sub pl-4 flex flex-col gap-0.5">
-                            <a href="{{ route('events-training.calendar', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Event Calendar</a>
-                            <a href="{{ route('events-training.conferences', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Conferences</a>
-                            <a href="{{ route('events-training.training-programs', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Training Programs</a>
-                        </div>
-                    </div>
-
-                    {{-- Training --}}
-                    <div>
-                        <button onclick="toggleMobSub('mob-training')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
-                            Training <span class="material-symbols-outlined text-base">expand_more</span>
-                        </button>
-                        <div id="mob-training" class="mob-sub pl-4 flex flex-col gap-0.5">
-                            <a href="{{ route('training.online-training', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Online Training</a>
-                            <a href="{{ route('training.in-person-training', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">In-Person Training</a>
-                            <a href="{{ route('training.e-learning', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">E-Learning</a>
-                        </div>
-                    </div>
-
-                    {{-- Careers (hidden) --}}
-                    {{-- <div>
-                        <button onclick="toggleMobSub('mob-careers')" class="w-full flex items-center justify-between text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">
-                            Careers &amp; Opportunities <span class="material-symbols-outlined text-base">expand_more</span>
-                        </button>
-                        <div id="mob-careers" class="mob-sub pl-4 flex flex-col gap-0.5">
-                            <a href="{{ route('careers.vacancies', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Vacancies</a>
-                            <a href="{{ route('careers.internships', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Internships</a>
-                            <a href="{{ route('careers.exchange-programs', $loc) }}" class="text-white/70 hover:text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all">Exchange Programs</a>
-                        </div>
-                    </div> --}}
-
-                    <a href="{{ route('contact-us', $loc) }}" class="text-white/90 hover:text-accent text-sm font-medium px-3 py-2 rounded-lg hover:bg-white/10 transition-all">Contact Us</a>
 
                     {{-- Language switcher --}}
                     <div class="grid grid-cols-4 gap-2 px-3 mt-2 pt-3 border-t border-white/10">
@@ -462,123 +315,126 @@
                 {{-- Col 1: About --}}
                 <div>
                     <div class="flex items-center gap-3 mb-5">
-                        <img src="{{ asset('images/aseanapol-logo.png') }}" alt="ASEANAPOL" class="h-12 w-auto">
+                        @if(cms_img('shared.organisation', 'identity.logo'))<img src="{{ cms_img('shared.organisation', 'identity.logo') }}" alt="{{ cms($S, 'brand.footer_logo_alt') }}" class="h-12 w-auto">@endif
                         <div>
-                            <div class="font-bold text-lg tracking-wide">ASEANAPOL</div>
-                            <div class="text-accent text-xs tracking-widest uppercase">Secretariat</div>
+                            <div class="font-bold text-lg tracking-wide">{{ cms($S, 'brand.name') }}</div>
+                            <div class="text-accent text-xs tracking-widest uppercase">{{ cms($S, 'brand.tagline') }}</div>
                         </div>
                     </div>
                     <p class="text-white/70 text-sm leading-relaxed mb-6">
-                        {{ __('landing.footer_desc') }}
+                        {{ \App\Support\SiteCms::tpl($t('footer_about.description', 'landing.footer_desc')) }}
                     </p>
+                    @php
+                        $footIcons = ['x' => 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z', 'instagram' => 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z', 'facebook' => 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z', 'linkedin' => 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z', 'youtube' => 'M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'];
+                        $sideIcons = ['facebook' => 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z', 'x' => 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z', 'linkedin' => 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z', 'instagram' => 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z', 'youtube' => 'M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'];
+                    @endphp
                     <div class="flex items-center gap-3">
-                        <a href="https://twitter.com/ASEANAPOL1981" target="_blank" rel="noopener" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-accent hover:text-primary flex items-center justify-center transition-colors">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        @foreach(['x', 'instagram', 'facebook', 'linkedin', 'youtube'] as $net)
+                        @if(cms($S, "social.{$net}_footer") && trim((string) cms($S, "social.{$net}_url")) !== '')
+                        <a href="{{ cms($S, "social.{$net}_url") }}" target="_blank" rel="noopener" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-accent hover:text-primary flex items-center justify-center transition-colors">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="{{ $footIcons[$net] }}"/></svg>
                         </a>
-                        <a href="https://www.instagram.com/aseanapol" target="_blank" rel="noopener" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-accent hover:text-primary flex items-center justify-center transition-colors">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                        </a>
-                        <a href="https://www.facebook.com/ASEANAPOL" target="_blank" rel="noopener" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-accent hover:text-primary flex items-center justify-center transition-colors">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                        </a>
-                        <a href="https://www.linkedin.com/in/aseanapol-secretariat-344498ab" target="_blank" rel="noopener" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-accent hover:text-primary flex items-center justify-center transition-colors">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        </a>
+                        @endif
+                        @endforeach
                     </div>
                 </div>
 
                 {{-- Col 2: Quick Links --}}
                 <div>
-                    <h4 class="font-semibold text-lg mb-5">{{ __('landing.footer_quick_links') }}</h4>
+                    <h4 class="font-semibold text-lg mb-5">{{ $t('footer_links.quick_title', 'landing.footer_quick_links') }}</h4>
                     <ul class="space-y-2.5">
-                        <li><a href="{{ route('about.index', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> About ASEANAPOL</a></li>
-                        <li><a href="{{ route('about.permanent-secretariat', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Permanent Secretariat</a></li>
-                        <li><a href="{{ route('about.governance', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Governance</a></li>
-                        <li><a href="{{ route('about.chronology', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> History</a></li>
-                        <li><a href="{{ route('about.vision-mission', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Vision &amp; Mission</a></li>
-                        <li><a href="{{ route('about.member-countries', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Member Countries</a></li>
-                        <li><a href="{{ route('about.dialogue-partners', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Dialogue Partners</a></li>
-                        <li><a href="{{ route('international-cooperation', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> International Cooperation</a></li>
-                        <li><a href="{{ route('news.index', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> News</a></li>
-                        <li><a href="{{ route('data-resources.publications', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Publications</a></li>
-                        <li><a href="{{ route('contact-us', ['locale' => app()->getLocale()]) }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Contact Us</a></li>
+                        @foreach(cms($S, 'footer_links.quick_links') as $ql)
+                        <li><a href="{{ $L($ql['link'] ?? '') }}" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> {{ $ql['label'] }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
 
                 {{-- Col 3: Partners & Resources --}}
                 <div>
-                    <h4 class="font-semibold text-lg mb-5">{{ __('landing.footer_partners_label') }}</h4>
+                    <h4 class="font-semibold text-lg mb-5">{{ $t('footer_links.partners_title', 'landing.footer_partners_label') }}</h4>
                     <ul class="space-y-3 mb-8">
-                        <li><a href="https://www.interpol.int" target="_blank" rel="noopener" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> INTERPOL</a></li>
-                        <li><a href="https://www.europol.europa.eu" target="_blank" rel="noopener" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> Europol</a></li>
-                        <li><a href="https://www.unodc.org" target="_blank" rel="noopener" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> UNODC</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> ACCBP</a></li>
+                        {{-- name + website come from shared.partners; only the choice/order and new-tab flag are local --}}
+                        @foreach(\App\Support\SiteCms::partnerRows(cms($S, 'footer_links.partner_links') ?? []) as $pl)
+                        <li><a href="{{ $L($pl['url']) }}" @if(!empty($pl['new_tab'])) target="_blank" rel="noopener" @endif class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> {{ $pl['name'] }}</a></li>
+                        @endforeach
                     </ul>
-                    <h4 class="font-semibold text-lg mb-5">{{ __('landing.footer_resources') }}</h4>
+                    <h4 class="font-semibold text-lg mb-5">{{ $t('footer_links.resources_title', 'landing.footer_resources') }}</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> e-ADS</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> ASEANAPOL Database</a></li>
+                        @foreach(cms($S, 'footer_links.resource_links') as $rl)
+                        <li><a href="{{ $L($rl['link'] ?? '') }}" @if(!empty($rl['new_tab'])) target="_blank" rel="noopener" @endif class="text-white/70 hover:text-accent text-sm transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-base">chevron_right</span> {{ $rl['label'] }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
 
                 {{-- Col 4: Contact --}}
                 <div>
-                    <h4 class="font-semibold text-lg mb-5">{{ __('landing.footer_contact') }}</h4>
+                    <h4 class="font-semibold text-lg mb-5">{{ $t('footer_contact.title', 'landing.footer_contact') }}</h4>
                     <div class="space-y-4 text-sm text-white/70">
+                        @if(\App\Support\Shared::secretariat('contact.address_oneline'))
                         <div class="flex gap-3">
                             <span class="material-symbols-outlined text-accent text-xl flex-shrink-0 mt-0.5">location_on</span>
-                            <p>Level 13, Tower 2, Bank Rakyat Twin Tower, No 33, Jalan Rakyat, 50470 Kuala Lumpur, Malaysia</p>
+                            <p>{{ \App\Support\Shared::secretariat('contact.address_oneline') }}</p>
                         </div>
+                        @endif
+                        @if(\App\Support\Shared::secretariat('contact.phone'))
                         <div class="flex gap-3 items-center">
                             <span class="material-symbols-outlined text-accent text-xl flex-shrink-0">phone</span>
-                            <p>+603-22602222</p>
+                            <p>{{ \App\Support\Shared::secretariat('contact.phone') }}</p>
                         </div>
+                        @endif
+                        @if(\App\Support\Shared::secretariat('contact.fax'))
                         <div class="flex gap-3 items-center">
                             <span class="material-symbols-outlined text-accent text-xl flex-shrink-0">fax</span>
-                            <p>+603-22602205</p>
+                            <p>{{ \App\Support\Shared::secretariat('contact.fax') }}</p>
                         </div>
+                        @endif
+                        @if(\App\Support\Shared::secretariat('contact.email_secretariat'))
                         <div class="flex gap-3 items-center">
                             <span class="material-symbols-outlined text-accent text-xl flex-shrink-0">mail</span>
-                            <a href="mailto:aseanapolsec@aseanapol.org" class="hover:text-accent transition-colors">aseanapolsec@aseanapol.org</a>
+                            <a href="mailto:{{ \App\Support\Shared::secretariat('contact.email_secretariat') }}" class="hover:text-accent transition-colors">{{ \App\Support\Shared::secretariat('contact.email_secretariat') }}</a>
                         </div>
+                        @endif
                     </div>
 
                     {{-- Newsletter --}}
+                    @if(cms_on($S, 'newsletter'))
                     <div class="mt-6">
-                        <h5 class="font-medium text-sm mb-3">{{ __('landing.footer_stay_updated') }}</h5>
+                        <h5 class="font-medium text-sm mb-3">{{ $t('newsletter.title', 'landing.footer_stay_updated') }}</h5>
                         <form class="flex gap-2" onsubmit="return false;">
-                            <input type="email" placeholder="{{ __('landing.footer_your_email') }}" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm text-white placeholder-white/50 outline-none focus:border-accent transition-colors">
+                            <input type="email" placeholder="{{ $t('newsletter.placeholder', 'landing.footer_your_email') }}" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm text-white placeholder-white/50 outline-none focus:border-accent transition-colors">
                             <button type="submit" class="bg-accent hover:bg-accent-600 text-primary font-semibold px-4 py-2 rounded-lg text-sm transition-colors">
                                 <span class="material-symbols-outlined text-lg">send</span>
                             </button>
                         </form>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
 
         {{-- Visitor Statistics Banner --}}
+        @if(cms_on($S, 'statistics'))
         <div class="border-t border-white/10 bg-white/5">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-                <h3 class="text-white font-bold text-xl mb-1">{{ __('landing.stats_title') }}</h3>
-                <p class="text-white/50 text-sm mb-6">{{ __('landing.stats_as_of') }} {{ now()->format('d M Y') }}</p>
+                <h3 class="text-white font-bold text-xl mb-1">{{ $t('statistics.title', 'landing.stats_title') }}</h3>
+                <p class="text-white/50 text-sm mb-6">{{ $t('statistics.as_of', 'landing.stats_as_of') }} {{ now()->format('d M Y') }}</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-20">
                     <div>
-                        <p class="text-white/60 text-sm uppercase tracking-widest mb-1">{{ __('landing.stats_total_visitors') }}</p>
+                        <p class="text-white/60 text-sm uppercase tracking-widest mb-1">{{ $t('statistics.total_label', 'landing.stats_total_visitors') }}</p>
                         <p class="text-accent font-bold text-4xl tracking-tight">{{ number_format($visitorTotalUnique) }}</p>
                     </div>
                     <div class="w-px h-14 bg-white/20 hidden sm:block"></div>
                     <div>
-                        <p class="text-white/60 text-sm uppercase tracking-widest mb-1">{{ __('landing.stats_today_visitors') }}</p>
+                        <p class="text-white/60 text-sm uppercase tracking-widest mb-1">{{ $t('statistics.today_label', 'landing.stats_today_visitors') }}</p>
                         <p class="text-accent font-bold text-4xl tracking-tight">{{ number_format($visitorDailyUnique) }}</p>
                     </div>
                 </div>
                 @if($visitorHistory->count() > 1)
                 <div class="mt-8 max-w-2xl mx-auto w-full">
-                    <p class="text-white/40 text-xs text-center mb-3 uppercase tracking-widest">Daily Visitors — Last 30 Days</p>
+                    <p class="text-white/40 text-xs text-center mb-3 uppercase tracking-widest">{{ cms($S, 'statistics.chart_title') }}</p>
                     <canvas id="visitorHistoryChart" height="80"></canvas>
                 </div>
-                <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g" crossorigin="anonymous"></script>
                 <script>
                 (function () {
                     const labels = @json($visitorHistory->pluck('date'));
@@ -621,15 +477,16 @@
                 @endif
             </div>
         </div>
+        @endif
 
         {{-- Bottom bar --}}
         <div class="border-t border-white/10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p class="text-white/50 text-sm">{!! __('landing.footer_copyright') !!}</p>
+                <p class="text-white/50 text-sm">{{ $t('bottom.copyright', 'landing.footer_copyright', true) }}</p>
                 <div class="flex items-center gap-6">
-                    <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_privacy') }}</a>
-                    <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_terms') }}</a>
-                    <a href="#" class="text-white/50 hover:text-accent text-sm transition-colors">{{ __('landing.footer_sitemap') }}</a>
+                    @foreach(\App\Support\SiteCms::rows($S, 'bottom.links', ['label' => ['landing.footer_privacy', 'landing.footer_terms', 'landing.footer_sitemap']]) as $bl)
+                    <a href="{{ $L($bl['link'] ?? '') }}" class="text-white/50 hover:text-accent text-sm transition-colors">{{ $bl['label'] }}</a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -785,29 +642,22 @@
         <div id="sidebar-panel" class="flex flex-col items-center gap-2 pr-3 pl-1 py-3">
 
             {{-- Follow icons (no label) --}}
-            <a href="https://www.facebook.com/ASEANAPOL" target="_blank" rel="noopener" aria-label="Facebook"
-               class="w-9 h-9 flex items-center justify-center rounded-xl bg-white dark:bg-dark-card shadow-md hover:bg-[#1877F2] text-[#1877F2] hover:text-white transition-all duration-200 hover:scale-110 hover:shadow-lg">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            @foreach(['facebook' => ['Facebook', 'hover:bg-[#1877F2] text-[#1877F2] hover:text-white'], 'x' => ['X / Twitter', 'hover:bg-black text-black dark:text-white hover:text-white'], 'linkedin' => ['LinkedIn', 'hover:bg-[#0A66C2] text-[#0A66C2] hover:text-white'], 'instagram' => ['Instagram', 'hover:bg-[#E1306C] text-[#E1306C] hover:text-white'], 'youtube' => ['YouTube', 'hover:bg-[#FF0000] text-[#FF0000] hover:text-white']] as $net => [$netName, $netCls])
+            @if(cms($S, "social.{$net}_sidebar") && trim((string) cms($S, "social.{$net}_url")) !== '')
+            <a href="{{ cms($S, "social.{$net}_url") }}" target="_blank" rel="noopener" aria-label="{{ $netName }}"
+               class="w-9 h-9 flex items-center justify-center rounded-xl bg-white dark:bg-dark-card shadow-md {{ $netCls }} transition-all duration-200 hover:scale-110 hover:shadow-lg">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="{{ $sideIcons[$net] }}"/></svg>
             </a>
-            <a href="https://twitter.com/ASEANAPOL1981" target="_blank" rel="noopener" aria-label="X / Twitter"
-               class="w-9 h-9 flex items-center justify-center rounded-xl bg-white dark:bg-dark-card shadow-md hover:bg-black text-black dark:text-white hover:text-white transition-all duration-200 hover:scale-110 hover:shadow-lg">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/aseanapol-secretariat-344498ab" target="_blank" rel="noopener" aria-label="LinkedIn"
-               class="w-9 h-9 flex items-center justify-center rounded-xl bg-white dark:bg-dark-card shadow-md hover:bg-[#0A66C2] text-[#0A66C2] hover:text-white transition-all duration-200 hover:scale-110 hover:shadow-lg">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/aseanapol" target="_blank" rel="noopener" aria-label="Instagram"
-               class="w-9 h-9 flex items-center justify-center rounded-xl bg-white dark:bg-dark-card shadow-md hover:bg-[#E1306C] text-[#E1306C] hover:text-white transition-all duration-200 hover:scale-110 hover:shadow-lg">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-            </a>
+            @endif
+            @endforeach
+
 
             {{-- Divider --}}
             <div class="w-6 border-t border-gray-200 dark:border-gray-600 my-0.5"></div>
 
             {{-- Single Share button with flyout (opens LEFT as horizontal row) --}}
             <div class="relative" id="share-btn-wrap">
-                <button onclick="toggleShareFlyout(event)" title="Share this page"
+                <button onclick="toggleShareFlyout(event)" title="{{ cms($S, 'sidebar.share_title') }}"
                     class="w-9 h-9 flex items-center justify-center rounded-xl bg-white dark:bg-dark-card shadow-md hover:bg-primary text-primary hover:text-white dark:text-accent transition-all duration-200 hover:scale-110 hover:shadow-lg">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
                 </button>

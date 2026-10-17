@@ -2,12 +2,12 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'Newsletters',
-    'subtitle' => 'Periodic newsletters and circulars distributed to ASEANAPOL member police forces and stakeholders.',
+    'title'    => cms('newsmedia.newsletters', 'hero.title'),
+    'subtitle' => cms('newsmedia.newsletters', 'hero.subtitle'),
     'breadcrumbs' => [
         ['label' => 'Home',        'url' => route('landing',              ['locale' => app()->getLocale()])],
-        ['label' => 'News & Media','url' => route('news-media.index',     ['locale' => app()->getLocale()])],
-        ['label' => 'Newsletters', 'url' => ''],
+        ['label' => cms('newsmedia.index', 'hero.title'),'url' => route('news-media.index',     ['locale' => app()->getLocale()])],
+        ['label' => cms('newsmedia.newsletters', 'hero.title'), 'url' => ''],
     ],
 ])
 @endsection
@@ -17,14 +17,15 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Info banner --}}
+        @if(cms_on('newsmedia.newsletters', 'banner'))
         <div class="bg-primary/5 dark:bg-primary/15 border border-primary/10 dark:border-primary/25 rounded-2xl p-5 mb-10 flex items-start gap-3">
             <span class="material-symbols-outlined text-primary dark:text-accent text-xl flex-shrink-0 mt-0.5">info</span>
             <p class="text-sm text-gray-600 dark:text-gray-300">
-                Digital copies of ASEANAPOL newsletters will be made available for download as they are cleared for public release.
-                Enquiries can be directed to
-                <a href="mailto:info@aseanapol.org" class="text-primary dark:text-accent font-semibold hover:underline">info@aseanapol.org</a>.
+                {{ cms('newsmedia.newsletters', 'banner.text') }}
+                @if(shared('secretariat', 'contact.email_general'))<a href="mailto:{{ shared('secretariat', 'contact.email_general') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ shared('secretariat', 'contact.email_general') }}</a>@endif{{ cms('newsmedia.newsletters', 'banner.after') }}
             </p>
         </div>
+        @endif
 
         {{-- Newsletter list --}}
         @if($newsletters->isNotEmpty())
@@ -54,12 +55,12 @@
                         <a href="{{ Storage::url($n->file_path) }}" target="_blank" rel="noopener"
                            class="inline-flex items-center gap-1.5 text-primary dark:text-accent text-sm font-semibold hover:underline">
                             <span class="material-symbols-outlined text-base">download</span>
-                            Download PDF
+                            {{ cms('newsmedia.newsletters', 'labels.download') }}
                         </a>
                     @else
                         <span class="inline-flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-sm">
                             <span class="material-symbols-outlined text-base">lock</span>
-                            Download pending clearance
+                            {{ cms('newsmedia.newsletters', 'labels.pending') }}
                         </span>
                     @endif
                 </div>
@@ -69,16 +70,18 @@
         @endif
 
         {{-- Publications CTA --}}
+        @if(cms_on('newsmedia.newsletters', 'cta'))
         <div class="mt-12 text-center">
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                The ASEANAPOL Bulletin and Magazine series are available in the Publications section.
+                {{ cms('newsmedia.newsletters', 'cta.text') }}
             </p>
             <a href="{{ route('data-resources.publications', ['locale' => app()->getLocale()]) }}"
                class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors">
                 <span class="material-symbols-outlined text-base">menu_book</span>
-                Browse Publications
+                {{ cms('newsmedia.newsletters', 'cta.button') }}
             </a>
         </div>
+        @endif
 
     </div>
 </section>

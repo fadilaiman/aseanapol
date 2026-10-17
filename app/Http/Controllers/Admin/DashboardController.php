@@ -15,6 +15,8 @@ class DashboardController extends Controller
             'publishedVideoCount'    => VideoGallery::published()->count(),
             'newsletterCount'        => Newsletter::count(),
             'publishedNewsletterCount' => Newsletter::published()->count(),
+            'cmsPageCount'           => collect(\App\Support\Cms::allGroups())->sum(fn ($g) => count($g['pages'])),
+            'cmsCustomisedPages'     => \App\Models\CmsBlock::distinct()->count('page_key'),
         ]);
     }
 }

@@ -6,7 +6,7 @@
     'subtitle' => $country,
     'breadcrumbs' => [
         ['label' => 'Home',            'url' => route('landing',              ['locale' => app()->getLocale()])],
-        ['label' => 'Member Countries','url' => route('about.member-countries',['locale' => app()->getLocale()])],
+        ['label' => $list_title,       'url' => route('about.member-countries',['locale' => app()->getLocale()])],
         ['label' => $country,          'url' => ''],
     ],
 ])
@@ -25,45 +25,41 @@
                     <img src="https://flagcdn.com/w160/{{ $iso }}.png"
                          alt="{{ $country }} flag"
                          class="w-24 h-auto rounded-md shadow-md flex-shrink-0">
-                    @isset($logo)
-                    <img src="{{ asset($logo) }}"
+                    @if(!empty($logo))
+                    <img src="{{ $logo }}"
                          alt="{{ $force }} crest"
                          class="w-20 h-20 object-contain flex-shrink-0">
-                    @endisset
+                    @endif
                     <div>
                         <div class="text-sm font-semibold text-accent uppercase tracking-wider mb-1">
-                            @isset($observer_note)
-                                Newest Member Country
-                            @else
-                                Member Country
-                            @endisset
+                            {{ $badge_label }}
                         </div>
                         <h2 class="text-2xl font-bold text-primary dark:text-white">{{ $force }}</h2>
-                        @isset($abbreviation)
+                        @if(!empty($abbreviation))
                             <p class="text-accent font-semibold text-sm mt-0.5">{{ $abbreviation }}</p>
-                        @endisset
+                        @endif
                         <p class="text-gray-500 dark:text-gray-400 mt-1">{{ $country }}</p>
                     </div>
                 </div>
 
                 {{-- Observer / Status Note (Timor-Leste) --}}
-                @isset($observer_note)
+                @if(!empty($observer_note))
                 <div class="bg-accent/10 dark:bg-accent/15 rounded-2xl p-5 border border-accent/20 dark:border-accent/30 flex gap-3 items-start">
                     <span class="material-symbols-outlined text-accent text-xl flex-shrink-0 mt-0.5">new_releases</span>
                     <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{{ $observer_note }}</p>
                 </div>
-                @endisset
+                @endif
 
                 {{-- Description --}}
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 class="text-xl font-bold text-primary dark:text-white mb-4">Overview</h3>
+                    <h3 class="text-xl font-bold text-primary dark:text-white mb-4">{{ $L['overview_heading'] }}</h3>
                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ $description }}</p>
                 </div>
 
                 {{-- History Timeline --}}
-                @isset($history)
+                @if(!empty($history))
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 class="text-xl font-bold text-primary dark:text-white mb-6">History</h3>
+                    <h3 class="text-xl font-bold text-primary dark:text-white mb-6">{{ $L['history_heading'] }}</h3>
                     <div class="space-y-5">
                         @foreach($history as $entry)
                         <div class="flex gap-4">
@@ -73,14 +69,14 @@
                         @endforeach
                     </div>
                 </div>
-                @endisset
+                @endif
 
                 {{-- ASEANAPOL Membership Note --}}
                 <div class="bg-primary/5 dark:bg-primary/15 rounded-2xl p-6 border border-primary/10 dark:border-primary/30">
                     <div class="flex items-start gap-3">
                         <span class="material-symbols-outlined text-primary dark:text-accent text-xl flex-shrink-0 mt-0.5">info</span>
                         <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                            {{ $country }} is one of the eleven member states of ASEANAPOL, contributing to the collective mission of enhancing regional police cooperation and combating transnational crime in Southeast Asia.
+                            {{ str_replace('{country}', $country, $L['membership_note']) }}
                         </p>
                     </div>
                 </div>
@@ -89,32 +85,32 @@
                 {{-- STUB SECTIONS — content being prepared (all KIV)        --}}
                 {{-- ======================================================= --}}
 
-                <h3 class="text-xl font-bold text-primary dark:text-white pt-2">Detailed Information</h3>
+                <h3 class="text-xl font-bold text-primary dark:text-white pt-2">{{ $L['detailed_heading'] }}</h3>
 
                 {{-- Chief of Police --}}
-                @isset($chief_name)
+                @if(!empty($chief_name))
                 <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                     <div class="flex flex-col sm:flex-row gap-0">
                         @if(!empty($chief_photo))
                         <div class="sm:w-40 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                            <img src="{{ asset($chief_photo) }}"
+                            <img src="{{ $chief_photo }}"
                                  alt="{{ $chief_name }}"
                                  class="w-full sm:h-full object-cover object-top max-h-52 sm:max-h-none">
                         </div>
                         @endif
                         <div class="p-6 flex flex-col justify-center">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">Chief of Police</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">{{ $L['chief_label'] }}</span>
                             <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-0.5">{{ $chief_name }}</h4>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">{{ $chief_rank }}</p>
                             <p class="text-xs font-semibold text-primary dark:text-accent uppercase tracking-wide">{{ $chief_designation }}</p>
                         </div>
                     </div>
                 </div>
-                @endisset
+                @endif
 
                 @php
-                    $hasStructure = isset($org_chart) || isset($official_positions);
-                    $hasRanks     = isset($rank_structure);
+                    $hasStructure = !empty($org_chart) || !empty($official_positions);
+                    $hasRanks     = !empty($rank_structure);
                 @endphp
 
                 @if(!$hasStructure && !$hasRanks)
@@ -126,10 +122,10 @@
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 mb-1">
-                                <h4 class="font-semibold text-primary dark:text-white text-sm">Police Structure</h4>
-                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">{{ $L['structure_title'] }}</h4>
+                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">{{ $L['pending_badge'] }}</span>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Organisational chart and key divisions of the national police force.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ $L['structure_text'] }}</p>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 items-start opacity-75">
@@ -138,10 +134,10 @@
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 mb-1">
-                                <h4 class="font-semibold text-primary dark:text-white text-sm">Rank & Uniforms</h4>
-                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">{{ $L['ranks_title'] }}</h4>
+                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">{{ $L['pending_badge'] }}</span>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Police rank hierarchy, insignia and uniform regulations.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ $L['ranks_text'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -155,26 +151,26 @@
                             <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
                                 <span class="material-symbols-outlined text-primary dark:text-accent text-xl">account_tree</span>
                             </div>
-                            <h4 class="font-semibold text-primary dark:text-white">Police Structure</h4>
+                            <h4 class="font-semibold text-primary dark:text-white">{{ $L['structure_heading'] }}</h4>
                         </div>
 
-                        @isset($org_chart)
-                        <a href="{{ asset($org_chart) }}" target="_blank" rel="noopener"
+                        @if(!empty($org_chart))
+                        <a href="{{ $org_chart }}" target="_blank" rel="noopener"
                            class="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline mb-5">
                             <span class="material-symbols-outlined text-base">picture_as_pdf</span>
-                            View Organisational Chart (PDF)
+                            {{ $L['org_chart_link'] }}
                         </a>
-                        @endisset
+                        @endif
 
-                        @isset($official_positions)
-                        <div class="{{ isset($org_chart) ? 'mt-5 pt-5 border-t border-gray-100 dark:border-gray-700' : '' }}">
-                            <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">Official Positions</p>
+                        @if(!empty($official_positions))
+                        <div class="{{ !empty($org_chart) ? 'mt-5 pt-5 border-t border-gray-100 dark:border-gray-700' : '' }}">
+                            <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">{{ $L['positions_heading'] }}</p>
                             <ol class="space-y-2">
                                 @foreach($official_positions as $index => $pos)
                                 <li class="flex gap-3 text-sm text-gray-600 dark:text-gray-300">
                                     <span class="flex-shrink-0 font-semibold text-primary dark:text-accent w-5 text-right">{{ $index + 1 }}.</span>
                                     <div>
-                                        @if(isset($pos['ii']))
+                                        @if(!empty($pos['ii']))
                                             <span class="text-gray-400 dark:text-gray-500 text-xs">(i)</span> {{ $pos['i'] }}<br>
                                             <span class="text-gray-400 dark:text-gray-500 text-xs">(ii)</span> {{ $pos['ii'] }}
                                         @else
@@ -185,7 +181,7 @@
                                 @endforeach
                             </ol>
                         </div>
-                        @endisset
+                        @endif
                     </div>
                     @else
                     <div class="bg-white dark:bg-dark-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 items-start opacity-75">
@@ -194,10 +190,10 @@
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 mb-1">
-                                <h4 class="font-semibold text-primary dark:text-white text-sm">Police Structure</h4>
-                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">{{ $L['structure_title'] }}</h4>
+                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">{{ $L['pending_badge'] }}</span>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Organisational chart and key divisions of the national police force.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ $L['structure_text'] }}</p>
                         </div>
                     </div>
                     @endif
@@ -209,14 +205,14 @@
                             <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
                                 <span class="material-symbols-outlined text-primary dark:text-accent text-xl">military_tech</span>
                             </div>
-                            <h4 class="font-semibold text-primary dark:text-white">Rank Structure</h4>
+                            <h4 class="font-semibold text-primary dark:text-white">{{ $L['ranks_heading'] }}</h4>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead>
                                     <tr class="border-b border-gray-100 dark:border-gray-700">
-                                        <th class="text-left text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 pb-2 pr-6">Rank</th>
-                                        <th class="text-left text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 pb-2">Abbreviation</th>
+                                        <th class="text-left text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 pb-2 pr-6">{{ $L['col_rank'] }}</th>
+                                        <th class="text-left text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 pb-2">{{ $L['col_abbreviation'] }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
@@ -237,10 +233,10 @@
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 mb-1">
-                                <h4 class="font-semibold text-primary dark:text-white text-sm">Rank & Uniforms</h4>
-                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">Pending</span>
+                                <h4 class="font-semibold text-primary dark:text-white text-sm">{{ $L['ranks_title'] }}</h4>
+                                <span class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">{{ $L['pending_badge'] }}</span>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Police rank hierarchy, insignia and uniform regulations.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ $L['ranks_text'] }}</p>
                         </div>
                     </div>
                     @endif
@@ -249,18 +245,19 @@
                 @endif
 
                 {{-- Contact Person(s) --}}
-                @php $contacts = isset($contact_persons) ? $contact_persons : (isset($contact_person) ? [$contact_person] : []); @endphp
                 @foreach($contacts as $cp)
                 <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                     <div class="flex flex-col sm:flex-row gap-0">
+                        @if(!empty($cp['photo_url']))
                         <div class="sm:w-40 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                            <img src="{{ asset($cp['photo']) }}"
+                            <img src="{{ $cp['photo_url'] }}"
                                  alt="{{ $cp['name'] }}"
                                  class="w-full sm:h-full object-cover object-top max-h-52 sm:max-h-none">
                         </div>
+                        @endif
                         <div class="p-6 flex flex-col justify-center gap-3">
                             <div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1 block">Contact Person</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1 block">{{ $L['contact_label'] }}</span>
                                 <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-0.5">{{ $cp['name'] }}</h4>
                                 <p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">{{ $cp['designation'] }}</p>
                             </div>
@@ -290,7 +287,7 @@
             {{-- Sidebar: Contact --}}
             <div class="space-y-6">
                 <div class="bg-primary dark:bg-dark-card rounded-2xl p-6 text-white shadow-lg">
-                    <h3 class="font-semibold text-lg mb-5 text-accent">ASEANAPOL Contact</h3>
+                    <h3 class="font-semibold text-lg mb-5 text-accent">{{ $L['contact_heading'] }}</h3>
                     <div class="space-y-4 text-sm">
                         @if(!empty($tel))
                             @foreach((array)$tel as $t)
@@ -302,7 +299,7 @@
                         @else
                             <div class="flex gap-3 items-center">
                                 <span class="material-symbols-outlined text-accent/40 text-xl flex-shrink-0">phone</span>
-                                <span class="text-white/40 italic text-xs">Telephone: pending</span>
+                                <span class="text-white/40 italic text-xs">{{ $L['tel_pending'] }}</span>
                             </div>
                         @endif
 
@@ -321,7 +318,7 @@
                         @else
                             <div class="flex gap-3 items-center">
                                 <span class="material-symbols-outlined text-accent/40 text-xl flex-shrink-0">mail</span>
-                                <span class="text-white/40 italic text-xs">Email: pending</span>
+                                <span class="text-white/40 italic text-xs">{{ $L['email_pending'] }}</span>
                             </div>
                         @endif
 
@@ -338,7 +335,7 @@
                 <a href="{{ route('about.member-countries', ['locale' => app()->getLocale()]) }}"
                    class="flex items-center gap-2 text-primary dark:text-accent hover:underline text-sm font-medium">
                     <span class="material-symbols-outlined text-base">arrow_back</span>
-                    Back to Member Countries
+                    {{ $L['back_label'] }}
                 </a>
             </div>
         </div>

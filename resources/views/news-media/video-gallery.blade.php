@@ -2,12 +2,12 @@
 
 @section('page_header')
 @include('partials.page-hero', [
-    'title'    => 'Video Gallery',
-    'subtitle' => 'Video recordings of ASEANAPOL events, ceremonies, and training activities.',
+    'title'    => cms('newsmedia.video-gallery', 'hero.title'),
+    'subtitle' => cms('newsmedia.video-gallery', 'hero.subtitle'),
     'breadcrumbs' => [
         ['label' => 'Home',          'url' => route('landing',              ['locale' => app()->getLocale()])],
-        ['label' => 'News & Media',  'url' => route('news-media.index',     ['locale' => app()->getLocale()])],
-        ['label' => 'Video Gallery', 'url' => ''],
+        ['label' => cms('newsmedia.index', 'hero.title'),  'url' => route('news-media.index',     ['locale' => app()->getLocale()])],
+        ['label' => cms('newsmedia.video-gallery', 'hero.title'), 'url' => ''],
     ],
 ])
 @endsection
@@ -16,14 +16,13 @@
 <section class="py-16 bg-background dark:bg-dark-surface">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        @if($videos->isEmpty())
+        @if($videos->isEmpty() && cms_on('newsmedia.video-gallery', 'banner'))
         {{-- Info banner (only when no videos yet) --}}
         <div class="bg-primary/5 dark:bg-primary/15 border border-primary/10 dark:border-primary/25 rounded-2xl p-5 mb-10 flex items-start gap-3">
             <span class="material-symbols-outlined text-primary dark:text-accent text-xl flex-shrink-0 mt-0.5">info</span>
             <p class="text-sm text-gray-600 dark:text-gray-300">
-                Video recordings of ASEANAPOL events and activities are being compiled and will be published here shortly.
-                For media enquiries, contact the ASEANAPOL Permanent Secretariat at
-                <a href="mailto:info@aseanapol.org" class="text-primary dark:text-accent font-semibold hover:underline">info@aseanapol.org</a>.
+                {{ cms('newsmedia.video-gallery', 'banner.text') }}
+                @if(shared('secretariat', 'contact.email_general'))<a href="mailto:{{ shared('secretariat', 'contact.email_general') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ shared('secretariat', 'contact.email_general') }}</a>@endif{{ cms('newsmedia.video-gallery', 'banner.after') }}
             </p>
         </div>
         @endif
@@ -86,16 +85,18 @@
         @endif
 
         {{-- Photo gallery CTA --}}
+        @if(cms_on('newsmedia.video-gallery', 'cta'))
         <div class="mt-12 text-center">
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                Browse photos from ASEANAPOL events in the Photo Gallery.
+                {{ cms('newsmedia.video-gallery', 'cta.text') }}
             </p>
             <a href="{{ route('news-media.gallery', ['locale' => app()->getLocale()]) }}"
                class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors">
                 <span class="material-symbols-outlined text-base">photo_library</span>
-                Browse Photo Gallery
+                {{ cms('newsmedia.video-gallery', 'cta.button') }}
             </a>
         </div>
+        @endif
 
     </div>
 </section>
