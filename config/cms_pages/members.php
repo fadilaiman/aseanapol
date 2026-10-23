@@ -203,10 +203,10 @@ $countries = [
     'thailand' => [
         'country' => 'Thailand',
         'description' => 'Royal Thai Police is a centralised national law enforcement agency with approximately 230,000 personnel, responsible for maintaining public order, preventing and suppressing crime, and safeguarding national security throughout the Kingdom of Thailand under the supervision of the National Police Policy Board.',
-        'chief_name' => 'Kittharath Punpetch',
+        'chief_name' => 'Samran Nualma',
         'chief_rank' => 'Police General',
         'chief_designation' => 'Commissioner General',
-        'chief_photo' => 'media/chiefs/thailand.jpg',
+        'chief_photo' => 'media/chiefs/thailand-2026.jpg',
         'history' => [
             ['year' => '15th Century', 'text' => 'Royal Thai Police traces its origins back to the Ayutthaya Kingdom, gradually evolving from a traditional local policing system into a modern national law enforcement organisation.'],
             ['year' => '1860', 'text' => 'King Rama IV established a modern police force in Bangkok to address increasing criminal activities, with guidance from British advisor Captain Joseph Byrd Ames.'],

@@ -225,7 +225,7 @@ return [
                 'label' => 'Organisational chart', 'toggle' => true,
                 'fields' => [
                     'heading' => ['type' => 'text',  'label' => 'Heading', 'default' => 'Organisational Structure of ASEANAPOL'],
-                    'image'   => ['type' => 'image', 'label' => 'Chart image', 'default' => 'media/governance/governance/organisational-chart-2026-v2.jpg'],
+                    'image'   => ['type' => 'image', 'label' => 'Chart image', 'default' => 'media/governance/governance/organisational-chart-2026-v3.jpg'],
                     'alt'     => ['type' => 'text',  'label' => 'Image alt text', 'default' => 'Organisational Structure of ASEANAPOL'],
                 ],
             ],
