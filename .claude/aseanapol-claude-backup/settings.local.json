@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(php -v 2>/dev/null | head -3)"
-    ]
-  }
-}
