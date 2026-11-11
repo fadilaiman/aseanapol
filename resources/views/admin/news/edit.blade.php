@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            @include('admin.news._images')
+            @include('admin.news._images', ['existingImages' => $news->galleryImages()])
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Summary</label>
@@ -53,7 +53,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
                 <textarea name="content" rows="10"
-                          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 font-mono">{{ old('content', $news->content) }}</textarea>
+                          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 font-mono">{{ old('content', $news->contentWithoutGallery()) }}</textarea>
             </div>
 
             <div>

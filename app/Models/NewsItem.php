@@ -21,6 +21,25 @@ class NewsItem extends Model
         'sponsors' => 'array',
     ];
 
+    private const GALLERY_RE = '#\s*<div class="news-gallery[^"]*">(.*?)</div>#is';
+
+    /** Image URLs inside the article's trailing photo gallery, in order. */
+    public function galleryImages(): array
+    {
+        if (! preg_match(self::GALLERY_RE, (string) $this->content, $m)) {
+            return [];
+        }
+        preg_match_all('#<img[^>]+src=(?:"([^"]+)"|\'([^\']+)\')#i', $m[1], $im, PREG_SET_ORDER);
+
+        return array_map(fn ($r) => html_entity_decode($r[1] !== '' ? $r[1] : ($r[2] ?? '')), $im);
+    }
+
+    /** Content with the photo gallery removed (it is edited as photo tiles instead). */
+    public function contentWithoutGallery(): string
+    {
+        return trim(preg_replace(self::GALLERY_RE, '', (string) $this->content, 1));
+    }
+
     /** Sponsor rows safe to render: [['name','logo','url'?]]; empty when none. */
     public function sponsorItems(): array
     {

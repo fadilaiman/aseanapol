@@ -45,6 +45,8 @@ class NewsItemController extends Controller
             'thumbnail_file' => 'nullable|file|image|max:5120',
             'images'         => 'nullable|array|max:20',
             'images.*'       => 'file|image|max:5120',
+            'image_order'    => 'nullable|array|max:20',
+            'image_order.*'  => 'string|max:400',
             'slug'           => 'nullable|string|max:255',
             'sponsors_label' => 'nullable|string|max:160',
             'sponsors'                => 'nullable|array|max:8',
@@ -57,7 +59,7 @@ class NewsItemController extends Controller
 
         $data['id']                 = (string) Str::uuid();
         $data['thumbnail']          = $this->resolveThumbnail($request);
-        $gallery                    = $this->storeImages($request);
+        $gallery                    = $this->resolveImages($request) ?? [];
         if ($gallery) {
             $data['thumbnail'] = $gallery[0];
         }
@@ -96,6 +98,8 @@ class NewsItemController extends Controller
             'thumbnail_file' => 'nullable|file|image|max:5120',
             'images'         => 'nullable|array|max:20',
             'images.*'       => 'file|image|max:5120',
+            'image_order'    => 'nullable|array|max:20',
+            'image_order.*'  => 'string|max:400',
             'slug'           => 'required|string|max:255',
             'sponsors_label' => 'nullable|string|max:160',
             'sponsors'                => 'nullable|array|max:8',
@@ -110,7 +114,7 @@ class NewsItemController extends Controller
         if ($resolved !== null) {
             $data['thumbnail'] = $resolved;
         }
-        $gallery = $this->storeImages($request);
+        $gallery = $this->resolveImages($request);
         if ($gallery) {
             $data['thumbnail'] = $gallery[0];
         }
@@ -125,7 +129,7 @@ class NewsItemController extends Controller
         }
         $data['slug']              = $slug;
         $data['is_upcoming_event'] = $request->boolean('is_upcoming_event');
-        $data['content']           = $this->withGallery($this->cleanContent($data['content'] ?? null), $gallery);
+        $data['content']           = $this->withGallery($this->cleanContent($data['content'] ?? null), $gallery ?? []);
 
         [$data['sponsors'], $stale] = $this->buildSponsors($request, $news->sponsors);
         unset($data['sponsors_label']);
@@ -151,13 +155,34 @@ class NewsItemController extends Controller
         return $html;
     }
 
-    /** Store uploaded photos in the order submitted; returns their public URLs. */
-    private function storeImages(Request $request): array
+    /**
+     * Final ordered photo list from the form: tokens "e:<existing url>" or "n:<index of new upload>".
+     * Returns null when the form did not submit an order (nothing to change).
+     */
+    private function resolveImages(Request $request): ?array
     {
+        $order = $request->input('image_order');
+        if (! is_array($order)) {
+            return null;
+        }
+        $stored = [];
+        foreach (array_values((array) $request->file('images', [])) as $file) {
+            $stored[] = ($file && $file->isValid()) ? Storage::url($file->store('news/gallery', 'public')) : null;
+        }
         $urls = [];
-        foreach ((array) $request->file('images', []) as $file) {
-            if ($file && $file->isValid()) {
-                $urls[] = Storage::url($file->store('news/gallery', 'public'));
+        foreach ($order as $token) {
+            if (str_starts_with($token, 'n:')) {
+                $u = $stored[(int) substr($token, 2)] ?? null;
+            } elseif (str_starts_with($token, 'e:')) {
+                $u = substr($token, 2);
+                if (! preg_match('#^(https?://|/(?!/))[^\s"<>]+$#i', $u) || preg_match('#(\.\.|%2e|\\\\)#i', $u)) {
+                    $u = null;
+                }
+            } else {
+                $u = null;
+            }
+            if ($u) {
+                $urls[] = $u;
             }
         }
 
