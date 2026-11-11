@@ -9,7 +9,7 @@
     </a>
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
-        <form method="POST" action="{{ route('admin.publications.store') }}" enctype="multipart/form-data" class="space-y-5">
+        <form method="POST" action="{{ route('admin.publications.store') }}" enctype="multipart/form-data" data-max-upload-mb="500" class="space-y-5">
             @csrf
             @include('admin.publications._form')
 

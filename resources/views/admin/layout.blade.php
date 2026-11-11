@@ -107,9 +107,15 @@
     <script>
     // Shared form safeguards for every admin module.
     (function () {
-        // The web server rejects any request over ~20 MB with a bare error page, losing everything typed.
-        // Stop it here instead, with a clear message, before anything is sent.
-        var LIMIT = 19 * 1024 * 1024;
+        // The web server rejects any request over its body limit with a bare error page, losing everything typed.
+        // Stop it here instead, with a clear message, before anything is sent. 19 MB suits the default 20 MB server
+        // limit; a form that legitimately takes bigger files (Publications, Digital Library) declares its own
+        // limit with data-max-upload-mb on the <form> (the server limits must be raised to match, see DEPLOY_RUNBOOK).
+        var DEFAULT_LIMIT = 19 * 1024 * 1024;
+        function limitFor(form) {
+            var mb = parseInt(form.dataset.maxUploadMb, 10);
+            return mb > 0 ? mb * 1048576 : DEFAULT_LIMIT;
+        }
         function filesTotal(form) {
             var t = 0;
             form.querySelectorAll('input[type=file]').forEach(function (i) { Array.prototype.forEach.call(i.files || [], function (f) { t += f.size; }); });
@@ -119,18 +125,18 @@
         document.addEventListener('change', function (e) {
             var i = e.target;
             if (!i || i.type !== 'file' || !i.form || i.dataset.sizeManaged) return;
-            var t = filesTotal(i.form);
-            if (t > LIMIT) {
-                alert('These files total ' + mb(t) + ', over the ' + mb(LIMIT) + ' upload limit. Choose smaller files (the photo uploader shrinks photos automatically).');
+            var t = filesTotal(i.form), limit = limitFor(i.form);
+            if (t > limit) {
+                alert('These files total ' + mb(t) + ', over the ' + mb(limit) + ' upload limit. Choose smaller files (the photo uploader shrinks photos automatically).');
                 i.value = '';
             }
         });
         document.addEventListener('submit', function (e) {
             var f = e.target;
             if (!f || f.tagName !== 'FORM' || e.defaultPrevented) return;
-            if (filesTotal(f) > LIMIT) {
+            if (filesTotal(f) > limitFor(f)) {
                 e.preventDefault();
-                alert('The files in this form total ' + mb(filesTotal(f)) + ', over the ' + mb(LIMIT) + ' upload limit. Remove or shrink some files and save again.');
+                alert('The files in this form total ' + mb(filesTotal(f)) + ', over the ' + mb(limitFor(f)) + ' upload limit. Remove or shrink some files and save again.');
                 return;
             }
             // Block double-clicks (duplicate articles/events) by disabling submit buttons once the form is on its way.

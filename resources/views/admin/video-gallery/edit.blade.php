@@ -81,9 +81,8 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
-                    <input type="number" name="sort_order" value="{{ old('sort_order', $videoGallery->sort_order) }}" min="0"
-                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+                    <span class="block text-sm font-medium text-gray-700 mb-1">Order on the website</span>
+                    <p class="text-xs text-gray-500 leading-relaxed">Videos are listed newest first, by the date they were added to this list. To bring an older video to the top, add it again as a new entry.</p>
                 </div>
                 <div class="flex items-end pb-3">
                     <label class="flex items-center gap-2 cursor-pointer">

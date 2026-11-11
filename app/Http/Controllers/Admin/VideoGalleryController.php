@@ -10,7 +10,7 @@ class VideoGalleryController extends Controller
 {
     public function index()
     {
-        $videos = VideoGallery::orderBy('sort_order')->orderBy('created_at', 'desc')->paginate(15);
+        $videos = VideoGallery::orderBy('created_at', 'desc')->paginate(15); // same order as the public page: newest added first
 
         return view('admin.video-gallery.index', compact('videos'));
     }
@@ -31,12 +31,9 @@ class VideoGalleryController extends Controller
             'category'       => 'required|string|max:50',
             'event_location' => 'nullable|string|max:255',
             'event_date'     => 'nullable|date',
-            'sort_order'     => 'nullable|integer|min:0',
         ]);
 
         $data['is_published'] = $request->boolean('is_published');
-        $data['sort_order'] = $data['sort_order'] ?? 0;
-
         VideoGallery::create($data);
 
         return redirect()->route('admin.video-gallery.index')->with('success', 'Video added successfully.');
@@ -58,12 +55,9 @@ class VideoGalleryController extends Controller
             'category'       => 'required|string|max:50',
             'event_location' => 'nullable|string|max:255',
             'event_date'     => 'nullable|date',
-            'sort_order'     => 'nullable|integer|min:0',
         ]);
 
         $data['is_published'] = $request->boolean('is_published');
-        $data['sort_order'] = $data['sort_order'] ?? 0;
-
         $videoGallery->update($data);
 
         return redirect()->route('admin.video-gallery.index')->with('success', 'Video updated successfully.');

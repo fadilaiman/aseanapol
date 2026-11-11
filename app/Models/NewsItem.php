@@ -40,6 +40,65 @@ class NewsItem extends Model
         return trim(preg_replace(self::GALLERY_RE, '', (string) $this->content, 1));
     }
 
+    /**
+     * What the admin "Content" box should show. Articles typed as plain text are stored as simple
+     * <p>/<br>/<ul><li> HTML; hand that back as plain text so editors never see tags.
+     * Richer markup (links, bold, images, tables...) is returned unchanged.
+     */
+    public function contentForEditing(): string
+    {
+        $html = $this->contentWithoutGallery();
+
+        return self::simpleHtmlToPlain($html) ?? $html;
+    }
+
+    /** Inverse of NewsItemController::autoParagraph(); null when the HTML is anything richer than bare p/br/ul/li. */
+    public static function simpleHtmlToPlain(string $html): ?string
+    {
+        $html = trim($html);
+        if ($html === '') {
+            return '';
+        }
+        $rest = preg_replace('#<p>.*?</p>|<ul>.*?</ul>#is', '', $html);
+        if (trim((string) $rest) !== '') {
+            return null; // stray text/markup outside simple blocks
+        }
+        preg_match_all('#<p>(.*?)</p>|<ul>(.*?)</ul>#is', $html, $blocks, PREG_SET_ORDER);
+
+        $decode = fn (string $s) => html_entity_decode($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $out = [];
+        foreach ($blocks as $b) {
+            if (($b[1] ?? '') !== '' || str_starts_with($b[0], '<p>')) {
+                $inner = $b[1] ?? '';
+                $inner = preg_replace('#<br\s*/?>#i', "\n", $inner);
+                if (preg_match('#<[^>]+>#', $inner)) {
+                    return null; // inline markup (links, bold...) cannot be shown as plain text without loss
+                }
+                $text = trim($decode($inner));
+                if ($text !== '') {
+                    $out[] = $text;
+                }
+            } else {
+                $items = [];
+                if (! preg_match_all('#<li>(.*?)</li>#is', $b[2], $li)) {
+                    return null;
+                }
+                foreach ($li[1] as $item) {
+                    if (preg_match('#<[^>]+>#', $item)) {
+                        return null;
+                    }
+                    $items[] = '* ' . trim($decode($item));
+                }
+                if (trim(preg_replace('#<li>.*?</li>#is', '', $b[2])) !== '') {
+                    return null;
+                }
+                $out[] = implode("\n", $items);
+            }
+        }
+
+        return implode("\n\n", $out);
+    }
+
     /** Sponsor rows safe to render: [['name','logo','url'?]]; empty when none. */
     public function sponsorItems(): array
     {

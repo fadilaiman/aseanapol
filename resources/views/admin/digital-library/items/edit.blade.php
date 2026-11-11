@@ -18,7 +18,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('admin.digital-library.items.update', $item) }}" enctype="multipart/form-data" class="space-y-5">
+        <form method="POST" action="{{ route('admin.digital-library.items.update', $item) }}" enctype="multipart/form-data" data-max-upload-mb="50" class="space-y-5">
             @csrf
             @method('PUT')
 

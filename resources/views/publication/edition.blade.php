@@ -27,10 +27,11 @@ $pdfUrl = $pub->pdf_url;
 
             {{-- Cover --}}
             <div class="lg:col-span-1">
+                @if($pub->cover_url)
+                {{-- An uploaded cover is finished artwork: show it whole, with no text overlay --}}
+                <img src="{{ $pub->cover_url }}" alt="{{ $pub->title }}" class="w-full h-auto rounded-2xl shadow-lg">
+                @else
                 <div class="bg-gradient-to-br {{ $pub->color_class }} rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-lg min-h-72 relative overflow-hidden">
-                    @if($pub->cover_url)
-                    <img src="{{ $pub->cover_url }}" alt="{{ $pub->title }}" class="absolute inset-0 w-full h-full object-cover">
-                    @endif
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="relative z-10">
                         @if(cms_img('shared.organisation', 'identity.logo'))<img src="{{ cms_img('shared.organisation', 'identity.logo') }}" alt="ASEANAPOL" class="w-16 h-16 object-contain mx-auto mb-4 opacity-80">@endif
@@ -42,6 +43,7 @@ $pdfUrl = $pub->pdf_url;
                         @endif
                     </div>
                 </div>
+                @endif
             </div>
 
             {{-- Content --}}

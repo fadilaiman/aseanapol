@@ -15,7 +15,7 @@
 </div>
 
 <div class="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-    <table class="w-full text-sm min-w-[520px]">
+    <table class="w-full text-sm">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="text-center px-4 py-3 font-medium text-gray-600 w-16">Order</th>

@@ -30,8 +30,9 @@
                 {{-- Cover graphic --}}
                 <div class="h-48 bg-gradient-to-br {{ $pub->color_class }} flex flex-col items-center justify-center p-6 relative">
                     @if($pub->cover_url)
-                    <img src="{{ $pub->cover_url }}" alt="{{ $pub->title }}" class="absolute inset-0 w-full h-full object-cover" loading="lazy">
-                    @endif
+                    {{-- An uploaded cover is finished artwork: show it whole, with no text overlay --}}
+                    <img src="{{ $pub->cover_url }}" alt="{{ $pub->title }}" class="absolute inset-0 w-full h-full object-contain p-2" loading="lazy">
+                    @else
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="relative z-10 text-center">
                         <div class="text-white/60 text-xs uppercase tracking-widest font-semibold mb-2">{{ cms('data.publications-index', 'cards.brand') }}</div>
@@ -39,6 +40,7 @@
                         <div class="text-white/80 text-sm mt-1">{{ $pub->type }}</div>
                     </div>
                     @if(cms_img('shared.organisation', 'identity.logo'))<img src="{{ cms_img('shared.organisation', 'identity.logo') }}" alt="" class="absolute bottom-3 right-3 w-10 h-10 object-contain opacity-20">@endif
+                    @endif
                 </div>
 
                 <div class="p-5 flex flex-col flex-1">
