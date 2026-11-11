@@ -104,5 +104,45 @@
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sb.classList.contains('-translate-x-full') && window.innerWidth < 768) set(false); });
     })();
     </script>
+    <script>
+    // Shared form safeguards for every admin module.
+    (function () {
+        // The web server rejects any request over ~20 MB with a bare error page, losing everything typed.
+        // Stop it here instead, with a clear message, before anything is sent.
+        var LIMIT = 19 * 1024 * 1024;
+        function filesTotal(form) {
+            var t = 0;
+            form.querySelectorAll('input[type=file]').forEach(function (i) { Array.prototype.forEach.call(i.files || [], function (f) { t += f.size; }); });
+            return t;
+        }
+        function mb(n) { return (n / 1048576).toFixed(1) + ' MB'; }
+        document.addEventListener('change', function (e) {
+            var i = e.target;
+            if (!i || i.type !== 'file' || !i.form || i.dataset.sizeManaged) return;
+            var t = filesTotal(i.form);
+            if (t > LIMIT) {
+                alert('These files total ' + mb(t) + ', over the ' + mb(LIMIT) + ' upload limit. Choose smaller files (the photo uploader shrinks photos automatically).');
+                i.value = '';
+            }
+        });
+        document.addEventListener('submit', function (e) {
+            var f = e.target;
+            if (!f || f.tagName !== 'FORM' || e.defaultPrevented) return;
+            if (filesTotal(f) > LIMIT) {
+                e.preventDefault();
+                alert('The files in this form total ' + mb(filesTotal(f)) + ', over the ' + mb(LIMIT) + ' upload limit. Remove or shrink some files and save again.');
+                return;
+            }
+            // Block double-clicks (duplicate articles/events) by disabling submit buttons once the form is on its way.
+            setTimeout(function () {
+                if (e.defaultPrevented) return;
+                f.querySelectorAll('button[type=submit],input[type=submit]').forEach(function (b) { b.disabled = true; b.classList.add('opacity-60'); });
+                setTimeout(function () { f.querySelectorAll('button[type=submit],input[type=submit]').forEach(function (b) { b.disabled = false; b.classList.remove('opacity-60'); }); }, 15000);
+            }, 0);
+        });
+        // Back/forward cache can restore a page with buttons still disabled.
+        window.addEventListener('pageshow', function () { document.querySelectorAll('button[type=submit]:disabled').forEach(function (b) { b.disabled = false; b.classList.remove('opacity-60'); }); });
+    })();
+    </script>
 </body>
 </html>

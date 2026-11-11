@@ -46,6 +46,10 @@ class TranslateNewsItemJob implements ShouldQueue, ShouldBeUnique
         $content = $item->content
             ? $translator->translateHtml($item->content, $this->locale)
             : null;
+        // Model output is untrusted and is rendered unescaped on the public article page: strip anything executable.
+        if ($content !== null) {
+            $content = \App\Support\HtmlSanitizer::cleanRich($content);
+        }
 
         NewsTranslation::updateOrCreate(
             ['news_item_id' => $this->newsItemId, 'locale' => $this->locale],

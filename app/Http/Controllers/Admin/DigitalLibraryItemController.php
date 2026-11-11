@@ -123,7 +123,7 @@ class DigitalLibraryItemController extends Controller
      * Keep the row internally consistent:
      *  - a newly uploaded PDF wins over a stale external URL (the model prefers external_url, so the upload
      *    would otherwise be silently ignored);
-     *  - switching to "link" drops any uploaded file; switching to "pdf" drops the extra download URL.
+     *  - switching to "pdf" drops the extra download URL; switching to "link" keeps the stored PDF untouched.
      */
     private function normalise(array $data, ?DigitalLibraryItem $item = null): array
     {
@@ -132,15 +132,13 @@ class DigitalLibraryItemController extends Controller
             if (!empty($data['file_path'])) {
                 $data['external_url'] = null;
             }
-        } else {
-            if ($item && $item->file_path) {
-                Storage::disk('public')->delete($item->file_path);
-            }
-            if (!empty($data['file_path'])) {
-                Storage::disk('public')->delete($data['file_path']);
-            }
-            $data['file_path'] = null;
+        } elseif (!empty($data['file_path'])) {
+            // A PDF was uploaded while the type is "link": it can never be shown, so don't keep an orphan.
+            Storage::disk('public')->delete($data['file_path']);
+            unset($data['file_path']);
         }
+        // Switching an existing item to "link" keeps its uploaded PDF on disk/in the row, so switching back
+        // (or an accidental type change) loses nothing; the model prefers external_url for display.
 
         return $data;
     }

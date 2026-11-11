@@ -5,7 +5,7 @@
         Drag &amp; drop photos here or <span class="text-blue-600 font-semibold">browse</span>
         <div class="text-xs text-gray-400 mt-1">Select multiple. Max 5 MB each, up to 20.</div>
     </div>
-    <input type="file" id="img-input" name="images[]" accept="image/*" multiple class="hidden">
+    <input type="file" id="img-input" name="images[]" accept="image/*" multiple data-size-managed="1" class="hidden">
     <div id="img-order"></div>
 
     <p id="img-hint" class="text-xs text-gray-400 mt-2 hidden">Drag photos to reorder, click × to remove. The first photo is the thumbnail; all photos appear in the article gallery.</p>
@@ -43,10 +43,37 @@
         render();
     }
 
-    function add(list) {
-        Array.from(list).filter(f => f.type.startsWith('image/')).forEach(f => {
-            if (items.length < 20) items.push({ file: f });
+    // Phone photos are 3-8 MB; shrink anything big so a whole set fits one upload (server limit ~20 MB).
+    function shrink(f) {
+        if (!/^image\/(jpeg|png|webp)$/.test(f.type) || f.size < 1.2 * 1048576) return Promise.resolve(f);
+        return new Promise(resolve => {
+            const url = URL.createObjectURL(f), img = new Image();
+            img.onload = () => {
+                const k = Math.min(1, 2400 / Math.max(img.width, img.height));
+                const c = document.createElement('canvas');
+                c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+                const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+                URL.revokeObjectURL(url);
+                c.toBlob(b => resolve(b && b.size < f.size ? new File([b], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }) : f), 'image/jpeg', 0.85);
+            };
+            img.onerror = () => { URL.revokeObjectURL(url); resolve(f); };
+            img.src = url;
         });
+    }
+
+    async function add(list) {
+        const imgs = Array.from(list).filter(f => f.type.startsWith('image/'));
+        for (const f of imgs) {
+            if (items.length >= 20) { alert('A maximum of 20 photos is allowed.'); break; }
+            const small = await shrink(f);
+            if (small.size > 5 * 1048576) { alert(f.name + ' is still over 5 MB after shrinking and was skipped.'); continue; }
+            items.push({ file: small });
+        }
+        const total = items.reduce((t, it) => t + (it.file ? it.file.size : 0), 0);
+        if (total > 19 * 1048576) {
+            alert('The new photos total ' + (total / 1048576).toFixed(1) + ' MB, over the 19 MB per-save limit. The last ones were removed; save, then add the rest in a second edit.');
+            while (items.length && items.reduce((t, it) => t + (it.file ? it.file.size : 0), 0) > 19 * 1048576) items.pop();
+        }
         sync();
     }
 
