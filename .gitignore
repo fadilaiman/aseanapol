@@ -30,3 +30,7 @@ CLAUDE.md
 /tests/e2e/_*
 /tests/e2e/out/
 /tests/e2e/shots/
+
+/.env.docker
+/deploy_news_*.py
+/add_photos_*.py
