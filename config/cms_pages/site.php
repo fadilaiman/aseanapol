@@ -342,31 +342,9 @@ return [
                 'col_contact' => ['type' => 'text', 'label' => 'Column: contact', 'default' => 'Contact'],
                 'portal_label' => ['type' => 'text', 'label' => 'Link text for rows that have a web link instead of an e-mail', 'default' => 'e-Services portal', 'audit' => false /* only for a member with a website but no e-mail (Shared facts); every default member has an e-mail */],
             ]],
-            'form' => ['label' => 'Inquiry form (hidden until a heading is entered)', 'columns' => 2, 'help' => 'The public inquiry form is not currently shown on the page. Enter a heading to display it; clear the heading to hide it. Delivery settings are on the "Contact form delivery" page.', 'fields' => [
-                'heading'    => ['type' => 'text', 'label' => 'Heading (blank = form hidden)', 'default' => ''],
-                'intro'      => ['type' => 'textarea', 'label' => 'Intro text', 'rows' => 2, 'default' => 'Send us an inquiry and the Secretariat will respond within 2–3 business days.'],
-                'name_label' => ['type' => 'text', 'label' => 'Name — label', 'default' => 'Your name'],
-                'name_placeholder' => ['type' => 'text', 'label' => 'Name — placeholder', 'default' => 'Full name'],
-                'email_label' => ['type' => 'text', 'label' => 'Email — label', 'default' => 'Your email'],
-                'email_placeholder' => ['type' => 'text', 'label' => 'Email — placeholder', 'default' => 'name@example.com'],
-                'subject_label' => ['type' => 'text', 'label' => 'Subject — label', 'default' => 'Subject'],
-                'subject_placeholder' => ['type' => 'text', 'label' => 'Subject — placeholder', 'default' => 'How can we help?'],
-                'message_label' => ['type' => 'text', 'label' => 'Message — label', 'default' => 'Message'],
-                'message_placeholder' => ['type' => 'text', 'label' => 'Message — placeholder', 'default' => 'Write your message (at least 10 characters)'],
-                'button' => ['type' => 'text', 'label' => 'Submit button', 'default' => 'Send Inquiry'],
-            ]],
         ],
     ],
 
-    // Not rendered on a page: settings used when the inquiry form is submitted (so no public URL / audit marker).
-    'contact-form' => [
-        'label' => 'Contact form delivery',
-        'sections' => [
-            'settings' => ['label' => 'Delivery settings', 'help' => 'Inquiries are sent to the Secretariat e-mail managed in Shared facts → Secretariat contact & e-ADS.', 'fields' => [
-                'success_message' => ['type' => 'textarea', 'label' => 'Success message', 'rows' => 2, 'default' => 'Thank you, :name. Your message has been sent. We will respond within 2–3 business days.', 'help' => 'Use :name where the sender\'s name should appear.'],
-            ]],
-        ],
-    ],
 
     // ------------------------------------------------------------------ coming soon placeholder (no public route currently uses it)
     'coming-soon' => [

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ContactInquiryMail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class PageController extends Controller
 {
@@ -348,28 +346,6 @@ class PageController extends Controller
     public function contactUs()
     {
         return view('contact.index');
-    }
-
-    public function submitContact(Request $request)
-    {
-        $validated = $request->validate([
-            'name'    => ['required', 'string', 'max:120'],
-            'email'   => ['required', 'email', 'max:255'],
-            'subject' => ['required', 'string', 'max:200'],
-            'message' => ['required', 'string', 'min:10', 'max:5000'],
-        ]);
-
-        Mail::to(\App\Support\Shared::secretariat('contact.email_secretariat') ?: 'aseanapolsec@aseanapol.org')
-            ->send(new ContactInquiryMail(
-                senderName:     $validated['name'],
-                senderEmail:    $validated['email'],
-                inquirySubject: $validated['subject'],
-                messageBody:    $validated['message'],
-            ));
-
-        return redirect()
-            ->route('contact-us', ['locale' => app()->getLocale()])
-            ->with('contact_success', str_replace(':name', $validated['name'], (string) cms('site.contact-form', 'settings.success_message')));
     }
 
     // =========================================================

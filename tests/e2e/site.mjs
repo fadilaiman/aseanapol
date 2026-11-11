@@ -2,11 +2,11 @@
 import fs from 'node:fs';
 import { launch, login, check, finish, openEditor, save, revertPage, BASE } from './lib.mjs';
 
-const HF = 'site.header-footer', LAND = 'site.landing', CON = 'site.contact', CF = 'site.contact-form';
+const HF = 'site.header-footer', LAND = 'site.landing', CON = 'site.contact';
 const { browser, page, errors } = await launch();
 const R = [];
 await login(page);
-for (const k of [HF, LAND, CON, CF]) await revertPage(page, k);
+for (const k of [HF, LAND, CON]) await revertPage(page, k);
 const get = async (u) => (await page.request.get(BASE + u)).text();
 const count = (h, s) => h.split(s).length - 1;
 
@@ -94,7 +94,6 @@ await openEditor(page, 'shared.secretariat');
 await page.fill('input[name="f[contact][phone]"]', '+603 QA PHONE');
 await page.fill('input[name="f[contact][email_secretariat]"]', 'qa-recipient@example.test');
 await save(page);
-check(R, 'contact-form page has no recipient field any more (shared)', (await (async () => { await openEditor(page, CF); return page.locator('input[name="f[settings][recipient]"]').count(); })()) === 0);
 await page.goto(BASE + '/en/contact-us');
 check(R, 'contact form visible once heading set', (await page.locator('form[action*="contact-us"] textarea[name=message]').count()) === 1);
 check(R, 'contact phone edit visible', (await page.content()).includes('+603 QA PHONE'));
@@ -117,7 +116,7 @@ for (const k of [HF, LAND, CON]) {
   await page.screenshot({ path: `tests/e2e/shots/${k}.png`, fullPage: false });
 }
 
-for (const k of [HF, LAND, CON, CF]) await revertPage(page, k);
+for (const k of [HF, LAND, CON]) await revertPage(page, k);
 await openEditor(page, 'shared.secretariat');
 await page.fill('input[name="f[contact][phone]"]', SEC_PHONE0);
 await page.fill('input[name="f[contact][email_secretariat]"]', SEC_EMAIL0);

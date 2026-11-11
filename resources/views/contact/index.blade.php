@@ -108,43 +108,6 @@ $SEC = fn ($f) => \App\Support\Shared::secretariat('contact.' . $f);
             @endif
         </div>
 
-        @if(trim((string) cms($P, 'form.heading')) !== '')
-        {{-- Inquiry form (optional) --}}
-        <div class="max-w-3xl mx-auto w-full" id="inquiry">
-            <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-1">{{ cms($P, 'form.heading') }}</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ cms($P, 'form.intro') }}</p>
-            @if(session('contact_success'))
-            <div class="mb-6 rounded-xl border border-green-200 bg-green-50 text-green-800 px-4 py-3 text-sm" data-testid="contact-success">{{ session('contact_success') }}</div>
-            @endif
-            @if($errors->any())
-            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 text-red-800 px-4 py-3 text-sm">
-                <ul class="list-disc pl-5">@foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach</ul>
-            </div>
-            @endif
-            <form method="POST" action="{{ route('contact-us.submit', ['locale' => app()->getLocale()]) }}#inquiry" class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-5">
-                @csrf
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ cms($P, 'form.name_label') }}
-                        <input type="text" name="name" value="{{ old('name') }}" required maxlength="120" placeholder="{{ cms($P, 'form.name_placeholder') }}" class="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-dark-surface px-3 py-2 text-sm">
-                    </label>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ cms($P, 'form.email_label') }}
-                        <input type="email" name="email" value="{{ old('email') }}" required maxlength="255" placeholder="{{ cms($P, 'form.email_placeholder') }}" class="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-dark-surface px-3 py-2 text-sm">
-                    </label>
-                </div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ cms($P, 'form.subject_label') }}
-                    <input type="text" name="subject" value="{{ old('subject') }}" required maxlength="200" placeholder="{{ cms($P, 'form.subject_placeholder') }}" class="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-dark-surface px-3 py-2 text-sm">
-                </label>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ cms($P, 'form.message_label') }}
-                    <textarea name="message" rows="6" required minlength="10" maxlength="5000" placeholder="{{ cms($P, 'form.message_placeholder') }}" class="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-dark-surface px-3 py-2 text-sm">{{ old('message') }}</textarea>
-                </label>
-                <button type="submit" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
-                    <span class="material-symbols-outlined text-lg">send</span>
-                    {{ cms($P, 'form.button') }}
-                </button>
-            </form>
-        </div>
-        @endif
-
         {{-- 9.4 — Member Directory --}}
         @if(cms_on($P, 'directory'))
         <div>

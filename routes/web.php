@@ -191,7 +191,6 @@ Route::middleware([SetLocale::class])
         // CONTACT US
         // =====================================================
         Route::get('/contact-us', [PageController::class, 'contactUs'])->name('contact-us');
-        Route::post('/contact-us', [PageController::class, 'submitContact'])->middleware('throttle:5,1')->name('contact-us.submit');
 
         // =====================================================
         // GUIDELINES  (kept, accessible via footer/search)
