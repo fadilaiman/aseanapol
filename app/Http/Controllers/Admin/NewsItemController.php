@@ -43,6 +43,8 @@ class NewsItemController extends Controller
             'published_at'   => 'nullable|date',
             'thumbnail_url'  => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
             'thumbnail_file' => 'nullable|file|image|max:5120',
+            'images'         => 'nullable|array|max:20',
+            'images.*'       => 'file|image|max:5120',
             'slug'           => 'nullable|string|max:255',
             'sponsors_label' => 'nullable|string|max:160',
             'sponsors'                => 'nullable|array|max:8',
@@ -55,9 +57,13 @@ class NewsItemController extends Controller
 
         $data['id']                 = (string) Str::uuid();
         $data['thumbnail']          = $this->resolveThumbnail($request);
+        $gallery                    = $this->storeImages($request);
+        if ($gallery) {
+            $data['thumbnail'] = $gallery[0];
+        }
         $data['slug']               = Str::limit(Str::slug((($data['slug'] ?? '') ?: $data['title'])), 240, '') ?: 'article';
         $data['is_upcoming_event']  = $request->boolean('is_upcoming_event');
-        $data['content']            = $this->cleanContent($data['content'] ?? null);
+        $data['content']            = $this->withGallery($this->cleanContent($data['content'] ?? null), $gallery);
         $data['published_at']       = $data['published_at'] ?? now();
 
         $base = $data['slug'];
@@ -88,6 +94,8 @@ class NewsItemController extends Controller
             'published_at'   => 'nullable|date',
             'thumbnail_url'  => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
             'thumbnail_file' => 'nullable|file|image|max:5120',
+            'images'         => 'nullable|array|max:20',
+            'images.*'       => 'file|image|max:5120',
             'slug'           => 'required|string|max:255',
             'sponsors_label' => 'nullable|string|max:160',
             'sponsors'                => 'nullable|array|max:8',
@@ -102,6 +110,10 @@ class NewsItemController extends Controller
         if ($resolved !== null) {
             $data['thumbnail'] = $resolved;
         }
+        $gallery = $this->storeImages($request);
+        if ($gallery) {
+            $data['thumbnail'] = $gallery[0];
+        }
 
         // Keep an existing slug byte-for-byte (older slugs contain dots/brackets that
         // Str::slug() would rewrite, breaking links such as press-release entries).
@@ -113,7 +125,7 @@ class NewsItemController extends Controller
         }
         $data['slug']              = $slug;
         $data['is_upcoming_event'] = $request->boolean('is_upcoming_event');
-        $data['content']           = $this->cleanContent($data['content'] ?? null);
+        $data['content']           = $this->withGallery($this->cleanContent($data['content'] ?? null), $gallery);
 
         [$data['sponsors'], $stale] = $this->buildSponsors($request, $news->sponsors);
         unset($data['sponsors_label']);
@@ -137,6 +149,36 @@ class NewsItemController extends Controller
         $html = \App\Support\HtmlSanitizer::cleanRich($html);
 
         return $html;
+    }
+
+    /** Store uploaded photos in the order submitted; returns their public URLs. */
+    private function storeImages(Request $request): array
+    {
+        $urls = [];
+        foreach ((array) $request->file('images', []) as $file) {
+            if ($file && $file->isValid()) {
+                $urls[] = Storage::url($file->store('news/gallery', 'public'));
+            }
+        }
+
+        return $urls;
+    }
+
+    private function withGallery(?string $content, array $urls): ?string
+    {
+        if (! $urls) {
+            return $content;
+        }
+        $imgs = implode("
+", array_map(
+            fn ($u) => '<img src="' . e($u) . '" alt="" class="rounded-xl shadow-md w-full h-48 object-cover">',
+            $urls
+        ));
+
+        return trim(($content ?? '') . "
+<div class=\"news-gallery grid grid-cols-2 md:grid-cols-3 gap-3 mt-8\">
+{$imgs}
+</div>");
     }
 
     private function resolveThumbnail(Request $request, ?string $current = null): ?string
