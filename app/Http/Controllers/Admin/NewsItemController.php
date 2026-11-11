@@ -150,9 +150,52 @@ class NewsItemController extends Controller
         if ($html === null || $html === '') {
             return $html;
         }
-        $html = \App\Support\HtmlSanitizer::cleanRich($html);
+        $html = \App\Support\HtmlSanitizer::cleanRich($this->autoParagraph($html));
 
         return $html;
+    }
+
+    /**
+     * Pasted plain text (no block-level HTML) keeps its layout: blank lines become
+     * paragraphs, single newlines become <br>, "* " / "- " lines become bullet lists.
+     * Anything that already contains block tags is left untouched.
+     */
+    private function autoParagraph(string $text): string
+    {
+        if (preg_match('#<(p|br|div|ul|ol|li|h[1-6]|table|blockquote|figure)\b#i', $text)) {
+            return $text;
+        }
+        $text = trim(str_replace(["\r\n", "\r"], "\n", $text));
+        $out = [];
+        foreach (preg_split('/\n{2,}/', $text) as $block) {
+            $lines = array_values(array_filter(array_map('trim', explode("\n", $block)), 'strlen'));
+            if (! $lines) {
+                continue;
+            }
+            $html = '';
+            $list = [];
+            $flush = function () use (&$html, &$list) {
+                if ($list) {
+                    $html .= '<ul>' . implode('', array_map(fn ($l) => '<li>' . $l . '</li>', $list)) . '</ul>';
+                    $list = [];
+                }
+            };
+            $para = [];
+            foreach ($lines as $l) {
+                if (preg_match('/^[*\-•]\s+(.*)$/u', $l, $m)) {
+                    if ($para) { $html .= '<p>' . implode('<br>', $para) . '</p>'; $para = []; }
+                    $list[] = $m[1];
+                } else {
+                    $flush();
+                    $para[] = $l;
+                }
+            }
+            $flush();
+            if ($para) { $html .= '<p>' . implode('<br>', $para) . '</p>'; }
+            $out[] = $html;
+        }
+
+        return implode("\n", $out);
     }
 
     /**
