@@ -233,8 +233,12 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
                             {{ \Carbon\Carbon::parse($item->published_at)->format('d M Y') }}
                         </div>
                         <h3 class="font-bold text-white text-sm leading-snug mb-2">{{ $item->title }}</h3>
-                        @if($item->summary)
-                        <p class="text-white/75 text-xs leading-relaxed mb-3 line-clamp-4">{{ $item->summary }}</p>
+                        @php
+                            $cardExcerpt = $item->summary ?: strip_tags(html_entity_decode($item->content ?? ''));
+                            $cardExcerpt = trim(mb_substr(preg_replace('/\s+/', ' ', $cardExcerpt), 0, 220));
+                        @endphp
+                        @if($cardExcerpt !== '')
+                        <p class="text-white/75 text-xs leading-relaxed mb-3 line-clamp-4">{{ $cardExcerpt }}</p>
                         @endif
                         <span class="inline-flex items-center gap-1 text-accent font-semibold text-sm mt-auto">
                             {{ $t('news.read_more', 'landing.news_read_more') }}
