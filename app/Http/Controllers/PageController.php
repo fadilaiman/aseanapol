@@ -91,7 +91,7 @@ class PageController extends Controller
         return view('news-media.press-releases');
     }
 
-    private const GALLERY_ALBUM_LABELS = [
+    public const GALLERY_ALBUM_LABELS = [
         'activities' => 'ASEANAPOL Activities',
         'news'       => 'News Photos',
         'events'     => 'Events',
@@ -116,12 +116,14 @@ class PageController extends Controller
         foreach (self::GALLERY_ALBUM_LABELS as $key => $label) {
             $query = \App\Models\GalleryImage::where('album_key', $key)->orderByDesc('event_date')->orderByDesc('id');
             $count = (clone $query)->count();
-            $images = $query->limit(self::GALLERY_PAGE_SIZE)->pluck('path')->all();
+            $rows = $query->limit(self::GALLERY_PAGE_SIZE)->pluck('caption', 'path');
+            $images = $rows->keys()->all();
 
             $albums[] = [
                 'key'      => $key,
                 'label'    => cms('newsmedia.gallery', 'albums.' . $key, $label),
                 'images'   => $images,
+                'captions' => $rows->filter()->all(),
                 'count'    => $count,
                 'hasMore'  => $count > count($images),
             ];
@@ -154,6 +156,7 @@ class PageController extends Controller
     public function videoGallery()
     {
         $videos = \App\Models\VideoGallery::published()
+            ->orderBy('sort_order')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -193,7 +196,7 @@ class PageController extends Controller
 
     public function digitalLibrary()
     {
-        $collections = \App\Models\DigitalLibraryCollection::with(['publishedItems'])
+        $collections = \App\Models\DigitalLibraryCollection::visible()->with(['publishedItems'])
             ->orderBy('sort_order')
             ->get()
             ->filter(fn($c) => $c->publishedItems->isNotEmpty())

@@ -42,6 +42,9 @@
 
                 {{-- Content --}}
                 <div class="flex-1">
+                    @if($n->edition)
+                    <span class="inline-block text-[11px] font-bold px-2 py-0.5 rounded-full bg-primary/10 dark:bg-primary/20 text-primary dark:text-accent mb-2">{{ $n->edition }}</span>
+                    @endif
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2 leading-snug">{{ $n->title }}</h3>
                     @if($n->topics)
                     <div class="flex flex-wrap gap-2 mb-3">

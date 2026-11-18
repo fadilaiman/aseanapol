@@ -35,6 +35,8 @@
                         ['route' => 'admin.news.index',                  'label' => 'News',            'icon' => 'newspaper',     'match' => 'admin.news.*'],
                         ['route' => 'admin.events.index',                'label' => 'Events',          'icon' => 'event',         'match' => 'admin.events.*'],
                         ['route' => 'admin.publications.index',          'label' => 'Publications',    'icon' => 'menu_book',     'match' => 'admin.publications.*'],
+                        ['route' => 'admin.custom-pages.index',          'label' => 'Custom Pages',    'icon' => 'description',   'match' => 'admin.custom-pages.*'],
+                        ['route' => 'admin.gallery.index',               'label' => 'Photo Gallery',   'icon' => 'photo_library', 'match' => 'admin.gallery.*'],
                     ];
                 @endphp
                 @foreach($navItems as $item)

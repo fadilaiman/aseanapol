@@ -61,6 +61,7 @@ class CmsPageController extends Controller
             'hidden'   => $hidden,
             'customized' => Cms::customizedCount($page),
             'liveUrl'  => $this->liveUrl($def),
+            'feeds'    => Cms::feeds($def),
             'fingerprint' => Cms::fingerprint($page),
             'conflict' => (bool) $submitted,
         ], $status);
@@ -107,6 +108,9 @@ class CmsPageController extends Controller
     {
         if (!empty($def['url'])) {
             return url($def['url']);
+        }
+        if (empty($def['route']) && !empty($def['feeds'])) {
+            return Cms::feeds($def)[0]['url'] ?? null; // shared.* pages: "View live page" = first page they feed
         }
         if (!empty($def['route']) && Route::has($def['route'])) {
             $params = array_merge(['locale' => 'en'], $def['route_params'] ?? []);

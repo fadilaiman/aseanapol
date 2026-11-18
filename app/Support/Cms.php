@@ -80,6 +80,60 @@ class Cms
         return self::page($pageKey)['sections'][$section]['fields'][$field] ?? null;
     }
 
+    // ------------------------------------------------------------------ cross-links (admin editor)
+
+    /** Where each "Shared facts" page is named in registry help texts (used to auto-link plain-text notes). */
+    private const SHARED_NAMES = [
+        'shared.roster'       => ['Secretariat office holders', '/(?:→|>)\s*Secretariat office holders/'],
+        'shared.members'      => ['Member countries', '/(?:→|>)\s*Member countries/'],
+        'shared.partners'     => ['Partner organisations', '/(?:→|>)\s*Partner organisations/'],
+        'shared.dialogue'     => ['Dialogue partners & observers', '/(?:→|>)\s*Dialogue partners/'],
+        'shared.secretariat'  => ['Secretariat contact & e-ADS', '/(?:→|>)\s*Secretariat(?! office)/'],
+        'shared.organisation' => ['Organisation', '/(?:→|>)\s*Organisation/'],
+    ];
+
+    /**
+     * Links a section editor shows to the Shared facts page(s) that hold its data, as [pageKey => label].
+     * Declarative: 'see' => ['shared.roster' => 'optional link text', ...] (or a list of page keys) on the section.
+     * Fallback: page keys named in the section help text ("Shared facts > Secretariat office holders").
+     */
+    public static function seeLinks(array $section): array
+    {
+        $out = [];
+        foreach ((array) ($section['see'] ?? []) as $k => $v) {
+            $key = is_int($k) ? (string) $v : (string) $k;
+            $label = is_int($k) ? null : (string) $v;
+            if (self::page($key)) {
+                $out[$key] = $label ?: 'Edit this in Shared facts → ' . self::page($key)['label'];
+            }
+        }
+        if (!$out && !empty($section['help']) && str_contains((string) $section['help'], 'Shared facts')) {
+            foreach (self::SHARED_NAMES as $key => [$name, $rx]) {
+                if (preg_match($rx, (string) $section['help']) && self::page($key)) {
+                    $out[$key] = 'Edit this in Shared facts → ' . $name;
+                }
+            }
+        }
+
+        return $out;
+    }
+
+    /** Public pages a shared.* page feeds: [['label' => ..., 'url' => ...]]. Registry: 'feeds' => [route name => label]. */
+    public static function feeds(array $page): array
+    {
+        $out = [];
+        foreach ((array) ($page['feeds'] ?? []) as $route => $label) {
+            if (\Illuminate\Support\Facades\Route::has($route)) {
+                try {
+                    $out[] = ['label' => $label, 'url' => route($route, ['locale' => 'en'])];
+                } catch (\Throwable) {
+                }
+            }
+        }
+
+        return $out;
+    }
+
     // ------------------------------------------------------------------ reading
 
     private static function blocks(string $pageKey): array

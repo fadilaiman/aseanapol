@@ -59,6 +59,9 @@
                     @if($isSuspended)
                     <h3 class="font-bold text-gray-400 dark:text-gray-500 text-sm leading-snug">{{ cms('events.conferences', 'labels.suspended_text') }}</h3>
                     @else
+                    @if($conf->title)
+                    <h4 class="font-semibold text-primary dark:text-accent text-sm leading-snug mb-0.5">{{ $conf->title }}</h4>
+                    @endif
                     <h3 class="font-bold text-gray-900 dark:text-white text-sm leading-snug">{{ $conf->dates_label }}</h3>
                     <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm text-accent">location_on</span>

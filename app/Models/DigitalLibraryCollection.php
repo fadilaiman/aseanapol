@@ -7,7 +7,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DigitalLibraryCollection extends Model
 {
-    protected $fillable = ['name', 'icon', 'sort_order'];
+    protected $fillable = ['name', 'description', 'icon', 'is_visible', 'sort_order'];
+
+    protected function casts(): array
+    {
+        return ['is_visible' => 'boolean'];
+    }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('is_visible', true);
+    }
 
     public function items(): HasMany
     {

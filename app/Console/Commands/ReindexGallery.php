@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\NewsItem;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Rebuilds the gallery_images index (used by the Photo Gallery page) from
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\DB;
  * Any file under the news directories not referenced by a news_items row
  * (e.g. a stray upload) is still included, dated by mtime, so nothing
  * silently disappears from the gallery.
+ *
+ * Admin decisions live in gallery_overrides and are re-applied after every rebuild: hidden photos are removed,
+ * manually uploaded photos (media/gallery/) are re-added with their album/date/caption.
  *
  * Cheap enough (~7k rows) to fully rebuild each run rather than diff.
  */
@@ -105,9 +109,36 @@ class ReindexGallery extends Command
             ));
         }
 
+        $this->applyOverrides($now);
+
         $this->info(count($rows) . ' image(s) indexed.');
 
         return self::SUCCESS;
+    }
+
+    private function applyOverrides($now): void
+    {
+        if (! Schema::hasTable('gallery_overrides')) {
+            return;
+        }
+        $hidden = [];
+        $manual = [];
+        foreach (DB::table('gallery_overrides')->cursor() as $o) {
+            if ($o->is_hidden) {
+                $hidden[] = $o->path;
+            } elseif ($o->is_manual && $o->event_date) {
+                $manual[] = [
+                    'album_key' => $o->album_key, 'path' => $o->path, 'event_date' => $o->event_date, 'caption' => $o->caption,
+                    'created_at' => $now, 'updated_at' => $now,
+                ];
+            }
+        }
+        foreach (array_chunk($manual, 500) as $chunk) {
+            DB::table('gallery_images')->insertOrIgnore($chunk);
+        }
+        foreach (array_chunk($hidden, 500) as $chunk) {
+            DB::table('gallery_images')->whereIn('path', $chunk)->delete();
+        }
     }
 
     private function normalizePath(string $src): ?string

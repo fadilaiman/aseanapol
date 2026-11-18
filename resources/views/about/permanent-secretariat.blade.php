@@ -159,7 +159,7 @@ $rt = function (string $path, bool $pad = false) use ($fx) {
                         <span class="text-lg leading-none mt-0.5">{{ $d['flag'] }}</span>
                         <div>
                             <p class="font-semibold text-sm text-gray-900 dark:text-white leading-snug">{{ $d['full_name'] }}</p>
-                            <p class="text-xs text-gray-400 mt-0.5">{{ $d['abbr'] }} &middot; {{ $d['term'] }}</p>
+                            <p class="text-xs text-gray-400 mt-0.5">{{ collect([$d['abbr'] ?? '', $d['term'] ?? ''])->filter(fn ($v) => trim((string) $v) !== '')->implode(' · ') }}</p>
                         </div>
                     </div>
                     @endforeach
@@ -179,7 +179,7 @@ $rt = function (string $path, bool $pad = false) use ($fx) {
                         <span class="text-lg leading-none mt-0.5">{{ $d['flag'] }}</span>
                         <div>
                             <p class="font-semibold text-sm text-gray-900 dark:text-white leading-snug">{{ $d['full_name'] }}</p>
-                            <p class="text-xs text-gray-400 mt-0.5">{{ $d['abbr'] }} &middot; {{ $d['term'] }}</p>
+                            <p class="text-xs text-gray-400 mt-0.5">{{ collect([$d['abbr'] ?? '', $d['term'] ?? ''])->filter(fn ($v) => trim((string) $v) !== '')->implode(' · ') }}</p>
                         </div>
                     </div>
                     @endforeach
@@ -199,7 +199,7 @@ $rt = function (string $path, bool $pad = false) use ($fx) {
                         <span class="text-lg leading-none mt-0.5">{{ $d['flag'] }}</span>
                         <div>
                             <p class="font-semibold text-sm text-gray-900 dark:text-white leading-snug">{{ $d['full_name'] }}</p>
-                            <p class="text-xs text-gray-400 mt-0.5">{{ $d['abbr'] }} &middot; {{ $d['term'] }}</p>
+                            <p class="text-xs text-gray-400 mt-0.5">{{ collect([$d['abbr'] ?? '', $d['term'] ?? ''])->filter(fn ($v) => trim((string) $v) !== '')->implode(' · ') }}</p>
                         </div>
                     </div>
                     @endforeach

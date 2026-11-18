@@ -42,9 +42,9 @@ class NewsItemController extends Controller
             'author'         => 'nullable|string|max:255',
             'published_at'   => 'nullable|date',
             'thumbnail_url'  => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
-            'thumbnail_file' => 'nullable|file|image|max:5120',
+            'thumbnail_file' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120',
             'images'         => 'nullable|array|max:20',
-            'images.*'       => 'file|image|max:5120',
+            'images.*'       => 'file|mimes:jpg,jpeg,png,webp|max:5120',
             'image_order'    => 'nullable|array|max:20',
             'image_order.*'  => 'string|max:400',
             'slug'           => 'nullable|string|max:255',
@@ -55,7 +55,7 @@ class NewsItemController extends Controller
             'sponsors.*.logo_url'     => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/(?!/)|media/|storage/)(?!.*\.\.)[^\s<>"]+$#i'],
             'sponsors.*.logo_existing' => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/(?!/)|media/|storage/)(?!.*\.\.)[^\s<>"]+$#i'],
             'sponsors.*.logo_file'    => 'nullable|file|image|mimes:png,jpg,jpeg,webp,gif|max:2048',
-        ]);
+        ], $this->uploadMessages());
 
         $data['id']                 = (string) Str::uuid();
         $data['thumbnail']          = $this->resolveThumbnail($request);
@@ -81,6 +81,20 @@ class NewsItemController extends Controller
         return redirect()->route('admin.news.index')->with('success', 'Article created.');
     }
 
+    private function uploadMessages(): array
+    {
+        return [
+            'images.*.mimes'       => 'Photo :position is not a supported image. Allowed types: JPG, PNG or WebP.',
+            'images.*.max'         => 'Photo :position is too large. Each photo must be 5 MB or smaller.',
+            'images.*.uploaded'    => 'Photo :position could not be uploaded (the file is larger than the server upload limit or the upload was interrupted). Use a photo under 5 MB.',
+            'images.*.file'        => 'Photo :position is not a valid file.',
+            'images.max'           => 'You can upload at most 20 photos.',
+            'thumbnail_file.mimes' => 'The thumbnail must be a JPG, PNG or WebP image.',
+            'thumbnail_file.max'   => 'The thumbnail must be 5 MB or smaller.',
+            'thumbnail_file.uploaded' => 'The thumbnail could not be uploaded (file too large for the server). Use an image under 5 MB.',
+        ];
+    }
+
     public function edit(NewsItem $news)
     {
         return view('admin.news.edit', compact('news'));
@@ -95,9 +109,9 @@ class NewsItemController extends Controller
             'author'         => 'nullable|string|max:255',
             'published_at'   => 'nullable|date',
             'thumbnail_url'  => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/|media/|storage/)\S+$#i'],
-            'thumbnail_file' => 'nullable|file|image|max:5120',
+            'thumbnail_file' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120',
             'images'         => 'nullable|array|max:20',
-            'images.*'       => 'file|image|max:5120',
+            'images.*'       => 'file|mimes:jpg,jpeg,png,webp|max:5120',
             'image_order'    => 'nullable|array|max:20',
             'image_order.*'  => 'string|max:400',
             'slug'           => 'required|string|max:255',
@@ -108,7 +122,7 @@ class NewsItemController extends Controller
             'sponsors.*.logo_url'     => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/(?!/)|media/|storage/)(?!.*\.\.)[^\s<>"]+$#i'],
             'sponsors.*.logo_existing' => ['nullable', 'string', 'max:255', 'regex:#^(https?://|/(?!/)|media/|storage/)(?!.*\.\.)[^\s<>"]+$#i'],
             'sponsors.*.logo_file'    => 'nullable|file|image|mimes:png,jpg,jpeg,webp,gif|max:2048',
-        ]);
+        ], $this->uploadMessages());
 
         $resolved = $this->resolveThumbnail($request, $news->thumbnail);
         if ($resolved !== null) {
@@ -277,6 +291,10 @@ class NewsItemController extends Controller
             && ! NewsItem::where('id', '!=', $news->id)->where('thumbnail', $news->thumbnail)->exists()) {
             Storage::disk('public')->delete($m[1]);
         }
+        // photos uploaded through this form live in storage news/gallery; delete only those, and only if no other article uses them
+        foreach ($news->galleryImages() as $u) {
+            $this->deleteGalleryUpload($u, $news->id);
+        }
         foreach ($news->sponsorItems() as $item) {
             if (! $this->logoUsedElsewhere($item['logo'], $news->id)) {
                 $this->deleteSponsorLogo($item['logo']);
@@ -284,6 +302,17 @@ class NewsItemController extends Controller
         }
         $news->delete();
         return back()->with('success', 'Article deleted.');
+    }
+
+    private function deleteGalleryUpload(string $url, string $exceptId): void
+    {
+        if (! preg_match('#^/storage/(news/gallery/[A-Za-z0-9._-]+)$#', $url, $m)) {
+            return;
+        }
+        if (NewsItem::where('id', '!=', $exceptId)->where(fn ($q) => $q->where('content', 'like', '%' . $url . '%')->orWhere('thumbnail', $url))->exists()) {
+            return;
+        }
+        Storage::disk('public')->delete($m[1]);
     }
 
     private const SPONSOR_DIR = 'news/sponsors';

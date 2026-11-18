@@ -39,7 +39,9 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-red-500">*</span></label>
                 <input type="text" name="title" value="{{ $v('title') }}" class="{{ $in }}" placeholder="e.g. 45th ASEANAPOL Conference">
-                <p class="text-xs text-gray-400 mt-1" data-kinds="conference">For conferences the title is only an admin label; the page shows the number and dates below.</p>
+                <p class="text-xs text-gray-400 mt-1" data-kinds="calendar">Shown as the event name on the Event Calendar page. Uses: start date, end date, type, city, country, description, link, image.</p>
+                <p class="text-xs text-gray-400 mt-1" data-kinds="conference">Shown on the Conferences card above the dates (e.g. &ldquo;45th ASEANAPOL Conference&rdquo;). The card also shows the conference number, year, status, dates as displayed, location (city/country), theme and link. Description and image are not used on the card except the image thumbnail.</p>
+                <p class="text-xs text-gray-400 mt-1" data-kinds="training">Shown as the programme name on the Training Programs page. Uses: category, abbreviation, icon, frequency, latest edition, description, link.</p>
             </div>
 
             {{-- Calendar + conference: dates --}}

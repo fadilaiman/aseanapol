@@ -42,7 +42,7 @@
                 @foreach($album['images'] as $img)
                 <div class="relative aspect-square overflow-hidden rounded-lg group bg-gray-100 dark:bg-dark-card lightbox-zone">
                     <img src="{{ asset($img) }}"
-                         alt="{{ $album['label'] }}"
+                         alt="{{ $album['captions'][$img] ?? $album['label'] }}"
                          loading="lazy"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                 </div>

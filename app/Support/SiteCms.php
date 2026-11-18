@@ -144,11 +144,52 @@ class SiteCms
         return $out;
     }
 
+    /** Brand name + sidebar hover colours per network key (registry: site.header-footer social.links). */
+    public const SOCIAL = [
+        'facebook'  => ['Facebook', 'hover:bg-[#1877F2] text-[#1877F2] hover:text-white'],
+        'x'         => ['X / Twitter', 'hover:bg-black text-black dark:text-white hover:text-white'],
+        'linkedin'  => ['LinkedIn', 'hover:bg-[#0A66C2] text-[#0A66C2] hover:text-white'],
+        'instagram' => ['Instagram', 'hover:bg-[#E1306C] text-[#E1306C] hover:text-white'],
+        'youtube'   => ['YouTube', 'hover:bg-[#FF0000] text-[#FF0000] hover:text-white'],
+        'tiktok'    => ['TikTok', 'hover:bg-black text-black dark:text-white hover:text-white'],
+        'telegram'  => ['Telegram', 'hover:bg-[#26A5E4] text-[#26A5E4] hover:text-white'],
+        'whatsapp'  => ['WhatsApp', 'hover:bg-[#25D366] text-[#25D366] hover:text-white'],
+        'threads'   => ['Threads', 'hover:bg-black text-black dark:text-white hover:text-white'],
+        'other'     => ['Website', 'hover:bg-primary text-primary dark:text-accent hover:text-white'],
+    ];
+
+    /** Visible social icons (rows with a URL) for footer/sidebar: [network, name, url, footer, sidebar, cls]. */
+    public static function socialLinks(string $page): array
+    {
+        $out = [];
+        foreach ((array) (Cms::get($page, 'social.links') ?? []) as $r) {
+            $url = trim((string) ($r['url'] ?? ''));
+            $net = (string) ($r['network'] ?? 'other');
+            if ($url === '' || !isset(self::SOCIAL[$net])) {
+                continue;
+            }
+            $out[] = [
+                'network' => $net,
+                'name'    => trim((string) ($r['label'] ?? '')) !== '' ? trim((string) $r['label']) : self::SOCIAL[$net][0],
+                'url'     => $url,
+                'footer'  => !empty($r['show_footer']),
+                'sidebar' => !empty($r['show_sidebar']),
+                'cls'     => self::SOCIAL[$net][1],
+            ];
+        }
+
+        return $out;
+    }
+
     public static function link(?string $value): string
     {
         $v = trim((string) $value);
         if ($v === '') {
             return '#';
+        }
+        // "page:privacy-policy" = a published page from Admin > Custom Pages
+        if (preg_match('/^page:([a-z0-9][a-z0-9-]*)$/i', $v, $pm)) {
+            return route('custom-page', ['locale' => app()->getLocale(), 'slug' => strtolower($pm[1])]);
         }
         if (preg_match('#^([a-z][a-z0-9+.-]*):#i', preg_replace('/[\x00-\x20]+/', '', $v), $m)) {
             // only web/mail/phone schemes; javascript:, data:, vbscript: … degrade to a dead link

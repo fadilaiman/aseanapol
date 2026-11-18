@@ -69,6 +69,9 @@ class SitemapController extends Controller
             foreach (NewsItem::query()->whereNotNull('slug')->where('published_at', '<=', now())->orderByDesc('published_at')->get(['slug', 'published_at', 'updated_at']) as $n) {
                 $urls[$base.'/en/news-media/news/'.$n->slug] = $n->updated_at ?? $n->published_at;
             }
+            foreach (\App\Models\CustomPage::published()->get(['slug', 'updated_at']) as $c) {
+                $urls[$base.'/en/page/'.$c->slug] = $c->updated_at;
+            }
         } catch (\Throwable $e) {
             // DB unavailable: static URLs only
         }

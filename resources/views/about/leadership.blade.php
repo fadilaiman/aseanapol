@@ -45,7 +45,7 @@
                     <div class="p-8 flex flex-col justify-center">
                         <span class="text-xs font-bold uppercase tracking-widest text-accent mb-2">{{ $__badge }}</span>
                         <h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-1">{{ $__h['full_name'] }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ $__h['force'] }} &nbsp;·&nbsp; {{ $__country }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ collect([$__h['force'] ?? '', $__country ?? ''])->filter(fn ($v) => trim((string) $v) !== '')->implode(' · ') }}</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                             {{ $__h['bio'] }}
                         </p>
@@ -72,7 +72,7 @@
                     </div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">{{ $card['role'] }}</p>
                     <h3 class="font-bold text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-accent transition-colors">{{ $__dh['full_name'] ?? '' }}</h3>
-                    <p class="text-xs text-gray-400 mt-1">{{ $__dm['force'] ?? ($__dh['force'] ?? '') }} &nbsp;·&nbsp; {{ trim(($__dh['flag'] ?? '') . ' ' . ($__dm['country'] ?? '')) }}</p>
+                    <p class="text-xs text-gray-400 mt-1">{{ collect([$__dm['force'] ?? ($__dh['force'] ?? ''), trim(($__dh['flag'] ?? '') . ' ' . ($__dm['country'] ?? ''))])->filter(fn ($v) => trim((string) $v) !== '')->implode(' · ') }}</p>
                     <p class="text-xs text-primary dark:text-accent mt-3 font-medium">{{ $card['link'] }}</p>
                 </a>
                 @endforeach

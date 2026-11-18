@@ -38,7 +38,7 @@ $past = function (string $heading, string $intro, bool $withTerm) {
     return [
         'label'  => 'Past post holders',
         'toggle' => true,
-        'help'   => 'The people (number, photo, name and rank, force, flag, term; newest first) are edited once under "Shared facts (used across pages)" > Secretariat office holders (roster). Only the wording below is local to this page.',
+        'help'   => 'The people (number, photo, name and rank, force, flag, term; shown sorted by term start year, newest first) are edited once under "Shared facts (used across pages)" > Secretariat office holders (roster). Only the wording below is local to this page.',
         'fields' => array_merge([
             'heading' => ['type' => 'text',     'label' => 'Section heading', 'default' => $heading],
             'intro'   => ['type' => 'textarea', 'label' => 'Introduction',    'rows' => 2, 'default' => $intro],

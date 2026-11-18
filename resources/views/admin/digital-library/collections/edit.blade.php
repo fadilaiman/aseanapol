@@ -29,6 +29,13 @@
             </div>
 
             <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea name="description" rows="3" maxlength="1000"
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 resize-none">{{ old('description', $collection->description) }}</textarea>
+                <p class="text-xs text-gray-400 mt-1">Optional. Shown under the collection name on the public Digital Library page.</p>
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Icon <span class="text-red-500">*</span></label>
                 <input type="text" name="icon" value="{{ old('icon', $collection->icon) }}" required
                        class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
@@ -41,6 +48,16 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
                 <input type="number" name="sort_order" value="{{ old('sort_order', $collection->sort_order) }}" min="0"
                        class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="hidden" name="is_visible" value="0">
+                    <input type="checkbox" name="is_visible" value="1" {{ old('is_visible', $collection->is_visible) ? 'checked' : '' }}
+                           class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm font-medium text-gray-700">Visible on the public Digital Library page</span>
+                </label>
+                <p class="text-xs text-gray-400 mt-1">Untick to hide the whole collection (its items are kept).</p>
             </div>
 
             <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">

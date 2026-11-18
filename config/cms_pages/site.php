@@ -9,7 +9,7 @@
  */
 
 $tw = ['w-48' => 'Narrow (w-48)', 'w-52' => 'Medium (w-52)', 'w-56' => 'Wide (w-56)', 'w-64' => 'Extra wide (w-64)'];
-$linkHelp = 'Route name (e.g. about.index), a path (/en/…, #) or a full URL.';
+$linkHelp = 'Route name (e.g. about.index), a path (/en/…), a full URL, or page:your-slug for a page made under Admin > Custom Pages (e.g. page:privacy-policy). A link left empty or "#" is not shown on the public site.';
 
 $menu = [
     ['label' => 'About ASEANAPOL', 'mobile_label' => 'About ASEANAPOL', 'link' => 'about.index', 'slug' => 'mob-about', 'width' => 'w-56', 'children' => [
@@ -76,18 +76,16 @@ foreach (($sharedReg['partners']['sections']['list']['fields']['rows']['default'
     $partnerOptions[$pr['key']] = $pr['name'];
 }
 
-$social = [];
-foreach ([
-    'facebook'  => ['Facebook', 'https://www.facebook.com/ASEANAPOL', true],
-    'x'         => ['X / Twitter', 'https://twitter.com/ASEANAPOL1981', true],
-    'linkedin'  => ['LinkedIn', 'https://www.linkedin.com/in/aseanapol-secretariat-344498ab', true],
-    'instagram' => ['Instagram', 'https://www.instagram.com/aseanapol', true],
-    'youtube'   => ['YouTube', '', true],
-] as $k => [$name, $url, $on]) {
-    $social["{$k}_url"]     = ['type' => 'url', 'label' => "$name — URL", 'default' => $url, 'help' => $k === 'youtube' ? 'Empty URL = icon not shown (YouTube is not linked by default).' : null];
-    $social["{$k}_footer"]  = ['type' => 'boolean', 'label' => "$name — show in footer", 'default' => $on];
-    $social["{$k}_sidebar"] = ['type' => 'boolean', 'label' => "$name — show in right floating sidebar", 'default' => $on];
-}
+// Social icons: one repeater row per network (ordered). Footer order = sidebar order = row order.
+$socialNets = ['facebook' => 'Facebook', 'x' => 'X / Twitter', 'linkedin' => 'LinkedIn', 'instagram' => 'Instagram', 'youtube' => 'YouTube',
+               'tiktok' => 'TikTok', 'telegram' => 'Telegram', 'whatsapp' => 'WhatsApp', 'threads' => 'Threads (generic "@" icon)', 'other' => 'Other (generic link icon)'];
+$socialDefaults = [
+    ['network' => 'x',         'label' => '', 'url' => 'https://twitter.com/ASEANAPOL1981', 'show_footer' => true, 'show_sidebar' => true],
+    ['network' => 'instagram', 'label' => '', 'url' => 'https://www.instagram.com/aseanapol', 'show_footer' => true, 'show_sidebar' => true],
+    ['network' => 'facebook',  'label' => '', 'url' => 'https://www.facebook.com/ASEANAPOL', 'show_footer' => true, 'show_sidebar' => true],
+    ['network' => 'linkedin',  'label' => '', 'url' => 'https://www.linkedin.com/in/aseanapol-secretariat-344498ab', 'show_footer' => true, 'show_sidebar' => true],
+    ['network' => 'youtube',   'label' => '', 'url' => '', 'show_footer' => true, 'show_sidebar' => true],
+];
 
 return [
     '_group' => ['label' => 'Site-wide & Home', 'icon' => 'home', 'order' => 1],
@@ -129,7 +127,15 @@ return [
                     'default' => $menu,
                 ],
             ]],
-            'social' => ['label' => 'Social media icons', 'columns' => 3, 'help' => 'One URL per network; choose where it appears. Empty URL = icon not shown.', 'fields' => $social],
+            'social' => ['label' => 'Social media icons', 'help' => 'One row per network, in the order shown. A row with an empty URL is not shown (YouTube is not linked by default). Choose whether it appears in the footer and/or the right floating sidebar.', 'fields' => [
+                'links' => ['type' => 'repeater', 'label' => 'Networks', 'item_label' => 'network', 'add_label' => 'Add network', 'columns' => 2, 'fields' => [
+                    'network'      => ['type' => 'select', 'label' => 'Network / icon', 'options' => $socialNets, 'default' => 'other'],
+                    'label'        => ['type' => 'text', 'label' => 'Name (tooltip; empty = network name)'],
+                    'url'          => ['type' => 'url', 'label' => 'URL'],
+                    'show_footer'  => ['type' => 'boolean', 'label' => 'Show in footer', 'default' => true],
+                    'show_sidebar' => ['type' => 'boolean', 'label' => 'Show in right floating sidebar', 'default' => true],
+                ], 'default' => $socialDefaults],
+            ]],
             'sidebar' => ['label' => 'Right floating sidebar', 'fields' => [
                 'share_title' => ['type' => 'text', 'label' => 'Share button tooltip', 'default' => 'Share this page'],
             ]],
@@ -184,7 +190,7 @@ return [
                 ], 'default' => [
                     ['label' => 'Privacy Policy', 'link' => '#'],
                     ['label' => 'Terms of Use', 'link' => '#'],
-                    ['label' => 'Sitemap', 'link' => '#'],
+                    ['label' => 'Sitemap', 'link' => '/sitemap.xml'],
                 ]],
             ]],
         ],
@@ -346,15 +352,28 @@ return [
     ],
 
 
-    // ------------------------------------------------------------------ coming soon placeholder (no public route currently uses it)
+    // ------------------------------------------------------------------ coming soon placeholder (NOTE: no public route renders it at present - PageController::comingSoon() is never called - so edits here have no visible effect yet)
     'coming-soon' => [
-        'label' => 'Coming-soon placeholder page',
+        'label' => 'Coming-soon placeholder page (not currently shown anywhere)',
         'sections' => [
             'content' => ['label' => 'Text', 'fields' => [
                 'heading' => ['type' => 'text', 'label' => 'Heading', 'default' => 'Coming Soon'],
                 'intro_before' => ['type' => 'text', 'label' => 'Text before the section name', 'default' => 'The'],
                 'intro_after'  => ['type' => 'textarea', 'label' => 'Text after the section name', 'rows' => 2, 'default' => 'section is currently being prepared. Please check back soon.'],
                 'button' => ['type' => 'text', 'label' => 'Button label', 'default' => 'Back to Home'],
+            ]],
+        ],
+    ],
+
+    // ------------------------------------------------------------------ 404 page
+    'not-found' => [
+        'label' => 'Page not found (404) message',
+        'sections' => [
+            'content' => ['label' => 'Text', 'help' => 'Shown when a visitor opens an address that does not exist (or a hidden Custom Page). There is no live link: open any wrong address such as /en/xyz to see it.', 'fields' => [
+                'code'    => ['type' => 'text', 'label' => 'Big code', 'default' => '404'],
+                'heading' => ['type' => 'text', 'label' => 'Heading', 'default' => 'Page not found'],
+                'message' => ['type' => 'textarea', 'label' => 'Message', 'rows' => 3, 'default' => 'Sorry, the page you are looking for does not exist or has been moved.'],
+                'button'  => ['type' => 'text', 'label' => 'Button label', 'default' => 'Back to Home'],
             ]],
         ],
     ],

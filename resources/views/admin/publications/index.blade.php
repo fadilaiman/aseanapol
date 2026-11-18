@@ -41,7 +41,7 @@
                         <div class="min-w-0">
                             <div class="font-medium text-gray-900 leading-snug break-words">{{ $pub->title }}</div>
                             <a href="{{ route('publication.show', ['locale' => 'en', 'slug' => $pub->slug]) }}" target="_blank"
-                               class="text-xs text-gray-400 hover:text-blue-600">/publication/{{ $pub->slug }}</a>
+                               class="text-xs text-gray-400 hover:text-blue-600">/en/publication/{{ $pub->slug }}</a>
                         </div>
                     </div>
                 </td>

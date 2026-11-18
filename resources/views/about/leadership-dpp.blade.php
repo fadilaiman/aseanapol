@@ -46,7 +46,7 @@
                     <div class="p-8 flex flex-col justify-center">
                         <span class="text-xs font-bold uppercase tracking-widest text-accent mb-2">{{ $__badge }}</span>
                         <h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-1">{{ $__h['full_name'] }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ $__h['force'] }} &nbsp;·&nbsp; {{ $__country }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ collect([$__h['force'] ?? '', $__country ?? ''])->filter(fn ($v) => trim((string) $v) !== '')->implode(' · ') }}</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                             {{ $__h['bio'] }}
                         </p>

@@ -28,9 +28,12 @@ class DigitalLibraryCollectionController extends Controller
     {
         $data = $request->validate([
             'name'       => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
             'icon'       => 'required|string|max:100',
             'sort_order' => 'nullable|integer|min:0',
         ]);
+
+        $data['is_visible'] = $request->boolean('is_visible');
 
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
@@ -49,9 +52,12 @@ class DigitalLibraryCollectionController extends Controller
     {
         $data = $request->validate([
             'name'       => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
             'icon'       => 'required|string|max:100',
             'sort_order' => 'nullable|integer|min:0',
         ]);
+
+        $data['is_visible'] = $request->boolean('is_visible');
 
         $data['sort_order'] = $data['sort_order'] ?? 0;
 

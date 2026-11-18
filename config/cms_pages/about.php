@@ -187,21 +187,21 @@ return [
             ],
             'dir_ps' => [
                 'label' => 'Directors: Police Services', 'toggle' => true,
-                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), newest first. Only the column heading is local.',
+                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), sorted by term start year, newest first (people with the same or no start year: later list row first). Only the column heading is local.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Director for Police Services'],
                 ],
             ],
             'dir_ed' => [
                 'label' => 'Directors: Executive Director', 'toggle' => true,
-                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), newest first. Only the column heading is local.',
+                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), sorted by term start year, newest first (people with the same or no start year: later list row first). Only the column heading is local.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Executive Director'],
                 ],
             ],
             'dir_plans' => [
                 'label' => 'Directors: Plans and Programmes', 'toggle' => true,
-                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), newest first. Only the column heading is local.',
+                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), sorted by term start year, newest first (people with the same or no start year: later list row first). Only the column heading is local.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Director for Plans and Programmes'],
                 ],

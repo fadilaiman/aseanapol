@@ -143,9 +143,10 @@ return [
     // ------------------------------------------------------------------ organisation
     'organisation' => [
         'label' => 'Organisation (name, dates, counts)',
+        'feeds' => ['landing' => 'Home page (statistics bar, vision quote)', 'about.permanent-secretariat' => 'Permanent Secretariat', 'about.logo' => 'ASEANAPOL Logo', 'about.vision-mission' => 'Vision and Mission', 'about.member-countries' => 'Member Countries', 'contact-us' => 'Contact Us (organisation name)'],
         'sections' => [
             'identity' => ['label' => 'Identity', 'help' => 'Used wherever the association is named across the site.', 'columns' => 2, 'fields' => [
-                'name_long'  => ['type' => 'text', 'label' => 'Full name', 'default' => 'Association of Southeast Asian Nations Chiefs of Police'],
+                'name_long'  => ['type' => 'text', 'label' => 'Full name', 'help' => 'Shown under the Secretariat heading on the Contact Us page.', 'default' => 'Association of Southeast Asian Nations Chiefs of Police'],
                 'name_short' => ['type' => 'text', 'label' => 'Short name', 'default' => 'ASEANAPOL'],
                 'tagline'    => ['type' => 'text', 'label' => 'Tagline / vision statement (without quotes)', 'default' => 'Toward a peaceful and crime-free ASEAN region'],
                 'logo'       => ['type' => 'image', 'label' => 'Logo', 'default' => 'images/aseanapol-logo.png'],
@@ -168,6 +169,7 @@ return [
     // ------------------------------------------------------------------ secretariat
     'secretariat' => [
         'label' => 'Secretariat contact & e-ADS',
+        'feeds' => ['contact-us' => 'Contact Us', 'about.permanent-secretariat' => 'Permanent Secretariat', 'careers.vacancies' => 'Careers: vacancies (contact e-mail)', 'events-training.training-programs' => 'Training programmes (contact e-mail)', 'news-media.newsletters' => 'Newsletters (contact e-mail)', 'news-media.video-gallery' => 'Video gallery (contact e-mail)', 'data-resources.crime-statistics' => 'Crime statistics (contact e-mail)', 'international-cooperation' => 'International Cooperation (e-ADS box)', 'landing' => 'Home page and site footer (address, phone, e-mail)'],
         'sections' => [
             'contact' => ['label' => 'Permanent Secretariat contact', 'columns' => 2, 'fields' => [
                 'address'         => ['type' => 'textarea', 'label' => 'Address (one line per row)', 'rows' => 3, 'default' => "Level 13, Tower 2, Bank Rakyat Twin Tower\nNo. 33, Jalan Rakyat\n50470 Kuala Lumpur, Malaysia"],
@@ -176,7 +178,7 @@ return [
                 'phone_link'      => ['type' => 'text', 'label' => 'Phone link (tel:)', 'default' => 'tel:+60322602222'],
                 'fax'             => ['type' => 'text', 'label' => 'Fax', 'default' => '+603-22602205'],
                 'email_secretariat' => ['type' => 'text', 'label' => 'Secretariat e-mail', 'help' => 'The Secretariat mailbox (contact page, footer, inquiries).', 'default' => 'aseanapolsec@aseanapol.org'],
-                'email_general'   => ['type' => 'text', 'label' => 'General information e-mail', 'help' => 'A different mailbox from the Secretariat one.', 'default' => 'info@aseanapol.org'],
+                'email_general'   => ['type' => 'text', 'label' => 'General information e-mail', 'help' => 'A different mailbox from the Secretariat one. Shown as the "general information" e-mail on the Careers: Vacancies, Training Programmes, Newsletters, Video Gallery, Press Releases and Crime Statistics pages (inside the "contact us" notes there).', 'default' => 'info@aseanapol.org'],
                 'office_hours'    => ['type' => 'text', 'label' => 'Office hours', 'default' => 'Office hours: Monday–Friday, 8:30 AM – 5:30 PM (MYT, UTC+8)'],
                 'map_embed_src'   => ['type' => 'url', 'label' => 'Map embed URL (Google Maps "output=embed" link)', 'default' => 'https://maps.google.com/maps?q=Menara+Kembar+Bank+Rakyat,+33+Jalan+Rakyat,+Kuala+Lumpur&output=embed&z=17'],
             ]],
@@ -190,6 +192,7 @@ return [
     // ------------------------------------------------------------------ members
     'members' => [
         'label' => 'Member countries',
+        'feeds' => ['about.member-countries' => 'Member Countries list and member pages', 'contact-us' => 'Contact Us (member directory)', 'landing' => 'Home page (member strip, directory table) and footer'],
         'sections' => [
             'list' => ['label' => 'Member police forces (display order)', 'help' => 'One row per member state. The key is a technical id used by the pages - do not change it. Display name = "force (abbreviation)". Hide removes a member from every page that reads this list.', 'fields' => [
                 'rows' => [
@@ -219,6 +222,7 @@ return [
     // ------------------------------------------------------------------ roster (Executive Director, DPS, DPP)
     'roster' => [
         'label' => 'Secretariat office holders (roster)',
+        'feeds' => ['about.leadership' => 'Leadership: Executive Director', 'about.leadership.dps' => 'Leadership: Director for Police Services', 'about.leadership.dpp' => 'Leadership: Director for Plans and Programmes', 'about.permanent-secretariat' => 'Permanent Secretariat (directors lists)'],
         'sections' => [
             'people' => ['label' => 'Executive Directors and Directors (all terms)', 'help' => 'One row per person per post. Set exactly one row per post as "current". Term end empty = still serving. Name is without rank; rank is shown before the name.', 'fields' => [
                 'rows' => [
@@ -245,6 +249,7 @@ return [
     // ------------------------------------------------------------------ partners (international organisations / LME)
     'partners' => [
         'label' => 'Partner organisations (LME & cooperation)',
+        'feeds' => ['about.ob-lme' => 'Like-Minded Entities', 'international-cooperation' => 'International Cooperation', 'landing' => 'Home page partner cards and site footer partner links'],
         'sections' => [
             'list' => ['label' => 'International organisations', 'help' => 'Names and websites used for Like-Minded Entities, International Cooperation and the footer partner links. Card icon/category/description stay on each page.', 'fields' => [
                 'rows' => [
@@ -269,6 +274,7 @@ return [
     // ------------------------------------------------------------------ dialogue partners + observers
     'dialogue' => [
         'label' => 'Dialogue partners & observers',
+        'feeds' => ['about.dialogue-partners' => 'Dialogue Partners', 'about.observers' => 'Observers', 'landing' => 'Home page (dialogue partner count)'],
         'sections' => [
             'list' => ['label' => 'Dialogue partners and observers', 'help' => 'One row per organisation. Tick "Dialogue partner" and/or "Observer" (RCMP is both). INTERPOL and Europol leave name, full name and website empty on purpose: they come from Partner organisations (type a value here only to override it).', 'fields' => [
                 'rows' => [

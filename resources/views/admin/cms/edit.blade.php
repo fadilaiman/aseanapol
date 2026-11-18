@@ -38,6 +38,17 @@
     </div>
 @endif
 
+@if(!empty($feeds))
+<div data-testid="feeds" class="bg-blue-50 border border-blue-200 text-blue-900 text-sm px-4 py-3 rounded-lg mb-5">
+    <strong>Feeds these public pages:</strong>
+    <ul class="mt-1 flex flex-wrap gap-x-5 gap-y-1">
+        @foreach($feeds as $fd)
+            <li><a href="{{ $fd['url'] }}" target="_blank" rel="noopener" class="underline hover:text-blue-700">{{ $fd['label'] }}</a></li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 {{-- Section jump list --}}
 @if(count($def['sections']) > 1)
 <nav class="flex flex-wrap gap-2 mb-5 text-xs">
@@ -47,7 +58,7 @@
 </nav>
 @endif
 
-<form id="cms-form" method="POST" action="{{ route('admin.cms.update', $pageKey) }}" enctype="multipart/form-data" class="space-y-5 pb-24">
+<form id="cms-form" method="POST" action="{{ route('admin.cms.update', $pageKey) }}" enctype="multipart/form-data" class="space-y-5 pb-40">
     @csrf
     @method('PUT')
     <input type="hidden" name="_fp" value="{{ $fingerprint }}">
@@ -59,6 +70,9 @@
                 <div>
                     <h2 class="font-semibold text-gray-800 text-sm">{{ $section['label'] }}</h2>
                     @if(!empty($section['help']))<p class="text-xs text-gray-400">{{ $section['help'] }}</p>@endif
+                    @foreach(\App\Support\Cms::seeLinks($section) as $seeKey => $seeLabel)
+                        <p class="text-xs mt-1"><a href="{{ route('admin.cms.edit', $seeKey) }}" data-testid="see-{{ $seeKey }}" class="inline-flex items-center gap-1 font-semibold text-blue-700 hover:underline"><span class="material-symbols-outlined" style="font-size:14px;">edit_note</span>{{ $seeLabel }}</a></p>
+                    @endforeach
                 </div>
                 <div class="flex items-center gap-4">
                     @if(!empty($section['toggle']))

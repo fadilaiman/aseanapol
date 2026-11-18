@@ -19,7 +19,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('admin.video-gallery.update', $videoGallery) }}" class="space-y-5">
+        <form method="POST" action="{{ route('admin.video-gallery.update', $videoGallery) }}" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
 
@@ -43,14 +43,28 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Local Video File Path</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Upload Video File</label>
+                <input type="file" name="video_file" accept="video/mp4,video/webm"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm file:mr-3 file:border-0 file:bg-gray-100 file:rounded file:px-3 file:py-1">
+                <p class="text-xs text-gray-400 mt-1">MP4 or WebM, up to 100 MB. Current server limit: <strong>{{ ini_get('upload_max_filesize') }}</strong> per file / {{ ini_get('post_max_size') }} per request; larger files are rejected with an error. An uploaded file replaces the path below.</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Or: Local Video File Path</label>
                 <input type="text" name="file_url" value="{{ old('file_url', $videoGallery->file_url) }}" placeholder="media/videos/filename.mp4"
                        class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
                 <p class="text-xs text-gray-400 mt-1">Relative path under <code class="bg-gray-100 px-1 rounded">public/</code>, e.g. <code class="bg-gray-100 px-1 rounded">media/videos/my-video.mp4</code>. Used when no Embed URL is set.</p>
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail / Poster Image</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Upload Thumbnail Image</label>
+                <input type="file" name="thumbnail_file" accept="image/jpeg,image/png,image/webp"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm file:mr-3 file:border-0 file:bg-gray-100 file:rounded file:px-3 file:py-1">
+                <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP, up to 5 MB. An uploaded image replaces the path below.</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Or: Thumbnail / Poster Path or URL</label>
                 <input type="text" name="thumbnail_url" value="{{ old('thumbnail_url', $videoGallery->thumbnail_url) }}" placeholder="media/videos/posters/my-video.jpg or https://..."
                        class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
                 <p class="text-xs text-gray-400 mt-1">Shown as the video's cover image before playback (fixes inconsistent auto-thumbnails across browsers). Relative path under <code class="bg-gray-100 px-1 rounded">public/</code>, or a full URL.</p>
@@ -81,8 +95,10 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <span class="block text-sm font-medium text-gray-700 mb-1">Order on the website</span>
-                    <p class="text-xs text-gray-500 leading-relaxed">Videos are listed newest first, by the date they were added to this list. To bring an older video to the top, add it again as a new entry.</p>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Sort order</label>
+                    <input type="number" name="sort_order" min="0" max="9999" value="{{ old('sort_order', $videoGallery->sort_order) }}"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+                    <p class="text-xs text-gray-500 mt-1 leading-relaxed">Lower numbers appear first on the website (0 = default). Videos with the same number are listed newest first.</p>
                 </div>
                 <div class="flex items-end pb-3">
                     <label class="flex items-center gap-2 cursor-pointer">

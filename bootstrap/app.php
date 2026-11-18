@@ -32,5 +32,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, \Illuminate\Http\Request $request) {
+            if ($request->is('admin/*') && ! $request->expectsJson()) {
+                $msg = e('The upload was too large for the server (limit ' . ini_get('post_max_size') . ' per request, '
+                    . ini_get('upload_max_filesize') . ' per file). Use smaller or fewer files and try again.');
+                return response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Upload too large</title>'
+                    . '<body style="font-family:system-ui,sans-serif;max-width:560px;margin:15vh auto;padding:0 16px">'
+                    . '<div role="alert" style="background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:16px;border-radius:8px"><strong>Upload too large.</strong><br>' . $msg . '</div>'
+                    . '<p><a href="javascript:history.back()">&larr; Go back to the form</a></p></body>', 413);
+            }
+        });
     })->create();

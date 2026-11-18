@@ -34,6 +34,7 @@ $SEC = fn ($f) => \App\Support\Shared::secretariat('contact.' . $f);
                 <div>
                     <h2 class="text-2xl font-extrabold text-primary dark:text-white mb-1">{{ cms($P, 'secretariat.heading') }}</h2>
                     <p class="text-sm text-gray-500 dark:text-gray-400">{{ cms($P, 'secretariat.subheading') }}</p>
+                    @if(trim((string) \App\Support\Shared::org('identity.name_long')) !== '')<p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ \App\Support\Shared::org('identity.name_long') }}</p>@endif
                 </div>
 
                 <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-700/50 overflow-hidden">

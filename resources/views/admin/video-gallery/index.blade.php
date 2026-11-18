@@ -19,6 +19,7 @@
                 <th class="text-left px-5 py-3 font-medium text-gray-600">Title</th>
                 <th class="text-left px-5 py-3 font-medium text-gray-600 hidden md:table-cell">Category</th>
                 <th class="text-left px-5 py-3 font-medium text-gray-600 hidden lg:table-cell">Date</th>
+                <th class="text-center px-5 py-3 font-medium text-gray-600 hidden md:table-cell">Order</th>
                 <th class="text-center px-5 py-3 font-medium text-gray-600">Status</th>
                 <th class="text-right px-5 py-3 font-medium text-gray-600">Actions</th>
             </tr>
@@ -38,6 +39,7 @@
                 <td class="px-5 py-4 text-gray-500 hidden lg:table-cell">
                     {{ $video->event_date ? $video->event_date->format('M Y') : '—' }}
                 </td>
+                <td class="px-5 py-4 text-center text-gray-500 hidden md:table-cell">{{ $video->sort_order }}</td>
                 <td class="px-5 py-4 text-center">
                     <form method="POST" action="{{ route('admin.video-gallery.toggle', $video) }}">
                         @csrf
@@ -63,7 +65,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="px-5 py-10 text-center text-gray-400 text-sm">
+                <td colspan="6" class="px-5 py-10 text-center text-gray-400 text-sm">
                     No videos yet. <a href="{{ route('admin.video-gallery.create') }}" class="text-blue-600 hover:underline">Add one.</a>
                 </td>
             </tr>

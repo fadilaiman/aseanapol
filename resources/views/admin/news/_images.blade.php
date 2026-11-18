@@ -3,10 +3,11 @@
     <label class="block text-sm font-medium text-gray-700 mb-1">Photos</label>
     <div id="img-drop" class="border-2 border-dashed border-gray-200 rounded-lg px-4 py-6 text-center text-sm text-gray-500 cursor-pointer hover:bg-gray-50">
         Drag &amp; drop photos here or <span class="text-blue-600 font-semibold">browse</span>
-        <div class="text-xs text-gray-400 mt-1">Select multiple. Max 5 MB each, up to 20.</div>
+        <div class="text-xs text-gray-400 mt-1">Select multiple. JPG, PNG or WebP, up to 20 photos. Photos over about 1 MB are automatically resized in your browser; each must be under 5 MB after resizing.</div>
     </div>
     <input type="file" id="img-input" name="images[]" accept="image/*" multiple data-size-managed="1" class="hidden">
     <div id="img-order"></div>
+    <div id="img-error" role="alert" class="hidden mt-2 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded-lg"></div>
 
     <p id="img-hint" class="text-xs text-gray-400 mt-2 hidden">Drag photos to reorder, click × to remove. The first photo is the thumbnail; all photos appear in the article gallery.</p>
     <div id="img-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-3"></div>
@@ -28,6 +29,9 @@
     // items: {url} for photos already saved, {file} for new uploads
     let items = @json(array_map(fn ($u) => ['url' => $u], $existingImages ?? []));
     let dragFrom = null;
+    const errBox = document.getElementById('img-error');
+    let errs = [];
+    function showErrors() { errBox.innerHTML = errs.map(m => '<div>' + m.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])) + '</div>').join(''); errBox.classList.toggle('hidden', !errs.length); }
 
     function sync() {
         const dt = new DataTransfer();
@@ -62,18 +66,24 @@
     }
 
     async function add(list) {
-        const imgs = Array.from(list).filter(f => f.type.startsWith('image/'));
+        errs = [];
+        const imgs = [];
+        for (const f of Array.from(list)) {
+            if (/^image\/(jpeg|png|webp)$/.test(f.type)) imgs.push(f);
+            else errs.push(f.name + ' was not added: only JPG, PNG or WebP images are allowed.');
+        }
         for (const f of imgs) {
-            if (items.length >= 20) { alert('A maximum of 20 photos is allowed.'); break; }
+            if (items.length >= 20) { errs.push('A maximum of 20 photos is allowed.'); break; }
             const small = await shrink(f);
-            if (small.size > 5 * 1048576) { alert(f.name + ' is still over 5 MB after shrinking and was skipped.'); continue; }
+            if (small.size > 5 * 1048576) { errs.push(f.name + ' was not added: it is still over 5 MB after shrinking.'); continue; }
             items.push({ file: small });
         }
         const total = items.reduce((t, it) => t + (it.file ? it.file.size : 0), 0);
         if (total > 19 * 1048576) {
-            alert('The new photos total ' + (total / 1048576).toFixed(1) + ' MB, over the 19 MB per-save limit. The last ones were removed; save, then add the rest in a second edit.');
+            errs.push('The new photos total ' + (total / 1048576).toFixed(1) + ' MB, over the 19 MB per-save limit. The last ones were removed; save, then add the rest in a second edit.');
             while (items.length && items.reduce((t, it) => t + (it.file ? it.file.size : 0), 0) > 19 * 1048576) items.pop();
         }
+        showErrors();
         sync();
     }
 

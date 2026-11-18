@@ -201,6 +201,11 @@ Route::middleware([SetLocale::class])
         Route::get('/guidelines/guidelines-for-accepting-donations-and-sponsorships', [PageController::class, 'guidelinesDonations'])->name('guidelines.donations');
         Route::get('/guidelines/policy-guidelines-for-accepting-observers-and-dialogue-partners-with-aseanapol', [PageController::class, 'guidelinesObserversDialogue'])->name('guidelines.observers-dialogue');
 
+        // =====================================================
+        // CUSTOM PAGES (Admin > Custom Pages): privacy, terms, ...
+        // =====================================================
+        Route::get('/page/{slug}', \App\Http\Controllers\CustomPageController::class)->where('slug', '[a-z0-9][a-z0-9-]*')->name('custom-page');
+
     });
 
 // Any unmatched URL (incl. /admin/*) gets the standard 404 through the web middleware stack (security headers).

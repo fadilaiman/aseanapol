@@ -104,7 +104,7 @@ class Shared
     // ------------------------------------------------------------------ roster
 
     /**
-     * Visible office holders in stored order (oldest first). Filter by post ('ed'|'dps'|'dpp') and/or is_current.
+     * Visible office holders in stored (admin list) order. $newestFirst = sort by term start year descending (ties: later admin row first). Filter by post ('ed'|'dps'|'dpp') and/or is_current.
      * Each row = stored fields plus: full_name ("rank name"), term ("2024–2025" / "2026–present" / "2026"),
      * force (force_label, else the member's composed name, else ''), flag (emoji), iso.
      *
@@ -133,7 +133,19 @@ class Shared
                 && ($current === null || (bool) ($r['is_current'] ?? false) === $current);
         }));
 
-        return $newestFirst ? array_reverse($out) : $out;
+        if ($newestFirst) {
+            // Predictable public order: term start year descending; same/unknown year -> later admin row first.
+            $idx = array_keys($out);
+            usort($idx, function ($a, $b) use ($out) {
+                $ya = (int) preg_replace('/\D.*$/', '', trim((string) ($out[$a]['term_start'] ?? '')));
+                $yb = (int) preg_replace('/\D.*$/', '', trim((string) ($out[$b]['term_start'] ?? '')));
+
+                return [$yb, $b] <=> [$ya, $a];
+            });
+            $out = array_map(fn ($i) => $out[$i], $idx);
+        }
+
+        return $out;
     }
 
     /** The current holder of a post, or null. */

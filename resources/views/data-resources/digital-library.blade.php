@@ -18,12 +18,15 @@
 
         @forelse($collections as $collection)
         <div>
-            <div class="flex items-center gap-3 mb-6">
+            <div class="flex items-center gap-3 {{ $collection->description ? 'mb-2' : 'mb-6' }}">
                 <div class="w-10 h-10 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <span class="material-symbols-outlined text-primary dark:text-accent text-xl">{{ $collection->icon }}</span>
                 </div>
                 <h2 class="text-xl font-bold text-primary dark:text-white">{{ $collection->name }}</h2>
             </div>
+            @if($collection->description)
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 max-w-3xl">{{ $collection->description }}</p>
+            @endif
 
             <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <table class="w-full text-sm">
