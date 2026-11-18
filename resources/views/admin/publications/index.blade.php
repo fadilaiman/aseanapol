@@ -15,7 +15,7 @@
 </div>
 
 <div class="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-    <table class="w-full text-sm">
+    <table class="w-full min-w-[34rem] text-sm sticky-actions">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="text-center px-4 py-3 font-medium text-gray-600 w-16">Order</th>
@@ -62,7 +62,7 @@
                     <form method="POST" action="{{ route('admin.publications.toggle', $pub) }}">
                         @csrf
                         <button type="submit" data-testid="toggle"
-                                class="text-xs px-3 py-1 rounded-full font-medium transition-colors
+                                class="text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap transition-colors
                                        {{ $pub->is_published ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }}">
                             {{ $pub->is_published ? 'Published' : 'Hidden' }}
                         </button>

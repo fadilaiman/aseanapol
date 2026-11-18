@@ -38,6 +38,10 @@
                     <img src="{{ cms_url($lme['logo'] ?? '') }}"
                          alt="{{ $lme['short_name'] }} logo"
                          class="max-h-20 max-w-full object-contain">
+                    @else
+                    <span class="w-14 h-14 rounded-xl bg-primary/8 dark:bg-primary/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary dark:text-accent text-3xl">{{ ($lme['icon'] ?? '') !== '' ? $lme['icon'] : 'public' }}</span>
+                    </span>
                     @endif
                 </div>
                 <div>

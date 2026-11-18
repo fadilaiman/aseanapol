@@ -101,10 +101,10 @@ class PublicationController extends Controller
             'edition.required' => 'Please enter the edition (for example 45 or 2026).',
             'cover.image' => 'The cover must be an image (JPG, PNG or WebP).',
             'cover.mimes' => 'The cover must be a JPG, PNG or WebP image.',
-            'cover.max' => 'The cover image is too large. The maximum is 5 MB; please compress or resize it and try again.',
-            'cover.uploaded' => 'The cover could not be uploaded because it is larger than the server upload limit (' . ini_get('upload_max_filesize') . '). Use an image under 5 MB, or ask the administrator to raise the limit.',
+            'cover.max' => 'The cover image is too large. The maximum is ' . upload_limit_label(5) . '; please compress or resize it and try again.',
+            'cover.uploaded' => 'The cover could not be uploaded because it is larger than the server upload limit (' . ini_get('upload_max_filesize') . '). Use an image under ' . upload_limit_label(5) . ', or ask the administrator to raise the limit.',
             'pdf.mimes' => 'The PDF must be a PDF file.',
-            'pdf.max' => 'The PDF is too large. The maximum is 500 MB.',
+            'pdf.max' => 'The PDF is too large. The maximum is ' . upload_limit_label(500) . '.',
             'pdf.uploaded' => 'The PDF could not be uploaded because it is larger than the server upload limit (' . ini_get('upload_max_filesize') . ' per file, ' . ini_get('post_max_size') . ' per request). Ask the administrator to raise the limit or use a smaller file.',
             'slug.regex' => 'The URL slug may only contain lowercase letters, numbers and dashes.',
             'slug.unique' => 'Another publication already uses this URL slug.',
@@ -126,6 +126,10 @@ class PublicationController extends Controller
 
         foreach (['pdf' => 'pdf_path', 'cover' => 'cover_path'] as $input => $column) {
             if ($request->hasFile($input)) {
+                if ($input === 'pdf' && ($data['size'] ?? null) === ($publication?->size)) {
+                    // size left empty, or still the previous file's size: compute it from the uploaded PDF
+                    $data['size'] = $this->humanSize((int) $request->file($input)->getSize());
+                }
                 $this->deleteUploaded($publication?->{$column});
                 $data[$column] = $this->storeUnique($request->file($input));
             } elseif ($publication && $request->boolean("remove_{$input}")) {
@@ -135,6 +139,13 @@ class PublicationController extends Controller
         }
 
         return $data;
+    }
+
+    private function humanSize(int $bytes): string
+    {
+        $mb = $bytes / 1048576;
+
+        return $mb >= 1 ? rtrim(rtrim(number_format($mb, 1), '0'), '.') . ' MB' : max(1, (int) round($bytes / 1024)) . ' KB';
     }
 
     private function storeUnique(UploadedFile $file): string

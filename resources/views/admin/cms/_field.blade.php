@@ -62,7 +62,7 @@
                     <button type="button" data-act="clear-file" class="px-3 py-2 text-xs rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 whitespace-nowrap">Clear</button>
                 </div>
                 <input type="file" name="{{ $fname }}" accept="{{ $type === 'image' ? 'image/png,image/jpeg,image/gif,image/webp' : '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.jpg,.jpeg,.png' }}" class="text-xs text-gray-500">
-                <p class="text-[11px] text-gray-400">Upload a new file to replace it (a new filename is always generated). Max 25 MB.</p>
+                <p class="text-[11px] text-gray-400">Upload a new file to replace it (a new filename is always generated). Max {{ upload_limit_label(25) }} (server limit).</p>
             </div>
             @break
 

@@ -46,7 +46,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Upload Video File</label>
                 <input type="file" name="video_file" accept="video/mp4,video/webm"
                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm file:mr-3 file:border-0 file:bg-gray-100 file:rounded file:px-3 file:py-1">
-                <p class="text-xs text-gray-400 mt-1">MP4 or WebM, up to 100 MB. Current server limit: <strong>{{ ini_get('upload_max_filesize') }}</strong> per file / {{ ini_get('post_max_size') }} per request; larger files are rejected with an error. An uploaded file replaces the path below.</p>
+                <p class="text-xs text-gray-400 mt-1">MP4 or WebM, up to <strong>{{ upload_limit_label(100) }}</strong> (server limit {{ ini_get('upload_max_filesize') }} per file / {{ ini_get('post_max_size') }} per request); larger files are rejected with an error. An uploaded file replaces the path below.</p>
             </div>
 
             <div>
@@ -60,7 +60,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Upload Thumbnail Image</label>
                 <input type="file" name="thumbnail_file" accept="image/jpeg,image/png,image/webp"
                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm file:mr-3 file:border-0 file:bg-gray-100 file:rounded file:px-3 file:py-1">
-                <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP, up to 5 MB. An uploaded image replaces the path below.</p>
+                <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP, up to {{ upload_limit_label(5) }}. An uploaded image replaces the path below.</p>
             </div>
 
             <div>

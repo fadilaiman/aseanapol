@@ -64,20 +64,39 @@ class HtmlSanitizer
             }
         }
         foreach (iterator_to_array($doc->getElementsByTagName('ol')) as $ol) {
-            $first = null;
-            foreach ($ol->childNodes as $c) {
+            if (!$ol->parentNode) {
+                continue;
+            }
+            // Quill 2 puts bullet AND numbered items in one <ol>, told apart by data-list. Split into runs so a
+            // numbered item is never turned into a bullet (and neighbouring <ul>/<ol> are never merged).
+            $runs = [];
+            $quill = false;
+            foreach (iterator_to_array($ol->childNodes) as $c) {
                 if ($c instanceof DOMElement && strtolower($c->nodeName) === 'li') {
-                    $first = $c;
-                    break;
+                    $kind = $c->getAttribute('data-list');
+                    if ($kind === 'bullet' || $kind === 'ordered') {
+                        $quill = true;
+                    }
+                    $kind = $kind === 'bullet' ? 'ul' : 'ol';
+                } else {
+                    $kind = $runs ? $runs[array_key_last($runs)][0] : 'ol';
                 }
-            }
-            if ($first && $first->getAttribute('data-list') === 'bullet' && $ol->parentNode) {
-                $ul = $doc->createElement('ul');
-                while ($ol->firstChild) {
-                    $ul->appendChild($ol->firstChild);
+                if (!$runs || $runs[array_key_last($runs)][0] !== $kind) {
+                    $runs[] = [$kind, []];
                 }
-                $ol->parentNode->replaceChild($ul, $ol);
+                $runs[array_key_last($runs)][1][] = $c;
             }
+            if (!$quill) {
+                continue;
+            }
+            foreach ($runs as [$kind, $items]) {
+                $list = $doc->createElement($kind);
+                foreach ($items as $it) {
+                    $list->appendChild($it);
+                }
+                $ol->parentNode->insertBefore($list, $ol);
+            }
+            $ol->parentNode->removeChild($ol);
         }
     }
 
@@ -179,7 +198,9 @@ class HtmlSanitizer
 
             $tag = strtolower($child->tagName);
 
-            if (in_array($tag, ['script', 'style', 'iframe', 'object', 'embed', 'form', 'input', 'button', 'link', 'meta', 'svg', 'math'], true)) {
+            // dropped WITH their content (never unwrapped: their text is code / hidden-form junk, not copy)
+            if (in_array($tag, ['script', 'style', 'iframe', 'object', 'embed', 'applet', 'form', 'input', 'button', 'link', 'meta', 'base',
+                'svg', 'math', 'noscript', 'template', 'textarea', 'select', 'option', 'title', 'head', 'xmp', 'plaintext', 'frame', 'frameset'], true)) {
                 $node->removeChild($child);
                 continue;
             }
@@ -205,12 +226,28 @@ class HtmlSanitizer
                 }
             }
 
+            // an image must point at http(s) or one of our own paths (/..., storage/..., media/...); anything else is dropped whole
+            if ($tag === 'img' && !self::safeImageSrc($child->getAttribute('src'))) {
+                $node->removeChild($child);
+                continue;
+            }
+
             if ($tag === 'a' && $child->getAttribute('target') === '_blank') {
                 $child->setAttribute('rel', 'noopener noreferrer');
             }
 
             self::walk($child);
         }
+    }
+
+    private static function safeImageSrc(string $src): bool
+    {
+        $src = trim(preg_replace('/[ - ]+/', '', $src));
+        if ($src === '' || str_contains($src, '..')) {
+            return false;
+        }
+
+        return (bool) preg_match('#^(https?://[^/]|/(?!/)|storage/|media/)#i', $src);
     }
 
     private static function safeUrl(string $url, bool $isSrc): bool

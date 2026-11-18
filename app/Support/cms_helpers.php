@@ -72,3 +72,42 @@ if (!function_exists('shared')) {
         return $path === null ? \App\Support\Shared::all($page) : \App\Support\Shared::get($page, $path, $default);
     }
 }
+
+if (!function_exists('ini_to_bytes')) {
+    /** "8M" / "2G" / "512K" / "1024" -> bytes (0 or -1 = unlimited -> PHP_INT_MAX). */
+    function ini_to_bytes(string|false $v): int
+    {
+        $v = trim((string) $v);
+        if ($v === '' || $v === '0' || $v === '-1') {
+            return PHP_INT_MAX;
+        }
+        $n = (float) $v;
+        switch (strtolower(substr($v, -1))) {
+            case 'g': $n *= 1024;
+            // no break
+            case 'm': $n *= 1024;
+            // no break
+            case 'k': $n *= 1024;
+        }
+
+        return (int) $n;
+    }
+}
+
+if (!function_exists('upload_limit_bytes')) {
+    /** The real per-file upload limit: the form's own limit ($configMb) capped by PHP upload_max_filesize and post_max_size. */
+    function upload_limit_bytes(int $configMb): int
+    {
+        return min($configMb * 1048576, ini_to_bytes(ini_get('upload_max_filesize')), ini_to_bytes(ini_get('post_max_size')));
+    }
+}
+
+if (!function_exists('upload_limit_label')) {
+    /** "25 MB" / "2 MB" label computed at render time from the effective limit. */
+    function upload_limit_label(int $configMb): string
+    {
+        $mb = upload_limit_bytes($configMb) / 1048576;
+
+        return (floor($mb) == $mb ? (string) (int) $mb : rtrim(rtrim(number_format($mb, 1), '0'), '.')) . ' MB';
+    }
+}

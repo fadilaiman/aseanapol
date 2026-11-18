@@ -74,12 +74,12 @@
             </label>
         @endif
         <input type="file" name="pdf" accept=".pdf,application/pdf" class="{{ $file }}">
-        <p class="text-xs text-gray-400 mt-1">PDF, max 500 MB. A new upload gets a new file name and replaces the current file.</p>
+        <p class="text-xs text-gray-400 mt-1">PDF, max {{ upload_limit_label(500) }}. A new upload gets a new file name and replaces the current file.</p>
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">File size label</label>
         <input type="text" name="size" value="{{ old('size', $publication->size) }}" class="{{ $inp }}" placeholder="12 MB">
-        <p class="text-xs text-gray-400 mt-1">Shown next to the download button, e.g. "373 MB". Optional.</p>
+        <p class="text-xs text-gray-400 mt-1">Shown next to the download button, e.g. "373 MB". Leave it empty and it is filled in automatically from the PDF you upload.</p>
     </div>
 </div>
 
@@ -95,7 +95,7 @@
             </div>
         @endif
         <input type="file" name="cover" accept="image/png,image/jpeg,image/webp" class="{{ $file }}">
-        <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP, max 5 MB. Optional &mdash; without it the coloured cover is used.</p>
+        <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP, max {{ upload_limit_label(5) }}. Optional &mdash; without it the coloured cover is used.</p>
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Cover colour</label>

@@ -143,6 +143,8 @@ return [
                     'brand'        => ['type' => 'text', 'label' => 'Cover brand line', 'default' => 'ASEANAPOL'],
                     'caption'      => ['type' => 'text', 'label' => 'Caption under title', 'default' => 'Official ASEANAPOL Publication'],
                     'btn_download' => ['type' => 'text', 'label' => 'Download button', 'default' => 'Download PDF'],
+                    'btn_details'  => ['type' => 'text', 'label' => 'Details link (opens the edition page)', 'default' => 'View details'],
+                    'edition_format' => ['type' => 'text', 'label' => 'Edition / year line ({edition}, {year})', 'default' => 'Edition {edition} · {year}'],
                     'size_format'  => ['type' => 'text', 'label' => 'File size line ({size} = size)', 'default' => 'PDF, {size}'],
                     'unavailable'  => ['type' => 'text', 'label' => 'No-PDF message', 'default' => 'PDF not available', 'audit' => false /* shown only on a card whose edition has no PDF; every audited edition has one */],
                 ],

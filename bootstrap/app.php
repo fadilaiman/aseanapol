@@ -28,18 +28,35 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'admin.auth' => \App\Http\Middleware\AdminAuth::class,
+            'admin.once' => \App\Http\Middleware\AdminDedupeSubmit::class,
             'admin.ip' => \App\Http\Middleware\AdminIpAllow::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, \Illuminate\Http\Request $request) {
-            if ($request->is('admin/*') && ! $request->expectsJson()) {
-                $msg = e('The upload was too large for the server (limit ' . ini_get('post_max_size') . ' per request, '
-                    . ini_get('upload_max_filesize') . ' per file). Use smaller or fewer files and try again.');
-                return response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Upload too large</title>'
-                    . '<body style="font-family:system-ui,sans-serif;max-width:560px;margin:15vh auto;padding:0 16px">'
-                    . '<div role="alert" style="background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:16px;border-radius:8px"><strong>Upload too large.</strong><br>' . $msg . '</div>'
-                    . '<p><a href="javascript:history.back()">&larr; Go back to the form</a></p></body>', 413);
+        // Friendly, standalone notice pages for the two failures an admin can hit while a form is open.
+        $notice = function (int $status, string $title, string $heading, string $body, bool $login) {
+            return response()->view('errors.admin-notice', compact('title', 'heading', 'body', 'login'), $status);
+        };
+
+        // 413: the request body exceeded post_max_size / the web server body limit (nothing reached the app).
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, \Illuminate\Http\Request $request) use ($notice) {
+            if (! $request->expectsJson()) {
+                $limit = upload_limit_label(500);
+                $perReq = ini_get('post_max_size');
+
+                return $notice(413, 'Upload too large', 'The upload was too large',
+                    "The files you sent are bigger than the server accepts (about {$limit} per file, {$perReq} per request in total). Nothing was saved. Go back, choose smaller or fewer files, and save again.",
+                    $request->is('admin/*'));
+            }
+        });
+
+        // 419: the CSRF token / session expired while the form was open.
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, \Illuminate\Http\Request $request) use ($notice) {
+            if ($e->getStatusCode() === 419 && ! $request->expectsJson()) {
+                return $notice(419, 'Session expired', 'Your session expired - sign in again',
+                    'For your security the session ended while this page was open, so what you just sent was NOT saved. Sign in again and repeat the change. '
+                    . 'Tip: before leaving, press your browser Back button to see the form with your typed text still in it (browsers usually keep it) and copy it first.',
+                    true);
             }
         });
     })->create();

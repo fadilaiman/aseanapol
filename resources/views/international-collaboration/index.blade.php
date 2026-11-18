@@ -57,7 +57,7 @@
                     'website'  => $sp['website'],
                     'category' => $local['category'] ?? '',
                     'icon'     => ($local['icon'] ?? '') !== '' ? $local['icon'] : ($sp['icon'] ?? ''),
-                    'logo'     => $local['logo'] ?? '',
+                    'logo'     => ($local['logo'] ?? '') !== '' ? $local['logo'] : ($sp['logo'] ?? ''), // Shared facts logo is the fallback
                     'desc'     => $local['desc'] ?? '',
                 ];
             @endphp

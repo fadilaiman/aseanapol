@@ -32,7 +32,7 @@ $categoryColors = [
         <div class="bg-primary/5 dark:bg-primary/15 border border-primary/10 dark:border-primary/25 rounded-2xl p-5 mb-10 flex items-start gap-3">
             <span class="material-symbols-outlined text-primary dark:text-accent text-xl flex-shrink-0 mt-0.5">{{ cms('events.training-programs', 'intro.icon') }}</span>
             <p class="text-sm text-gray-600 dark:text-gray-300">
-                {{ str_replace('{members}', (string) shared('organisation', 'counts.member_count_word'), cms('events.training-programs', 'intro.before')) }}
+                {{ str_replace('{members}', \App\Support\SiteCms::memberCountWord(), cms('events.training-programs', 'intro.before')) }}
                 <a href="{{ route('events-training.calendar', ['locale' => app()->getLocale()]) }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ cms('events.training-programs', 'intro.calendar') }}</a>{{ cms('events.training-programs', 'intro.after_cal') }}
                 {{ cms('events.training-programs', 'intro.middle') }}
                 @if(shared('secretariat', 'contact.email_general'))<a href="mailto:{{ shared('secretariat', 'contact.email_general') }}" class="text-primary dark:text-accent font-semibold hover:underline">{{ shared('secretariat', 'contact.email_general') }}</a>@endif{{ cms('events.training-programs', 'intro.after_email') }}

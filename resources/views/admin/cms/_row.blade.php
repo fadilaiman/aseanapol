@@ -7,6 +7,14 @@
     <div class="flex items-center gap-2 px-3 py-2 bg-white border-b border-gray-200 rounded-t-lg">
         <span class="material-symbols-outlined text-gray-400" style="font-size:18px;" aria-hidden="true">drag_indicator</span>
         <span class="cms-row-title text-sm font-medium text-gray-700 flex-1 truncate" data-label-key="{{ $labelKey }}">{{ $title !== '' ? \Illuminate\Support\Str::limit(strip_tags($title), 80) : 'New item' }}</span>
+        @if(!empty($def['row_edit_page']) && !empty($row['key']))
+            @php $editKey = str_replace('{key}', (string) $row['key'], $def['row_edit_page']); @endphp
+            @if(\App\Support\Cms::page($editKey))
+                <a href="{{ route('admin.cms.edit', $editKey) }}" data-testid="row-edit-page" class="text-xs font-semibold text-blue-700 hover:underline whitespace-nowrap">Edit country page</a>
+            @else
+                <span class="text-[11px] text-gray-400 whitespace-nowrap" title="Save this page first, then reload: the country page editor appears here.">save to edit page</span>
+            @endif
+        @endif
         <label class="inline-flex items-center gap-1 text-xs text-gray-500" title="Hide this item on the public page without deleting it">
             <input type="checkbox" name="{{ $rowName }}[_hide]" value="1" @checked(!empty($row['_hide'])) class="rounded border-gray-300" aria-label="Hide this item on the public page"> Hide
         </label>

@@ -17,7 +17,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin.ip')->group(function (
     Route::post('login', [Admin\AuthController::class, 'authenticate'])->name('authenticate');
     Route::post('logout', [Admin\AuthController::class, 'logout'])->name('logout');
 
-    Route::middleware('admin.auth')->group(function () {
+    Route::middleware(['admin.auth', 'admin.once'])->group(function () {
         Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
 
         Route::post('video-gallery/{videoGallery}/toggle', [Admin\VideoGalleryController::class, 'toggle'])->name('video-gallery.toggle');
@@ -93,6 +93,9 @@ Route::middleware([SetLocale::class])
         Route::get('/about-aseanapol/member-countries/royal-thai-police', [PageController::class, 'memberThailand'])->name('about.member.thailand');
         Route::get('/about-aseanapol/member-countries/office-of-investigation-police-agency-viet-nam', [PageController::class, 'memberVietnam'])->name('about.member.vietnam');
         Route::get('/about-aseanapol/member-countries/national-police-of-timor-leste', [PageController::class, 'memberTimorLeste'])->name('about.member.timor-leste');
+
+        // Members added in Shared facts (no built-in page above): generic data-driven country page
+        Route::get('/about-aseanapol/member-countries/{slug}', [PageController::class, 'memberGeneric'])->where('slug', '[a-z0-9][a-z0-9-]*')->name('about.member.generic');
 
         // Partners
         Route::get('/about-aseanapol/dialogue-partners', [PageController::class, 'dialoguePartners'])->name('about.dialogue-partners');

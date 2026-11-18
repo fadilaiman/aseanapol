@@ -9,7 +9,7 @@
             <input type="text" name="sponsors[{{ $key }}][url]" value="{{ $r['url'] }}" maxlength="255" placeholder="https://" data-f="url" class="{{ $inp }}">
         </div>
         <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Logo file (png, jpg, webp, gif; max 2 MB)</label>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Logo file (png, jpg, webp, gif; max {{ upload_limit_label(2) }})</label>
             <input type="file" name="sponsors[{{ $key }}][logo_file]" accept="image/png,image/jpeg,image/webp,image/gif" data-f="logo_file" class="{{ $inp }} bg-white">
             <input type="hidden" name="sponsors[{{ $key }}][logo_existing]" value="{{ $r['logo'] }}">
         </div>

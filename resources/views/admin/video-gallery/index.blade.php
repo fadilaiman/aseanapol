@@ -13,7 +13,7 @@
 </div>
 
 <div class="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-    <table class="w-full text-sm">
+    <table class="w-full text-sm sticky-actions">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="text-left px-5 py-3 font-medium text-gray-600">Title</th>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\NewsItem;
+use App\Models\NewsSlugRedirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -25,6 +26,10 @@ class NewsItemController extends Controller
         }
 
         $articles = $query->paginate(20)->withQueryString();
+        if ($articles->isEmpty() && $articles->currentPage() > 1) {
+            // ?page=999 (e.g. after deleting the last item of the last page): go to the last real page, not "No articles".
+            return redirect()->to($articles->url(max(1, $articles->lastPage())));
+        }
         return view('admin.news.index', compact('articles', 'q'));
     }
 
@@ -85,13 +90,13 @@ class NewsItemController extends Controller
     {
         return [
             'images.*.mimes'       => 'Photo :position is not a supported image. Allowed types: JPG, PNG or WebP.',
-            'images.*.max'         => 'Photo :position is too large. Each photo must be 5 MB or smaller.',
-            'images.*.uploaded'    => 'Photo :position could not be uploaded (the file is larger than the server upload limit or the upload was interrupted). Use a photo under 5 MB.',
+            'images.*.max'         => 'Photo :position is too large. Each photo must be ' . upload_limit_label(5) . ' or smaller.',
+            'images.*.uploaded'    => 'Photo :position could not be uploaded (the file is larger than the server upload limit or the upload was interrupted). Use a photo under ' . upload_limit_label(5) . '.',
             'images.*.file'        => 'Photo :position is not a valid file.',
             'images.max'           => 'You can upload at most 20 photos.',
             'thumbnail_file.mimes' => 'The thumbnail must be a JPG, PNG or WebP image.',
-            'thumbnail_file.max'   => 'The thumbnail must be 5 MB or smaller.',
-            'thumbnail_file.uploaded' => 'The thumbnail could not be uploaded (file too large for the server). Use an image under 5 MB.',
+            'thumbnail_file.max'   => 'The thumbnail must be ' . upload_limit_label(5) . ' or smaller.',
+            'thumbnail_file.uploaded' => 'The thumbnail could not be uploaded (file too large for the server). Use an image under ' . upload_limit_label(5) . '.',
         ];
     }
 
@@ -124,13 +129,22 @@ class NewsItemController extends Controller
             'sponsors.*.logo_file'    => 'nullable|file|image|mimes:png,jpg,jpeg,webp,gif|max:2048',
         ], $this->uploadMessages());
 
-        $resolved = $this->resolveThumbnail($request, $news->thumbnail);
-        if ($resolved !== null) {
-            $data['thumbnail'] = $resolved;
-        }
         $gallery = $this->resolveImages($request);
         if ($gallery) {
             $data['thumbnail'] = $gallery[0];
+        } else {
+            // No photos any more. The thumbnail input is pre-filled with the CURRENT thumbnail, so only a typed value that
+            // differs from it (or an uploaded thumbnail file) counts as explicit; otherwise a thumbnail that came from the
+            // removed photos must not linger, and an emptied field clears it.
+            $typed = trim((string) $request->input('thumbnail_url', ''));
+            $hasFile = $request->hasFile('thumbnail_file') && $request->file('thumbnail_file')->isValid();
+            if ($hasFile || ($typed !== '' && $typed !== (string) $news->thumbnail)) {
+                $data['thumbnail'] = $this->resolveThumbnail($request, $news->thumbnail);
+            } elseif ($typed === '' && $request->has('thumbnail_url')) {
+                $data['thumbnail'] = null;
+            } elseif ($typed !== '' && in_array($typed, $news->galleryImages(), true)) {
+                $data['thumbnail'] = null; // was one of the (now removed) gallery photos
+            }
         }
 
         // Keep an existing slug byte-for-byte (older slugs contain dots/brackets that
@@ -148,7 +162,13 @@ class NewsItemController extends Controller
         [$data['sponsors'], $stale] = $this->buildSponsors($request, $news->sponsors);
         unset($data['sponsors_label']);
 
+        $oldSlug = $news->slug;
         $news->update($data);
+        if ($oldSlug !== $slug) {
+            // keep the previous URL alive; a slug that is live again no longer needs a redirect
+            NewsSlugRedirect::where('old_slug', $slug)->delete();
+            NewsSlugRedirect::updateOrCreate(['old_slug' => $oldSlug], ['news_item_id' => $news->id]);
+        }
         foreach ($stale as $path) {
             $this->deleteSponsorLogo($path);
         }
@@ -300,6 +320,7 @@ class NewsItemController extends Controller
                 $this->deleteSponsorLogo($item['logo']);
             }
         }
+        NewsSlugRedirect::where('news_item_id', $news->id)->delete();
         $news->delete();
         return back()->with('success', 'Article deleted.');
     }

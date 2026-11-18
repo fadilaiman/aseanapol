@@ -26,8 +26,8 @@ $fx = function ($t) {
         '{first_conference_place}' => trim($fc[1] ?? ''),
         '{secretariat_established}' => (string) ($k['secretariat_established_label'] ?? ''),
         '{conference_count}' => (string) ($k['conference_count_label'] ?? ''),
-        '{member_count_word}' => (string) ($c['member_count_word'] ?? ''),
-        '{member_count_num}' => (string) ($c['member_count_num'] ?? ''),
+        '{member_count_word}' => \App\Support\SiteCms::memberCountWord() /* live: follows Shared facts > Member countries */,
+        '{member_count_num}' => (string) \App\Support\SiteCms::memberCount(),
     ]);
 };
 @endphp

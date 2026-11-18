@@ -60,6 +60,16 @@ class PageController extends Controller
     public function memberTimorLeste() { return $this->memberPage('timor-leste'); }
 
     // Member country data lives in the CMS registry (config/cms_pages/members.php).
+    /** Members added in Shared facts that have no built-in page: /about-aseanapol/member-countries/{slug}. */
+    public function memberGeneric($locale, string $slug)
+    {
+        if (!\App\Support\MemberPages::isGeneric($slug)) {
+            return redirect()->to(\App\Support\MemberPages::url($slug, $locale), 301);
+        }
+
+        return $this->memberPage($slug);
+    }
+
     private function memberPage(string $slug)
     {
         return view('information.member', \App\Support\MemberPages::data($slug));

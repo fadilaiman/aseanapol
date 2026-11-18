@@ -509,4 +509,10 @@ foreach ($countries as $slug => $d) {
     $pages[$slug] = $buildCountry($slug, $d);
 }
 
+// Template for members an admin adds in Shared facts > Member countries (no built-in page): same schema, empty defaults.
+// Cms::group() clones it per added member at runtime (see Cms::withAddedMembers); it must not touch the database here.
+$pages['_member_template'] = $buildCountry('template', [
+    'country' => 'Added member', 'description' => '', 'chief_name' => '', 'chief_rank' => '', 'chief_designation' => '', 'chief_photo' => '',
+]);
+
 return $pages;

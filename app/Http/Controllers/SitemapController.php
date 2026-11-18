@@ -42,12 +42,22 @@ class SitemapController extends Controller
     public function __invoke()
     {
         $base = request()->getSchemeAndHttpHost();
-        $xml = Cache::remember('sitemap.xml.v1.'.md5($base), 3600, fn () => $this->build($base));
+        $xml = Cache::remember('sitemap.xml.v3.'.md5($base.self::membersStamp()), 3600, fn () => $this->build($base));
 
         return response($xml, 200, [
             'Content-Type' => 'application/xml; charset=utf-8',
             'Cache-Control' => 'public, max-age=3600',
         ]);
+    }
+
+    /** Changes when Shared facts > Member countries is saved, so added members show up without waiting for the cache. */
+    private static function membersStamp(): string
+    {
+        try {
+            return \App\Support\Cms::fingerprint('shared.members');
+        } catch (\Throwable) {
+            return '';
+        }
     }
 
     private function build(string $base): string
@@ -63,6 +73,13 @@ class SitemapController extends Controller
             $urls[$base.'/en/publication/'.$s] = null;
         }
         try {
+            // members added in Shared facts (no built-in page) are served by the generic country route
+            foreach (\App\Support\Shared::members() as $m) {
+                $k = (string) ($m['key'] ?? '');
+                if ($k !== '' && \App\Support\MemberPages::isGeneric($k) && preg_match('/^[a-z0-9][a-z0-9-]*$/', $k)) {
+                    $urls[$base.'/en/about-aseanapol/member-countries/'.$k] = null;
+                }
+            }
             foreach (Publication::published()->get(['slug', 'updated_at']) as $p) {
                 $urls[$base.'/en/publication/'.$p->slug] = $p->updated_at;
             }

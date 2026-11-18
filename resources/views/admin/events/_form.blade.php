@@ -167,7 +167,7 @@
                 @endif
                 <input type="file" name="image" accept="image/png,image/jpeg,image/webp"
                        class="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
-                <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP, max 4 MB. Uploading replaces the current image.</p>
+                <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP, max {{ upload_limit_label(4) }}. Uploading replaces the current image.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

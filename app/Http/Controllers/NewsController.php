@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewsItem;
+use App\Models\NewsSlugRedirect;
 use App\Models\NewsTranslation;
 
 class NewsController extends Controller
@@ -42,7 +43,16 @@ class NewsController extends Controller
         $decoded = rawurldecode($slug);
 
         $article = NewsItem::where('slug', $decoded)->first()
-            ?? NewsItem::where('slug', $this->asciiSlug($decoded))->firstOrFail();
+            ?? NewsItem::where('slug', $this->asciiSlug($decoded))->first();
+
+        if (! $article) {
+            // A renamed article: send the old URL (any locale) permanently to the current one.
+            $redirect = NewsSlugRedirect::where('old_slug', $decoded)->first();
+            $target = $redirect ? NewsItem::find($redirect->news_item_id) : null;
+            abort_unless($target, 404);
+
+            return redirect()->route('news.show', ['locale' => $locale, 'slug' => $target->slug], 301);
+        }
 
         $article->applyTranslation($locale);
 

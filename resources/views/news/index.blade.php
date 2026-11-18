@@ -63,9 +63,14 @@
                     @endif
                 </a>
                 <div class="p-5 flex flex-col flex-1">
-                    <div class="flex items-center gap-2 mb-3 text-xs text-gray-400 dark:text-gray-500">
+                    <div class="flex flex-wrap items-center gap-2 mb-3 text-xs text-gray-400 dark:text-gray-500">
                         <span class="material-symbols-outlined text-sm">calendar_today</span>
                         {{ $article->published_at ? $article->published_at->format('d M Y') : '—' }}
+                        @if($article->is_upcoming_event)
+                        <span data-testid="upcoming-badge" class="ml-auto inline-flex items-center gap-1 bg-accent/15 text-primary dark:text-accent font-bold px-2.5 py-0.5 rounded-full">
+                            <span class="material-symbols-outlined text-sm">event_upcoming</span>{{ __('landing.upcoming_event_badge') }}
+                        </span>
+                        @endif
                     </div>
                     <h3 class="font-bold text-gray-900 dark:text-white text-sm leading-snug mb-3 flex-1 hover:text-primary dark:hover:text-accent transition-colors">
                         <a href="{{ route('news.show', ['locale' => app()->getLocale(), 'slug' => $article->slug]) }}">{{ $article->title }}</a>

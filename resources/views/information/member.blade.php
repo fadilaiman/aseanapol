@@ -51,10 +51,12 @@
                 @endif
 
                 {{-- Description --}}
+                @if(!empty($description))
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
                     <h3 class="text-xl font-bold text-primary dark:text-white mb-4">{{ $L['overview_heading'] }}</h3>
                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ $description }}</p>
                 </div>
+                @endif
 
                 {{-- History Timeline --}}
                 @if(!empty($history))

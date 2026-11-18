@@ -49,7 +49,17 @@
                     </span>
                     <h3 class="font-bold text-gray-900 dark:text-white mt-3 mb-1">{{ $pub->title }}</h3>
                     <p class="text-gray-400 dark:text-gray-500 text-xs">{{ cms('data.publications-index', 'cards.caption') }}</p>
+                    @php
+                        $edLine = preg_replace('/^[\s·]+|[\s·]+$/u', '', str_replace(['{edition}', '{year}'], [$pub->edition, $pub->year ?: ''], cms('data.publications-index', 'cards.edition_format')));
+                        $detailUrl = route('publication.show', ['locale' => app()->getLocale(), 'slug' => $pub->slug]);
+                    @endphp
+                    @if($edLine !== '')<p class="text-gray-500 dark:text-gray-400 text-xs mt-1" data-testid="pub-edition">{{ $edLine }}</p>@endif
+                    @if(!empty($pub->theme))<p class="text-gray-600 dark:text-gray-300 text-sm mt-2 line-clamp-3" data-testid="pub-theme">{{ $pub->theme }}</p>@endif
                     <div class="mt-auto pt-4">
+                        <a href="{{ $detailUrl }}" data-testid="pub-details" class="inline-flex items-center gap-1 text-primary dark:text-accent text-sm font-semibold hover:underline mb-3">
+                            {{ cms('data.publications-index', 'cards.btn_details') }} <span class="material-symbols-outlined text-base">arrow_forward</span>
+                        </a>
+                        <br>
                         @if(!empty($pubPdf))
                         <a href="{{ $pubPdf }}" target="_blank" rel="noopener"
                            class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">

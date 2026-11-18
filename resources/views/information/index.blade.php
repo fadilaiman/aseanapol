@@ -28,7 +28,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @foreach($members as $m)
-            <a href="{{ route($m['route'], ['locale' => app()->getLocale()]) }}"
+            <a href="{{ $m['url'] }}"
                class="card-hover group bg-white dark:bg-dark-card rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center text-center hover:border-primary/20 dark:hover:border-accent/30 transition-all relative">
                 @if(!empty($m['badge']))
                 <span class="absolute top-3 right-3 text-[10px] font-bold bg-accent text-primary px-2 py-0.5 rounded-full uppercase tracking-wide">{{ $m['badge'] }}</span>

@@ -159,7 +159,7 @@ return [
                 'secretariat_established_label' => ['type' => 'text', 'label' => 'Permanent Secretariat fully operational from', 'default' => '1 January 2010'],
                 'conference_count_label' => ['type' => 'text', 'label' => 'Number of annual conferences (as shown, e.g. 44+)', 'default' => '44+'],
             ]],
-            'counts' => ['label' => 'Counts', 'columns' => 2, 'fields' => [
+            'counts' => ['label' => 'Counts', 'columns' => 2, 'help' => 'The number of member states in page wording is counted automatically from Shared facts > Member countries (hidden members are not counted). These two fields are only used while they still match that count, so adding or hiding a member never leaves a stale "eleven".', 'fields' => [
                 'member_count_word' => ['type' => 'text', 'label' => 'Number of member states (in words, lower case)', 'default' => 'eleven'],
                 'member_count_num'  => ['type' => 'number', 'label' => 'Number of member states (digits)', 'default' => 11],
             ]],
@@ -194,11 +194,11 @@ return [
         'label' => 'Member countries',
         'feeds' => ['about.member-countries' => 'Member Countries list and member pages', 'contact-us' => 'Contact Us (member directory)', 'landing' => 'Home page (member strip, directory table) and footer'],
         'sections' => [
-            'list' => ['label' => 'Member police forces (display order)', 'help' => 'One row per member state. The key is a technical id used by the pages - do not change it. Display name = "force (abbreviation)". Hide removes a member from every page that reads this list.', 'fields' => [
+            'list' => ['label' => 'Member police forces (display order)', 'help' => 'One row per member state. The key is a technical id used by the pages - do not change it. Display name = "force (abbreviation)". Hide removes a member from every page that reads this list. Adding a row adds a card to the Member Countries list, the home page strip, the contact directory and a country page of its own (member counts in page wording follow automatically).', 'fields' => [
                 'rows' => [
-                    'type' => 'repeater', 'label' => 'Members', 'item_label' => 'country', 'add_label' => 'Add member', 'columns' => 2,
+                    'type' => 'repeater', 'label' => 'Members', 'item_label' => 'country', 'add_label' => 'Add member', 'columns' => 2, 'row_edit_page' => 'members.{key}',
                     'fields' => [
-                        'key'          => ['type' => 'text', 'label' => 'Key (technical id, e.g. brunei)'],
+                        'key'          => ['type' => 'text', 'label' => 'Key (technical id, e.g. brunei)', 'help' => 'New member: lowercase letters, numbers and dashes only (e.g. new-country). It becomes the page address /about-aseanapol/member-countries/<key>. Save, then use "Edit country page" on the row to fill in the overview, chief, contacts, history and ranks.'],
                         'country'      => ['type' => 'text', 'label' => 'Country name'],
                         'iso'          => ['type' => 'text', 'label' => 'Flag code (2 letters)'],
                         'force'        => ['type' => 'text', 'label' => 'Police force (official English name)'],
@@ -260,7 +260,7 @@ return [
                         'short_name' => ['type' => 'text', 'label' => 'Short name / acronym'],
                         'full_name' => ['type' => 'text', 'label' => 'Full name'],
                         'website'   => ['type' => 'url', 'label' => 'Website (empty = none)'],
-                        'logo'      => ['type' => 'image', 'label' => 'Logo'],
+                        'logo'      => ['type' => 'image', 'label' => 'Logo', 'help' => 'Shown on the Like-Minded Entities page, the International Cooperation partner cards and the home page partner cards. Empty = the icon below is shown instead.'],
                         'icon'      => ['type' => 'icon', 'label' => 'Icon'],
                         'is_lme'    => ['type' => 'boolean', 'label' => 'Like-Minded Entity'],
                         'is_cooperation_partner' => ['type' => 'boolean', 'label' => 'Listed as a cooperation partner'],

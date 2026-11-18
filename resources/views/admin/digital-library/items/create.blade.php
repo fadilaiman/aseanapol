@@ -66,7 +66,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Upload PDF</label>
                 <input type="file" name="file" accept=".pdf"
                        class="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
-                <p class="text-xs text-gray-400 mt-1">PDF only, max 50 MB. Or provide an external URL below instead.</p>
+                <p class="text-xs text-gray-400 mt-1">PDF only, max {{ upload_limit_label(50) }}. Or provide an external URL below instead.</p>
             </div>
 
             <div>

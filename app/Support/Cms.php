@@ -23,6 +23,8 @@ class Cms
     private static array $groups = [];
     /** @var array<string, array<string, mixed>> */
     private static array $blocks = [];
+    /** @var string[] uploads stored during the current save (to verify none was silently dropped) */
+    public static array $storedUploads = [];
 
     // ------------------------------------------------------------------ registry
 
@@ -48,10 +50,47 @@ class Cms
             $def = is_file($file) ? (require $file) : [];
             $meta = $def['_group'] ?? ['label' => Str::headline($group), 'icon' => 'article', 'order' => 99];
             unset($def['_group']);
+            if ($group === 'members') {
+                $def = self::withAddedMembers($def);
+            }
             self::$groups[$group] = ['_group' => $meta, 'pages' => $def];
         }
 
         return self::$groups[$group];
+    }
+
+    /**
+     * Member countries added in Shared facts > Member countries (rows with no built-in page) get a country page of the
+     * SAME schema (config members.php "_member_template", empty defaults). Resolved at runtime, never in the config file
+     * (config files load before the database exists). Hidden rows are included: their editor stays reachable while the
+     * public page 404s.
+     */
+    private static function withAddedMembers(array $def): array
+    {
+        $tpl = $def['_member_template'] ?? null;
+        unset($def['_member_template']);
+        if (!is_array($tpl)) {
+            return $def;
+        }
+        try {
+            $rows = (array) self::raw('shared.members', 'list.rows', []);
+        } catch (\Throwable) {
+            return $def;
+        }
+        foreach ($rows as $row) {
+            $key = is_array($row) ? trim((string) ($row['key'] ?? '')) : '';
+            if ($key === '' || isset($def[$key]) || !preg_match('/^[a-z0-9][a-z0-9-]{0,60}$/', $key)) {
+                continue;
+            }
+            $country = trim((string) ($row['country'] ?? '')) ?: $key;
+            $page = $tpl;
+            unset($page['route']);
+            $page['label'] = $country . ' (added member)';
+            $page['url'] = '/en/about-aseanapol/member-countries/' . $key;
+            $def[$key] = $page;
+        }
+
+        return $def;
     }
 
     /** All groups, ordered. @return array<string, array> */
@@ -387,7 +426,7 @@ class Cms
                 if ($upload instanceof UploadedFile) {
                     if (!$upload->isValid()) {
                         // e.g. larger than PHP upload_max_filesize: tell the admin instead of silently ignoring it
-                        throw ValidationException::withMessages(['files' => 'Upload failed: ' . $upload->getErrorMessage()]);
+                        throw ValidationException::withMessages(['files' => self::uploadErrorMessage($upload)]);
                     }
 
                     return self::store($upload, $type);
@@ -433,6 +472,100 @@ class Cms
         return $url;
     }
 
+    /** Human message for a failed upload (never silent): names the real effective limit. */
+    public static function uploadErrorMessage(UploadedFile $f): string
+    {
+        $name = $f->getClientOriginalName() ?: 'A file';
+        $limit = upload_limit_label(25);
+
+        return match ($f->getError()) {
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => "\"$name\" was NOT uploaded: it is larger than the server upload limit ($limit per file). Nothing was saved. Choose a smaller file.",
+            UPLOAD_ERR_PARTIAL => "\"$name\" was NOT uploaded: the upload was interrupted. Nothing was saved. Try again.",
+            UPLOAD_ERR_NO_TMP_DIR, UPLOAD_ERR_CANT_WRITE, UPLOAD_ERR_EXTENSION => "\"$name\" was NOT uploaded: the server could not store it. Nothing was saved.",
+            default => "\"$name\" was NOT uploaded ({$f->getErrorMessage()}). Nothing was saved.",
+        };
+    }
+
+    /** Number of real (non-empty) file uploads in the request. */
+    public static function uploadCount(Request $request): int
+    {
+        $n = 0;
+        $walk = function ($v) use (&$walk, &$n) {
+            if ($v instanceof UploadedFile) {
+                $n++;
+            } elseif (is_array($v)) {
+                foreach ($v as $x) {
+                    $walk($x);
+                }
+            }
+        };
+        $walk($request->allFiles());
+
+        return $n;
+    }
+
+    /** First failed upload anywhere in the request (UPLOAD_ERR_NO_FILE is not a failure), or null. */
+    public static function failedUpload(Request $request): ?UploadedFile
+    {
+        $walk = function ($v) use (&$walk) {
+            if ($v instanceof UploadedFile) {
+                return ($v->getError() !== UPLOAD_ERR_OK && $v->getError() !== UPLOAD_ERR_NO_FILE) ? $v : null;
+            }
+            if (is_array($v)) {
+                foreach ($v as $x) {
+                    if ($r = $walk($x)) {
+                        return $r;
+                    }
+                }
+            }
+
+            return null;
+        };
+
+        return $walk($request->allFiles());
+    }
+
+    // ------------------------------------------------------------------ uploaded-file garbage collection
+
+    /** Every "storage/cms/<file>" path referenced by the stored overrides of one page (nested repeaters included). */
+    public static function uploadsOf(string $pageKey): array
+    {
+        $found = [];
+        foreach (CmsBlock::where('page_key', $pageKey)->pluck('value') as $json) {
+            if (preg_match_all('#storage/cms/[A-Za-z0-9._-]+#', (string) $json, $m)) {
+                $found = array_merge($found, $m[0]);
+            }
+        }
+
+        return array_values(array_unique($found));
+    }
+
+    /**
+     * Delete uploads that $before referenced but nothing references any more
+     * (replaced / cleared / reverted file fields). Call AFTER the save committed. Only touches storage/app/public/cms.
+     */
+    public static function deleteOrphans(array $before): void
+    {
+        foreach ($before as $path) {
+            if (!preg_match('#^storage/cms/([A-Za-z0-9._-]+)$#', $path, $m)) {
+                continue;
+            }
+            $like = '%' . str_replace('_', '\\_', $path) . '%'; // '_' is the only LIKE wildcard these paths can contain
+            $inUse = CmsBlock::where('value', 'like', $like)->exists();
+            if (!$inUse) {
+                try {
+                    $inUse = \Illuminate\Support\Facades\Schema::hasTable('custom_pages')
+                        && \Illuminate\Support\Facades\DB::table('custom_pages')->where('body', 'like', $like)->exists();
+                } catch (\Throwable) {
+                    $inUse = true; // unsure -> keep the file
+                }
+            }
+            if (!$inUse) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete('cms/' . $m[1]);
+            }
+        }
+    }
+
     private static function need(bool $ok, string $message): void
     {
         if (!$ok) {
@@ -447,7 +580,7 @@ class Cms
             ? ['jpg', 'jpeg', 'png', 'gif', 'webp']
             : ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'jpg', 'jpeg', 'png'];
         self::need(in_array($ext, $allowed, true), 'File type not allowed: .' . $ext);
-        self::need($file->getSize() <= 25 * 1024 * 1024, 'File too large (max 25 MB)');
+        self::need($file->getSize() <= upload_limit_bytes(25), 'File too large (max ' . upload_limit_label(25) . ')');
         // The extension is client-controlled: also check the real content type.
         $mime = (string) $file->getMimeType();
         if ($type === 'image') {
@@ -460,6 +593,7 @@ class Cms
         $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) ?: 'file';
         $name = Str::limit($name, 40, '') . '-' . now()->format('ymdHis') . '-' . Str::lower(Str::random(5)) . '.' . $ext;
         $file->storeAs('cms', $name, 'public');
+        self::$storedUploads[] = 'cms/' . $name;
 
         return 'storage/cms/' . $name;
     }

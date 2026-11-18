@@ -21,6 +21,11 @@
         <form method="POST" action="{{ route('admin.news.store') }}" enctype="multipart/form-data" class="space-y-5">
             @csrf
 
+                        <div class="flex items-start gap-2 bg-blue-50 border border-blue-100 text-blue-900 text-xs px-3 py-2 rounded-lg" data-testid="translation-note">
+                <span class="material-symbols-outlined" style="font-size:16px;">translate</span>
+                <span>Saving changed Title, Summary or Content re-generates the translations automatically. The check runs every 5 minutes and the translated versions appear a few minutes after that; until then visitors reading in another language see the English text.</span>
+            </div>
+
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-red-500">*</span></label>
                 <input type="text" name="title" value="{{ old('title') }}" required

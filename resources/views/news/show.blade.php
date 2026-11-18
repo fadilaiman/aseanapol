@@ -25,6 +25,11 @@
                 {{ $article->published_at->format('d F Y') }}
             </span>
             @endif
+            @if($article->is_upcoming_event)
+            <span data-testid="upcoming-badge" class="inline-flex items-center gap-1.5 bg-accent/15 text-primary dark:text-accent font-bold text-xs px-3 py-1 rounded-full">
+                <span class="material-symbols-outlined text-sm">event_upcoming</span>{{ __('landing.upcoming_event_badge') }}
+            </span>
+            @endif
             @if($article->author)
             <span class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-base">person</span>

@@ -136,7 +136,7 @@ class SiteCms
                 continue;
             }
             $out[] = $r + [
-                'name' => $p['short'], 'full' => $p['full_name'] ?? '', 'icon' => $p['icon'] ?? '',
+                'name' => $p['short'], 'full' => $p['full_name'] ?? '', 'icon' => $p['icon'] ?? '', 'logo' => $p['logo'] ?? '',
                 'url' => self::bareUrl($p['website'] ?? ''),
             ];
         }

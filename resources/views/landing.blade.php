@@ -582,9 +582,16 @@ $newsCount = max(1, (int) (cms($P, 'news.count') ?: 6));
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($partners as $partner)
                 <a href="{{ $L($partner['url'] ?? '') }}" {{ $L($partner['url'] ?? '') !== '#' ? 'target="_blank" rel="noopener"' : '' }} class="group bg-primary/[0.04] dark:bg-primary/20 border border-primary/10 dark:border-primary/30 rounded-2xl p-6 flex flex-col card-hover">
+                    @if(!empty($partner['logo']))
+                    {{-- logo uploaded in Shared facts > Partner organisations; without one the icon tile below is shown --}}
+                    <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center mb-5 p-1.5 shadow-lg shadow-primary/10 border border-primary/10">
+                        <img src="{{ cms_url($partner['logo']) }}" alt="{{ $partner['name'] }}" class="max-w-full max-h-full object-contain">
+                    </div>
+                    @else
                     <div class="w-14 h-14 rounded-xl bg-primary flex items-center justify-center mb-5 shadow-lg shadow-primary/30 group-hover:bg-accent transition-colors duration-300">
                         <span class="material-symbols-outlined text-white text-3xl">{{ $partner['icon'] }}</span>
                     </div>
+                    @endif
                     <div class="font-extrabold text-xl text-primary dark:text-white mb-1 group-hover:text-accent dark:group-hover:text-accent transition-colors">{{ $partner['name'] }}</div>
                     <div class="text-xs font-semibold text-primary/60 dark:text-gray-400 uppercase tracking-wide mb-3">{{ $partner['full'] }}</div>
                     <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mt-auto">{{ $partner['desc'] }}</p>

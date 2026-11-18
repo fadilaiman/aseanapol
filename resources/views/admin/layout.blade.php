@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        /* List tables on narrow screens: the Actions column (Edit / Delete) stays pinned at the right edge while the rest scrolls. */
+        .sticky-actions th:last-child, .sticky-actions td:last-child:not([colspan]) { position: sticky; right: 0; background: #fff; box-shadow: -8px 0 8px -8px rgba(0,0,0,.25); z-index: 1; }
+        .sticky-actions thead th:last-child { background: #f9fafb; }
+        .sticky-actions tr:hover td:last-child:not([colspan]) { background: #f9fafb; }
+        @media (max-width: 639px) { .sticky-actions th, .sticky-actions td { padding-left: .6rem !important; padding-right: .6rem !important; } .sticky-actions td:last-child > div { gap: .6rem; flex-wrap: nowrap; white-space: nowrap; } }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen font-sans antialiased">
@@ -113,7 +118,7 @@
         // Stop it here instead, with a clear message, before anything is sent. 19 MB suits the default 20 MB server
         // limit; a form that legitimately takes bigger files (Publications, Digital Library) declares its own
         // limit with data-max-upload-mb on the <form> (the server limits must be raised to match, see DEPLOY_RUNBOOK).
-        var DEFAULT_LIMIT = 19 * 1024 * 1024;
+        var DEFAULT_LIMIT = {{ min(19 * 1048576, (int) (ini_to_bytes(ini_get('post_max_size')) * 0.9)) }};
         function limitFor(form) {
             var mb = parseInt(form.dataset.maxUploadMb, 10);
             return mb > 0 ? mb * 1048576 : DEFAULT_LIMIT;
@@ -133,6 +138,21 @@
                 i.value = '';
             }
         });
+        // One random token per form per page load; the server refuses to process the same token twice (AdminDedupeSubmit).
+        function addOnceTokens() {
+            var a = new Uint8Array(12), t;
+            (window.crypto || window.msCrypto).getRandomValues(a);
+            t = Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+            document.querySelectorAll('form').forEach(function (f) {
+                if ((f.getAttribute('method') || 'get').toLowerCase() !== 'post' || f.querySelector('input[name=_once]')) return;
+                var h = document.createElement('input'); h.type = 'hidden'; h.name = '_once'; h.value = t + Math.random().toString(36).slice(2, 6);
+                var end = f.querySelector('input[name=_end]'); // _end must stay the LAST field (truncation check)
+                if (end && end.parentNode === f) f.insertBefore(h, end); else f.appendChild(h);
+            });
+        }
+        addOnceTokens();
+        // Restored from the back/forward cache: the old token is spent, give each form a fresh one.
+        window.addEventListener('pageshow', function (ev) { if (ev.persisted) { document.querySelectorAll('input[name=_once]').forEach(function (i) { i.remove(); }); addOnceTokens(); } });
         document.addEventListener('submit', function (e) {
             var f = e.target;
             if (!f || f.tagName !== 'FORM' || e.defaultPrevented) return;

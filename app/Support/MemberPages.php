@@ -24,8 +24,9 @@ class MemberPages
         if (!str_contains($text, '{count')  && !str_contains($text, '{Count')) {
             return $text;
         }
-        $word = (string) Shared::org('counts.member_count_word', 'eleven');
-        $num = (string) Shared::org('counts.member_count_num', 11);
+        // live count of the visible rows in Shared facts > Member countries (the stored word/number are only used while they still match it)
+        $word = SiteCms::memberCountWord();
+        $num = (string) SiteCms::memberCount();
 
         return str_replace(['{count_num}', '{count}', '{Count}'], [$num, $word, ucfirst($word)], $text);
     }
@@ -47,12 +48,29 @@ class MemberPages
         return [];
     }
 
-    /** Cards for the Member Countries list page (members hidden in Shared facts are skipped). */
+    /** True for a member that has no built-in page/route: it is served by the generic data-driven route. */
+    public static function isGeneric(string $key): bool
+    {
+        return !in_array($key, self::SLUGS, true);
+    }
+
+    /** Public URL of a member country page (built-in named route, or the generic one). */
+    public static function url(string $key, ?string $locale = null): string
+    {
+        $locale = $locale ?: app()->getLocale();
+
+        return self::isGeneric($key)
+            ? route('about.member.generic', ['locale' => $locale, 'slug' => $key])
+            : route('about.member.' . $key, ['locale' => $locale]);
+    }
+
+    /** Cards for the Member Countries list page: EVERY visible row of Shared facts > Member countries (hidden ones are skipped). */
     public static function cards(): array
     {
         $out = [];
         foreach (Shared::members() as $m) {
-            if (!in_array($m['key'] ?? '', self::SLUGS, true)) {
+            $key = (string) ($m['key'] ?? '');
+            if ($key === '' || !preg_match('/^[a-z0-9][a-z0-9-]{0,60}$/', $key)) {
                 continue;
             }
             $out[] = [
@@ -61,7 +79,7 @@ class MemberPages
                 'iso'     => (string) ($m['iso'] ?? ''),
                 'since'   => (string) ($m['joined_year'] ?? ''),
                 'badge'   => (string) ($m['badge'] ?? ''),
-                'route'   => 'about.member.' . $m['key'],
+                'url'     => self::url($key),
             ];
         }
 
@@ -71,8 +89,10 @@ class MemberPages
     /** Data for information/member.blade.php. */
     public static function data(string $slug): array
     {
-        abort_unless(in_array($slug, self::SLUGS, true), 404);
+        // built-in countries always resolve; a generic (added) member only while it is visible in Shared facts
+        abort_unless(preg_match('/^[a-z0-9][a-z0-9-]{0,60}$/', $slug) && (!self::isGeneric($slug) || Shared::member($slug)), 404);
         $p = 'members.' . $slug;
+        abort_unless(Cms::page($p), 404);
         $rows = fn (string $section, string $field) => Cms::visible($p, $section) ? (array) Cms::get($p, "$section.$field", []) : [];
 
         $m = self::row($slug);

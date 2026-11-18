@@ -26,8 +26,18 @@
     </div>
 </div>
 
+<div data-testid="translation-note" class="flex items-start gap-2 bg-blue-50 border border-blue-100 text-blue-900 text-xs px-4 py-2.5 rounded-lg mb-5">
+    <span class="material-symbols-outlined" style="font-size:16px;">translate</span>
+    <span><strong>Languages:</strong> text you change here is saved in English. On the other language versions it is machine-translated in the visitor's browser, like the rest of the page; no ready-made translation is stored for edited text. Only the original, unedited wording keeps its prepared translation. (News articles are different: saving a news article re-generates its stored translations automatically.)</span>
+</div>
+
 @if($errors->any())
     <div role="alert" data-testid="cms-error" class="bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 rounded-lg mb-5">{{ $errors->first() }}</div>
+@endif
+@if(!empty($uploadError))
+    <div role="alert" data-testid="cms-error" class="bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 rounded-lg mb-5">
+        <strong>Not saved.</strong> {{ $uploadError }} Your other edits are still shown below; files you selected must be chosen again.
+    </div>
 @endif
 @if(!empty($conflict))
     <div role="alert" data-testid="cms-conflict" class="bg-amber-50 border border-amber-300 text-amber-900 text-sm px-4 py-3 rounded-lg mb-5">

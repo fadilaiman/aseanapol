@@ -37,7 +37,7 @@
     <form method="POST" action="{{ route('admin.gallery.store') }}" enctype="multipart/form-data" class="px-5 pb-5 pt-2 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
         @csrf
         <div class="md:col-span-2">
-            <label class="block text-xs font-medium text-gray-500 mb-1" for="photos">Photos (JPG, PNG, WebP, GIF; up to 30, 8 MB each)</label>
+            <label class="block text-xs font-medium text-gray-500 mb-1" for="photos">Photos (JPG, PNG, WebP, GIF; up to 30, {{ upload_limit_label(8) }} each)</label>
             <input id="photos" type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/webp,image/gif" class="text-sm w-full">
         </div>
         <div>
@@ -95,7 +95,7 @@
 </form>
 
 <div class="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-    <table class="w-full text-sm" data-testid="gallery-table">
+    <table class="w-full text-sm sticky-actions" data-testid="gallery-table">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="text-left px-5 py-3 font-medium text-gray-600">Photo</th>

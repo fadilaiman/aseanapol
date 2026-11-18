@@ -139,8 +139,8 @@ $SEC = fn ($f) => \App\Support\Shared::secretariat('contact.' . $f);
                             <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-2.5">
-                                        <img src="{{ asset('images/flags/' . $m['flag'] . '.svg') }}"
-                                             onerror="this.style.display='none'"
+                                        <img src="https://flagcdn.com/w40/{{ strtolower($m['flag']) }}.png"
+                                             loading="lazy"
                                              alt="{{ $m['country'] }}" class="w-6 h-4 object-cover rounded-sm flex-shrink-0">
                                         <span class="font-semibold text-gray-800 dark:text-gray-100">{{ $m['country'] }}</span>
                                     </div>
