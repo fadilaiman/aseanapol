@@ -71,6 +71,7 @@
                             <th class="px-3 py-3 font-semibold text-gray-600 dark:text-gray-300 w-16"></th>
                             <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">{{ cms('about-people.leadership-dps', 'past.col_name') }}</th>
                             <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ cms('about-people.leadership-dps', 'past.col_country') }}</th>
+                            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ cms('about-people.leadership-dps', 'past.col_term') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
@@ -85,8 +86,12 @@
                             <td class="px-5 py-3">
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $d['full_name'] }}</span>
                                 <div class="text-xs text-gray-400 mt-0.5">{{ $d['force'] }}</div>
+                                @if(cms_on('about-people.leadership-dps', 'past') && cms('about-people.leadership-dps', 'past.show_bios') && !$d['is_current'] && trim((string) ($d['bio'] ?? '')) !== '')
+                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-2 leading-relaxed max-w-xl">{{ $d['bio'] }}</p>
+                                @endif
                             </td>
                             <td class="px-5 py-3 text-gray-600 dark:text-gray-300">{{ $d['flag'] }}</td>
+                            <td class="px-5 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ $d['term'] ?? '' }}</td>
                         </tr>
                         @endforeach
                     </tbody>

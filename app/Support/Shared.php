@@ -114,18 +114,29 @@ class Shared
     {
         $rows = self::rowsOf('roster', 'people.rows');
         $all = self::remember('roster', $rows, function () use ($rows) {
-            return array_values(array_map(function (array $r) {
+            $cur = self::currentFlags($rows);
+            $disp = self::displayInfo($rows, $cur);
+
+            return array_values(array_map(function (array $r, int $i) use ($cur, $disp) {
                 $m = !empty($r['member_key']) ? self::memberAny($r['member_key']) : null;
                 $r['full_name'] = trim(trim((string) ($r['rank'] ?? '')) . ' ' . trim((string) ($r['name'] ?? '')));
                 $s = trim((string) ($r['term_start'] ?? ''));
                 $e = trim((string) ($r['term_end'] ?? ''));
-                $r['term'] = $s === '' ? $e : ($e === '' ? "{$s}–present" : "{$s}–{$e}");
+                if ($e === '' && ($disp[$i]['end'] ?? '') !== '') {
+                    $e = $disp[$i]['end']; // superseded holder: ends where the next newer holder starts (display only)
+                }
+                if (trim((string) ($r['ordinal'] ?? '')) === '') {
+                    $r['ordinal'] = $disp[$i]['ordinal'] ?? '';
+                }
+                $r['term'] = $s === '' ? $e : ($e === '' ? "{$s}–present" : ($e === $s ? $s : "{$s}–{$e}"));
                 $r['force'] = trim((string) ($r['force_label'] ?? '')) !== '' ? $r['force_label'] : ($m['name'] ?? '');
                 $r['iso'] = $m['iso'] ?? '';
                 $r['flag'] = $m['flag'] ?? '';
+                $r['is_current_forced'] = (bool) ($r['is_current'] ?? false);
+                $r['is_current'] = $cur[$i]; // effective: exactly one current holder per post (see currentFlags())
 
                 return $r;
-            }, $rows));
+            }, $rows, array_keys($rows)));
         });
 
         $out = array_values(array_filter($all, function (array $r) use ($post, $current) {
@@ -143,6 +154,83 @@ class Shared
                 return [$yb, $b] <=> [$ya, $a];
             });
             $out = array_map(fn ($i) => $out[$i], $idx);
+        }
+
+        return $out;
+    }
+
+    /**
+     * Effective "current holder" flag for every row of a roster (visible rows only; keys are preserved), exactly one true per post.
+     * Rule per post: the row ticked "force as current" (newest term start among ticked); else the row with an empty
+     * term end and the newest term start; else the newest term start overall. Ties: the later list row wins.
+     * The admin editor badge (resources/views/admin/cms/edit.blade.php, JS) mirrors this rule.
+     *
+     * @param array<int|string, array<string, mixed>> $rows
+     * @return array<int|string, bool>
+     */
+    public static function currentFlags(array $rows): array
+    {
+        $year = fn (array $r) => (int) preg_replace('/\D.*$/', '', trim((string) ($r['term_start'] ?? '')));
+        $best = function (array $idx) use ($rows, $year) {
+            $win = null;
+            foreach ($idx as $i) {
+                if ($win === null || $year($rows[$i]) >= $year($rows[$win])) {
+                    $win = $i; // >= : later row wins a tie
+                }
+            }
+
+            return $win;
+        };
+        $byPost = [];
+        foreach ($rows as $i => $r) {
+            if (is_array($r) && empty($r['_hide'])) {
+                $byPost[(string) ($r['post'] ?? '')][] = $i;
+            }
+        }
+        $flags = array_fill_keys(array_keys($rows), false);
+        foreach ($byPost as $idx) {
+            $forced = array_values(array_filter($idx, fn ($i) => !empty($rows[$i]['is_current'])));
+            $open = array_values(array_filter($idx, fn ($i) => trim((string) ($rows[$i]['term_end'] ?? '')) === ''));
+            $win = $best($forced ?: ($open ?: $idx));
+            if ($win !== null) {
+                $flags[$win] = true;
+            }
+        }
+
+        return $flags;
+    }
+
+    /**
+     * Display-only helpers per visible roster row: 'ordinal' (1st, 2nd... = position by term start within the post, used only
+     * when the stored ordinal is empty) and 'end' (for a superseded holder with empty term end: start year of the next newer
+     * holder of the same post). Stored data is never changed. Mirrored by refreshBadges() in the admin editor JS.
+     *
+     * @param array<int|string, array<string, mixed>> $rows
+     * @param array<int|string, bool> $cur result of currentFlags()
+     * @return array<int|string, array{ordinal: string, end: string}>
+     */
+    public static function displayInfo(array $rows, array $cur): array
+    {
+        $year = fn (array $r) => (int) preg_replace('/\D.*$/', '', trim((string) ($r['term_start'] ?? '')));
+        $byPost = [];
+        foreach ($rows as $i => $r) {
+            if (is_array($r) && empty($r['_hide'])) {
+                $byPost[(string) ($r['post'] ?? '')][] = $i;
+            }
+        }
+        $out = [];
+        foreach ($byPost as $idx) {
+            usort($idx, fn ($a, $b) => [$year($rows[$a]), $a] <=> [$year($rows[$b]), $b]);
+            foreach ($idx as $n => $i) {
+                $n1 = $n + 1;
+                $suffix = ($n1 % 100 >= 11 && $n1 % 100 <= 13) ? 'th' : (['1' => 'st', '2' => 'nd', '3' => 'rd'][$n1 % 10] ?? 'th');
+                $end = '';
+                if (empty($cur[$i]) && trim((string) ($rows[$i]['term_end'] ?? '')) === '' && isset($idx[$n + 1])) {
+                    $ny = trim((string) ($rows[$idx[$n + 1]]['term_start'] ?? ''));
+                    $end = preg_replace('/\D.*$/', '', $ny) ?: '';
+                }
+                $out[$i] = ['ordinal' => $n1 . $suffix, 'end' => $end];
+            }
         }
 
         return $out;

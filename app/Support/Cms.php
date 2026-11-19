@@ -157,6 +157,66 @@ class Cms
         return $out;
     }
 
+    /**
+     * Admin repeater row title from a registry template, e.g. '{post:short} — {name} ({term_start}–{term_end|present})'.
+     * {f} = row value; {f:short} = the select's 'short' label; {f|alt} = value, else field/literal alt. Null when no template.
+     */
+    public static function rowTitle(array $def, array $row): ?string
+    {
+        if (empty($def['item_tpl'])) {
+            return null;
+        }
+        $val = function (string $f, bool $short) use ($def, $row) {
+            $v = trim((string) ($row[$f] ?? ($def['fields'][$f]['default'] ?? '')));
+            if ($short) {
+                return (string) ($def['fields'][$f]['short'][$v] ?? ($def['fields'][$f]['options'][$v] ?? $v));
+            }
+
+            return $v;
+        };
+
+        return trim((string) preg_replace_callback('/\{(\w+)(?::(short))?(?:\|([^}]*))?\}/', function ($m) use ($val, $def) {
+            $v = $val($m[1], ($m[2] ?? '') === 'short');
+            if ($v === '' && isset($m[3])) {
+                $v = isset($def['fields'][$m[3]]) ? $val($m[3], false) : $m[3];
+            }
+
+            return $v;
+        }, (string) $def['item_tpl']));
+    }
+
+    /** Rows in editor order for a repeater with 'editor_sort' => [field, ...] (stable; select fields follow option order). */
+    public static function sortRows(array $def, array $rows): array
+    {
+        $keys = (array) ($def['editor_sort'] ?? []);
+        if (!$keys) {
+            return $rows;
+        }
+        $rank = function (array $r, string $f) use ($def) {
+            $v = (string) ($r[$f] ?? ($def['fields'][$f]['default'] ?? ''));
+            $opts = $def['fields'][$f]['options'] ?? null;
+            if (is_array($opts) && ($def['fields'][$f]['type'] ?? '') === 'select') {
+                $p = array_search($v, array_map('strval', array_keys($opts)), true);
+
+                return $p === false ? 999 : $p;
+            }
+
+            return (int) preg_replace('/\D.*$/', '', trim($v));
+        };
+        $idx = array_keys($rows);
+        usort($idx, function ($a, $b) use ($rows, $keys, $rank) {
+            foreach ($keys as $f) {
+                if (($c = $rank((array) $rows[$a], $f) <=> $rank((array) $rows[$b], $f)) !== 0) {
+                    return $c;
+                }
+            }
+
+            return $a <=> $b;
+        });
+
+        return array_values(array_map(fn ($i) => $rows[$i], $idx));
+    }
+
     /** Public pages a shared.* page feeds: [['label' => ..., 'url' => ...]]. Registry: 'feeds' => [route name => label]. */
     public static function feeds(array $page): array
     {

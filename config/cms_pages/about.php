@@ -187,21 +187,24 @@ return [
             ],
             'dir_ps' => [
                 'label' => 'Directors: Police Services', 'toggle' => true,
-                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), sorted by term start year, newest first (people with the same or no start year: later list row first). Only the column heading is local.',
+                'roster_post' => 'dps',
+                'help' => 'Only the column heading is edited here. The people in this column (name, rank, force, term, photo, biography) are managed once, under Shared facts > Secretariat office holders (roster): add or edit a person there and choose the post "Director for Police Services" — the website lists them here automatically, newest term first, and shows the newest term as the current holder. The live list below shows what this column displays now.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Director for Police Services'],
                 ],
             ],
             'dir_ed' => [
                 'label' => 'Directors: Executive Director', 'toggle' => true,
-                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), sorted by term start year, newest first (people with the same or no start year: later list row first). Only the column heading is local.',
+                'roster_post' => 'ed',
+                'help' => 'Only the column heading is edited here. The people in this column (name, rank, force, term, photo, biography) are managed once, under Shared facts > Secretariat office holders (roster): add or edit a person there and choose the post "Executive Director" — the website lists them here automatically, newest term first, and shows the newest term as the current holder. The live list below shows what this column displays now.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Executive Director'],
                 ],
             ],
             'dir_plans' => [
                 'label' => 'Directors: Plans and Programmes', 'toggle' => true,
-                'help' => 'The names, forces and terms in this column are NOT edited here: they come from Shared facts > Secretariat office holders (roster), sorted by term start year, newest first (people with the same or no start year: later list row first). Only the column heading is local.',
+                'roster_post' => 'dpp',
+                'help' => 'Only the column heading is edited here. The people in this column (name, rank, force, term, photo, biography) are managed once, under Shared facts > Secretariat office holders (roster): add or edit a person there and choose the post "Director for Plans and Programmes" — the website lists them here automatically, newest term first, and shows the newest term as the current holder. The live list below shows what this column displays now.',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Column heading', 'default' => 'Director for Plans and Programmes'],
                 ],

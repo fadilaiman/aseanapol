@@ -2,11 +2,18 @@
 @php
     $rowName = 'f' . implode('', array_map(fn ($s) => '[' . $s . ']', $segs));
     $title   = trim((string) ($row[$labelKey] ?? ''));
+    $dispEnd = $dispEnd ?? '';
+    $tplTitle = \App\Support\Cms::rowTitle($def, ($dispEnd !== '' && trim((string) ($row['term_end'] ?? '')) === '') ? ['term_end' => $dispEnd] + $row : $row);
+    if ($tplTitle !== null && !empty($row)) { $title = $tplTitle; }
+    $isCurrent = $isCurrent ?? null;
 @endphp
-<div class="cms-row border border-gray-200 rounded-lg bg-gray-50" data-row>
-    <div class="flex items-center gap-2 px-3 py-2 bg-white border-b border-gray-200 rounded-t-lg">
+<div class="cms-row border border-gray-200 rounded-lg bg-gray-50" data-row data-disp-end="{{ $dispEnd }}" @if(!empty($def['filter_by'])) data-filter-val="{{ $row[$def['filter_by']] ?? ($def['fields'][$def['filter_by']]['default'] ?? '') }}" @endif>
+    <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 px-3 py-2 bg-white border-b border-gray-200 rounded-t-lg">
         <span class="material-symbols-outlined text-gray-400" style="font-size:18px;" aria-hidden="true">drag_indicator</span>
-        <span class="cms-row-title text-sm font-medium text-gray-700 flex-1 truncate" data-label-key="{{ $labelKey }}">{{ $title !== '' ? \Illuminate\Support\Str::limit(strip_tags($title), 80) : 'New item' }}</span>
+        <span class="cms-row-title text-sm font-medium text-gray-700 flex-1 min-w-0 break-words sm:truncate" data-label-key="{{ $labelKey }}" @if(!empty($def['item_tpl'])) data-tpl="{{ $def['item_tpl'] }}" @endif>{{ $title !== '' ? \Illuminate\Support\Str::limit(strip_tags($title), 80) : 'New item' }}</span>
+        @if(($def['badge'] ?? null) === 'roster')
+            <span class="cms-badge text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap {{ $isCurrent === null ? 'hidden' : ($isCurrent ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600') }}" data-testid="row-badge" title="Calculated automatically: the newest term of each post is shown as the current holder.">{{ $isCurrent === null ? '' : ($isCurrent ? 'Current' : 'Past') }}</span>
+        @endif
         @if(!empty($def['row_edit_page']) && !empty($row['key']))
             @php $editKey = str_replace('{key}', (string) $row['key'], $def['row_edit_page']); @endphp
             @if(\App\Support\Cms::page($editKey))

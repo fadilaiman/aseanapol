@@ -14,10 +14,11 @@ $hero = fn (string $title, string $subtitle) => [
 ];
 
 /** "Current post holder" card shared by leadership pages. The person (photo, name, force, country, bio, term) is read from Shared facts. */
-$current = fn (string $heading, string $alt, string $badge) => [
+$current = fn (string $heading, string $alt, string $badge, string $post = 'ed') => [
     'label'  => 'Current post holder',
     'toggle' => true,
-    'help'   => 'The person (photo, name and rank, force, country, biography, term) is edited once under "Shared facts (used across pages)" > Secretariat office holders (roster). Only the wording below is local to this page.',
+    'roster_post' => $post,
+    'help'   => 'The person shown here is the holder with the newest term for this post, chosen automatically. Their photo, name and rank, force, country, biography and term are edited once under "Shared facts (used across pages)" > Secretariat office holders (roster): add a new person with a newer term to change who is shown. Only the wording below is local to this page.',
     'fields' => [
         'heading' => ['type' => 'text', 'label' => 'Section heading', 'default' => $heading],
         'alt'     => ['type' => 'text', 'label' => 'Photo alt text', 'default' => $alt],
@@ -26,19 +27,19 @@ $current = fn (string $heading, string $alt, string $badge) => [
 ];
 
 /** Past post holders table (rows come from Shared::roster()). */
-$past = function (string $heading, string $intro, bool $withTerm) {
+$past = function (string $heading, string $intro, bool $withTerm, string $post = 'ed') {
     $cols = [
         'col_no'      => ['type' => 'text', 'label' => 'Column heading: number', 'default' => '#'],
         'col_name'    => ['type' => 'text', 'label' => 'Column heading: name', 'default' => 'Name & Rank'],
         'col_country' => ['type' => 'text', 'label' => 'Column heading: country', 'default' => 'Country'],
     ];
-    if ($withTerm) {
-        $cols['col_term'] = ['type' => 'text', 'label' => 'Column heading: term', 'default' => 'Term'];
-    }
+    $cols['col_term'] = ['type' => 'text', 'label' => 'Column heading: term', 'default' => 'Term'];
+    $cols['show_bios'] = ['type' => 'boolean', 'label' => 'Show biographies of past holders', 'help' => 'Show biographies of past holders (shown under the name, only for people who have one in Secretariat office holders; default off)', 'default' => false];
     return [
         'label'  => 'Past post holders',
         'toggle' => true,
-        'help'   => 'The people (number, photo, name and rank, force, flag, term; shown sorted by term start year, newest first) are edited once under "Shared facts (used across pages)" > Secretariat office holders (roster). Only the wording below is local to this page.',
+        'roster_post' => $post,
+        'help'   => 'The list (number, photo, name and rank, force, flag, term; sorted by term start year, newest first) is built automatically from every person of this post under "Shared facts (used across pages)" > Secretariat office holders (roster). Add or edit people there, not here. Only the wording below is local to this page.',
         'fields' => array_merge([
             'heading' => ['type' => 'text',     'label' => 'Section heading', 'default' => $heading],
             'intro'   => ['type' => 'textarea', 'label' => 'Introduction',    'rows' => 2, 'default' => $intro],
@@ -59,7 +60,8 @@ return [
             'directors' => [
                 'label'  => 'Secretariat Directors cards',
                 'toggle' => true,
-                'help'   => 'Cards linking to the Director for Police Services / Plans and Programmes pages. The current holder (name and rank, force, country) is read from Shared facts > Secretariat office holders (roster).',
+                'roster_post' => ['dps', 'dpp'],
+                'help'   => 'Cards linking to the Director for Police Services / Plans and Programmes pages. The current holder shown on each card (name and rank, force, country) is the newest term of that post, taken automatically from Shared facts > Secretariat office holders (roster).',
                 'fields' => [
                     'heading' => ['type' => 'text', 'label' => 'Section heading', 'default' => 'Secretariat Directors'],
                     'cards' => [
@@ -91,11 +93,12 @@ return [
         'route' => 'about.leadership.dps',
         'sections' => [
             'hero' => $hero('Director for Police Services', 'The Director for Police Services oversees police cooperation and operational matters within the ASEANAPOL Secretariat.'),
-            'current' => $current('Current Director for Police Services', 'Director for Police Services', 'Director for Police Services · {term}'),
+            'current' => $current('Current Director for Police Services', 'Director for Police Services', 'Director for Police Services · {term}', 'dps'),
             'past' => $past(
                 'Past Directors for Police Services',
                 'The Director for Police Services post rotates among ASEANAPOL member countries within the Secretariat.',
-                false
+                true,
+                'dps'
             ),
         ],
     ],
@@ -106,11 +109,12 @@ return [
         'route' => 'about.leadership.dpp',
         'sections' => [
             'hero' => $hero('Director for Plans and Programmes', 'The Director for Plans and Programmes oversees strategic planning and programme implementation within the ASEANAPOL Secretariat.'),
-            'current' => $current('Current Director for Plans and Programmes', 'Director for Plans and Programmes', 'Director for Plans and Programmes · {term}'),
+            'current' => $current('Current Director for Plans and Programmes', 'Director for Plans and Programmes', 'Director for Plans and Programmes · {term}', 'dpp'),
             'past' => $past(
                 'Past Directors for Plans and Programmes',
                 'The Director for Plans and Programmes post rotates among ASEANAPOL member countries within the Secretariat.',
-                false
+                true,
+                'dpp'
             ),
         ],
     ],

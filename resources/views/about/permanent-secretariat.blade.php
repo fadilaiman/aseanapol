@@ -37,7 +37,7 @@ $sharedLogo = \App\Support\Cms::url((string) \App\Support\Shared::org('identity.
 $dirRows = function (string $post) {
     return array_map(function ($p) {
         $m = !empty($p['member_key']) ? \App\Support\Shared::member($p['member_key']) : null;
-        $p['abbr'] = $m['abbreviation'] ?? ($p['force'] ?? '');
+        $p['abbr'] = trim((string) ($p['force_label'] ?? '')) !== '' ? trim($p['force_label']) : ($m['abbreviation'] ?? ($p['force'] ?? ''));
         return $p;
     }, \App\Support\Shared::roster($post, null, true));
 };

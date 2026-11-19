@@ -43,7 +43,7 @@ $roster = [
     $p('ed', '6th', 'DAC', 'Jim Wee', 'singapore', '', '2020', '2021', 'media/ed/6.jpg', false, ''),
     $p('ed', '7th', 'Police Brigadier General', 'Zaw Lin Tun', 'myanmar', '', '2022', '2023', 'media/ed/7.jpg', false, ''),
     $p('ed', '8th', 'Pol. Colonel', 'David Martinez Vinluan', 'philippines', '', '2024', '2025', 'media/ed/8.jpg', false, ''),
-    $p('ed', '9th', 'Police Senior Colonel', 'Kongkrissada Kittithiraphong', 'thailand', '', '2026', '2027', 'media/ed/9.jpg', true,
+    $p('ed', '9th', 'Police Senior Colonel', 'Kongkrissada Kittithiraphong', 'thailand', '', '2026', '2027', 'media/ed/9.jpg', false,
         "Police Senior Colonel Kongkrissada Kittithiraphong serves as the 9th Executive Director of the ASEANAPOL Secretariat, nominated by the Royal Thai Police for the term 2026–2027. He oversees the operations of the Secretariat and leads ASEANAPOL's efforts in strengthening regional cooperation to combat transnational crime."),
     // Director for Police Services
     $p('dps', '1st', 'DAC', 'Lim Kim Tak', 'singapore', '', '2010', '2012', 'media/dps/no1.png', false, ''),
@@ -52,7 +52,7 @@ $roster = [
     $p('dps', '4th', 'DAC', 'Jim Wee', 'singapore', '', '2018', '2019', 'media/dps/no4.png', false, ''),
     $p('dps', '5th', 'Pol. Snr. Supt.', 'Joni Getamala', 'indonesia', '', '2020', '2022', 'media/dps/no5.png', false, ''),
     $p('dps', '6th', 'ACP', 'Dr. Bakri bin Zainal Abidin', 'malaysia', '', '2023', '2024', 'media/dps/no6.png', false, ''),
-    $p('dps', '7th', 'Police Senior Superintendent', 'Huntal Tambunan', 'indonesia', '', '2025', '', 'media/dps/no7.png', true,
+    $p('dps', '7th', 'Police Senior Superintendent', 'Huntal Tambunan', 'indonesia', '', '2025', '', 'media/dps/no7.png', false,
         'Police Senior Superintendent Huntal Tambunan serves as the Director for Police Services of the ASEANAPOL Secretariat, nominated by the Indonesian National Police. He is responsible for overseeing police cooperation and operational programmes under the Secretariat.'),
     // Director for Plans and Programmes
     $p('dpp', '1st', 'Pol. Supt.', 'Desy Adriani', 'indonesia', '', '2010', '2012', 'media/dpp/no1.png', false, ''),
@@ -61,7 +61,7 @@ $roster = [
     $p('dpp', '4th', 'ACP', 'Aidah binti Othman', 'malaysia', '', '2017', '2019', 'media/dpp/no4.png', false, ''),
     $p('dpp', '5th', 'Supt.', 'Tang Yik Tung', 'brunei', '', '2020', '2022', 'media/dpp/no5.png', false, ''),
     $p('dpp', '6th', 'Pol. Snr. Lt. Col.', 'Nguyen Huu Ngoc', 'vietnam', '', '2023', '2025', 'media/dpp/no6.png', false, ''),
-    $p('dpp', '7th', 'Police Colonel', 'Jean Mary A. Mangahis', 'philippines', '', '2026', '', 'media/dpp/no7.png', true,
+    $p('dpp', '7th', 'Police Colonel', 'Jean Mary A. Mangahis', 'philippines', '', '2026', '', 'media/dpp/no7.png', false,
         'Police Colonel Jean Mary A. Mangahis serves as the Director for Plans and Programmes of the ASEANAPOL Secretariat, nominated by the Philippine National Police. She is responsible for strategic planning and overseeing programme implementation within the Secretariat.'),
 ];
 
@@ -224,11 +224,16 @@ return [
         'label' => 'Secretariat office holders (roster)',
         'feeds' => ['about.leadership' => 'Leadership: Executive Director', 'about.leadership.dps' => 'Leadership: Director for Police Services', 'about.leadership.dpp' => 'Leadership: Director for Plans and Programmes', 'about.permanent-secretariat' => 'Permanent Secretariat (directors lists)'],
         'sections' => [
-            'people' => ['label' => 'Executive Directors and Directors (all terms)', 'help' => 'One row per person per post. Set exactly one row per post as "current". Term end empty = still serving. Name is without rank; rank is shown before the name.', 'fields' => [
+            'people' => ['label' => 'Executive Directors and Directors (all terms)', 'help' => 'One row per person per post. Choose the Post and fill in the term: the website groups people under the right post automatically and shows the person with the NEWEST term as the current Executive Director / Director; everyone else is listed as a past holder (see the Current / Past badge on each row). To change who is current, just add the new person with a newer term start year. Term end empty = still serving. Name is without rank; rank is shown before the name.', 'fields' => [
                 'rows' => [
                     'type' => 'repeater', 'label' => 'People', 'item_label' => 'name', 'add_label' => 'Add person', 'columns' => 2,
+                    // generic editor options: row title template, list order, filter buttons, Current/Past badge
+                    'item_tpl' => '{post:short} — {name} ({term_start}–{term_end|present})',
+                    'editor_sort' => ['post', 'term_start'],
+                    'filter_by' => 'post',
+                    'badge' => 'roster',
                     'fields' => [
-                        'post'        => ['type' => 'select', 'label' => 'Post', 'options' => ['ed' => 'Executive Director', 'dps' => 'Director for Police Services', 'dpp' => 'Director for Plans and Programmes'], 'default' => 'ed'],
+                        'post'        => ['type' => 'select', 'label' => 'Post', 'options' => ['ed' => 'Executive Director', 'dps' => 'Director for Police Services', 'dpp' => 'Director for Plans and Programmes'], 'short' => ['ed' => 'ED', 'dps' => 'DPS', 'dpp' => 'DPP'], 'default' => 'ed', 'help' => 'Choose the post: the person is placed under it on the website automatically.'],
                         'ordinal'     => ['type' => 'text', 'label' => 'Number (e.g. 9th)'],
                         'rank'        => ['type' => 'text', 'label' => 'Rank'],
                         'name'        => ['type' => 'text', 'label' => 'Name'],
@@ -237,7 +242,7 @@ return [
                         'term_start'  => ['type' => 'text', 'label' => 'Term start (year)'],
                         'term_end'    => ['type' => 'text', 'label' => 'Term end (year; empty = present)'],
                         'photo'       => ['type' => 'image', 'label' => 'Photo'],
-                        'is_current'  => ['type' => 'boolean', 'label' => 'Current post holder'],
+                        'is_current'  => ['type' => 'boolean', 'label' => 'Current holder override (optional)', 'help' => 'Force as current holder (optional — leave unticked: the newest term is shown as current automatically)'],
                         'bio'         => ['type' => 'textarea', 'label' => 'Biography (current holders)', 'rows' => 4],
                     ],
                     'default' => $roster,

@@ -43,7 +43,7 @@
             @break
 
         @case('select')
-            <select id="{{ $id }}" name="{{ $name }}" class="{{ $inputCls }}">
+            <select id="{{ $id }}" name="{{ $name }}" class="{{ $inputCls }}" @if(!empty($def['short'])) data-short="{{ json_encode($def['short']) }}" @endif>
                 @foreach(($def['options'] ?? []) as $ov => $ol)
                     @php $optVal = is_int($ov) ? $ol : $ov; @endphp
                     <option value="{{ $optVal }}" @selected((string) $value === (string) $optVal)>{{ $ol }}</option>
@@ -69,18 +69,32 @@
         @case('repeater')
             @php
                 $rows = is_array($value) ? array_values($value) : [];
+                if (!empty($def['editor_sort'])) { $rows = \App\Support\Cms::sortRows($def, $rows); }
                 $ph   = '__I' . ($depth + 1) . '__';
                 $labelKey = $def['item_label'] ?? array_key_first($def['fields']);
+                $badgeFlags = ($def['badge'] ?? null) === 'roster' ? \App\Support\Shared::currentFlags(array_map(fn ($r) => (array) $r, $rows)) : [];
+                $dispInfo = $badgeFlags ? \App\Support\Shared::displayInfo(array_map(fn ($r) => (array) $r, $rows), $badgeFlags) : [];
+                $filterBy = $def['filter_by'] ?? null;
+                $filterDef = $filterBy ? ($def['fields'][$filterBy] ?? null) : null;
             @endphp
-            <div class="cms-repeater border border-gray-200 rounded-xl p-3 bg-white" data-repeater data-ph="{{ $ph }}" data-next="{{ count($rows) }}">
+            <div class="cms-repeater border border-gray-200 rounded-xl p-3 bg-white" data-repeater data-ph="{{ $ph }}" data-next="{{ count($rows) }}" @if(!empty($def['badge'])) data-badge="{{ $def['badge'] }}" @endif @if($filterDef) data-filter-by="{{ $filterBy }}" @endif>
                 <input type="hidden" name="{{ $name }}[__present]" value="1">
+                @if($filterDef)
+                    <div class="flex flex-wrap items-center gap-2 mb-3 text-xs" data-testid="row-filter">
+                        <span class="font-semibold text-gray-600">Show:</span>
+                        <button type="button" data-act="filter" data-val="" class="px-2.5 py-1 rounded-full border border-blue-600 bg-blue-600 text-white">All</button>
+                        @foreach(($filterDef['options'] ?? []) as $ov => $ol)
+                            <button type="button" data-act="filter" data-val="{{ $ov }}" class="px-2.5 py-1 rounded-full border border-gray-300 text-gray-700 bg-white">{{ $ol }}</button>
+                        @endforeach
+                    </div>
+                @endif
                 <div class="cms-rows space-y-2">
                     @foreach($rows as $i => $row)
-                        @include('admin.cms._row', ['def' => $def, 'segs' => array_merge($segs, [$i]), 'row' => (array) $row, 'depth' => $depth + 1, 'labelKey' => $labelKey])
+                        @include('admin.cms._row', ['def' => $def, 'segs' => array_merge($segs, [$i]), 'row' => (array) $row, 'depth' => $depth + 1, 'labelKey' => $labelKey, 'isCurrent' => $badgeFlags[$i] ?? null, 'dispEnd' => $dispInfo[$i]['end'] ?? ''])
                     @endforeach
                 </div>
                 <template>
-                    @include('admin.cms._row', ['def' => $def, 'segs' => array_merge($segs, [$ph]), 'row' => [], 'depth' => $depth + 1, 'labelKey' => $labelKey])
+                    @include('admin.cms._row', ['def' => $def, 'segs' => array_merge($segs, [$ph]), 'row' => [], 'depth' => $depth + 1, 'labelKey' => $labelKey, 'isCurrent' => null])
                 </template>
                 <button type="button" data-act="add-row" class="mt-3 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-lg border border-blue-300 text-blue-700 hover:bg-blue-50">
                     <span class="material-symbols-outlined" style="font-size:16px;">add</span> {{ $def['add_label'] ?? 'Add item' }}

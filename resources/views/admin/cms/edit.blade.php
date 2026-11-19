@@ -95,6 +95,40 @@
                     <button type="submit" form="cms-reset-form" name="section" value="{{ $sKey }}" data-confirm="Revert this section to the original content?"
                             class="text-xs text-gray-500 hover:text-red-700 underline">Revert section</button>
                 </div>
+            @if(!empty($section['roster_post']))
+            @php
+                $rosterLabels = ['ed' => 'Executive Director', 'dps' => 'Director for Police Services', 'dpp' => 'Director for Plans and Programmes'];
+                $rosterUrl = route('admin.cms.edit', 'shared.roster');
+            @endphp
+            <div class="basis-full space-y-3" data-testid="roster-panel-{{ $sKey }}">
+                @foreach((array) $section['roster_post'] as $rp)
+                    @php $people = \App\Support\Shared::roster($rp, null, true); @endphp
+                    <div class="rounded-lg border border-blue-200 bg-blue-50/60 p-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <p class="text-xs font-semibold text-blue-900">People shown for {{ $rosterLabels[$rp] ?? $rp }} <span class="font-normal text-blue-700">(read-only, as saved; newest first)</span></p>
+                            <div class="flex flex-wrap gap-2">
+                                <a href="{{ $rosterUrl }}#post={{ $rp }}" data-testid="roster-edit-{{ $rp }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-white" style="background:#0a2540;"><span class="material-symbols-outlined" style="font-size:16px;">edit_note</span>Add / edit people for {{ $rosterLabels[$rp] ?? $rp }}</a>
+                                <a href="{{ $rosterUrl }}#add={{ $rp }}" data-testid="roster-add-{{ $rp }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border border-blue-400 text-blue-800 bg-white"><span class="material-symbols-outlined" style="font-size:16px;">person_add</span>Add new {{ $rosterLabels[$rp] ?? $rp }}</a>
+                            </div>
+                        </div>
+                        @if($people)
+                        <ul class="text-xs text-gray-700 divide-y divide-blue-100 bg-white rounded border border-blue-100">
+                            @foreach($people as $pp)
+                                <li class="flex items-center gap-2 px-2.5 py-1.5">
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold {{ $pp['is_current'] ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600' }}">{{ $pp['is_current'] ? 'Current' : 'Past' }}</span>
+                                    <span class="font-medium">{{ $pp['full_name'] }}</span>
+                                    <span class="text-gray-400">{{ $pp['force'] }}</span>
+                                    <span class="ml-auto text-gray-500 whitespace-nowrap">{{ $pp['term'] }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                        @else
+                            <p class="text-xs text-gray-500">No visible people for this post yet.</p>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+            @endif
             </header>
             <div class="cms-section-body p-5 grid grid-cols-1 gap-5 {{ ($section['columns'] ?? 1) > 1 ? 'md:grid-cols-' . $section['columns'] : '' }}">
                 @foreach($section['fields'] as $fKey => $field)
@@ -215,10 +249,128 @@
         var t = e.target; if (!t.name) return;
         var row = t.closest('[data-row]'); if (!row) return;
         var title = row.querySelector(':scope > div .cms-row-title');
-        if (title && t.name.slice(-(title.dataset.labelKey.length + 2)) === '[' + title.dataset.labelKey + ']') {
+        if (title && title.dataset.tpl) {
+            refreshRow(row);
+        } else if (title && t.name.slice(-(title.dataset.labelKey.length + 2)) === '[' + title.dataset.labelKey + ']') {
             title.textContent = t.value.trim().slice(0, 80) || 'New item';
         }
+        var rep = row.closest('[data-repeater]');
+        if (rep && rep.dataset.badge) refreshBadges(rep);
     });
+    document.addEventListener('change', function (e) {
+        var row = e.target.closest && e.target.closest('[data-row]'); if (!row) return;
+        var rep = row.closest('[data-repeater]'); if (!rep) return;
+        var title = row.querySelector(':scope > div .cms-row-title');
+        if (title && title.dataset.tpl) refreshRow(row);
+        if (rep.dataset.badge) refreshBadges(rep);
+        if (rep.dataset.filterBy && e.target.name && e.target.name.slice(-(rep.dataset.filterBy.length + 2)) === '[' + rep.dataset.filterBy + ']') {
+            row.dataset.filterVal = e.target.value;
+        }
+    });
+
+    // --- row helpers (row title template, Current/Past badge, filter) -------------------------------
+    function fld(row, key) {
+        var els = row.querySelectorAll('input[name$="[' + key + ']"],select[name$="[' + key + ']"],textarea[name$="[' + key + ']"]');
+        for (var i = els.length - 1; i >= 0; i--) {
+            var el = els[i];
+            if (el.closest('[data-row]') !== row) continue;
+            if (el.type === 'hidden' && els.length > 1 && i > 0) continue; // checkbox pair: look at the checkbox
+            return el;
+        }
+        return null;
+    }
+    function fval(row, key) {
+        var el = fld(row, key); if (!el) return '';
+        if (el.type === 'checkbox') return el.checked ? '1' : '';
+        return (el.value || '').trim();
+    }
+    function shortLabel(row, key, v) {
+        var el = fld(row, key);
+        if (el && el.tagName === 'SELECT') { var d = el.dataset.short ? JSON.parse(el.dataset.short) : null; if (d && d[v]) return d[v]; var o = el.options[el.selectedIndex]; return o ? o.text : v; }
+        return v;
+    }
+    function refreshRow(row) {
+        var title = row.querySelector(':scope > div .cms-row-title');
+        if (!title || !title.dataset.tpl) return;
+        var out = title.dataset.tpl.replace(/\{(\w+)(?::(short))?(?:\|([^}]*))?\}/g, function (m, f, sh, alt) {
+            var v = fval(row, f);
+            if (f === 'term_end' && v === '' && row.dataset.dispEnd) v = row.dataset.dispEnd;
+            if (sh) v = shortLabel(row, f, v);
+            if (v === '' && alt !== undefined) v = fld(row, alt) ? fval(row, alt) : alt;
+            return v;
+        }).trim();
+        title.textContent = (out.replace(/[\s\u2014\u2013()\-]/g, '') === '' ? 'New item' : out).slice(0, 80);
+    }
+    function year(v) { var n = parseInt(String(v).replace(/\D.*$/, ''), 10); return isNaN(n) ? 0 : n; }
+    // mirrors App\Support\Shared::currentFlags()
+    function refreshBadges(rep) {
+        var rows = Array.prototype.filter.call(rep.querySelectorAll(':scope > .cms-rows > [data-row]'), function (r) {
+            var h = r.querySelector('input[name$="[_hide]"]'); return !(h && h.checked);
+        });
+        var byPost = {};
+        rows.forEach(function (r) { (byPost[fval(r, 'post')] = byPost[fval(r, 'post')] || []).push(r); });
+        var win = [];
+        Object.keys(byPost).forEach(function (k) {
+            var idx = byPost[k];
+            var forced = idx.filter(function (r) { return fval(r, 'is_current') === '1'; });
+            var open = idx.filter(function (r) { return fval(r, 'term_end') === ''; });
+            var pool = forced.length ? forced : (open.length ? open : idx), w = null;
+            pool.forEach(function (r) { if (w === null || year(fval(r, 'term_start')) >= year(fval(w, 'term_start'))) w = r; });
+            if (w) win.push(w);
+        });
+        // superseded holders with an empty term end: end = start of the next newer holder of the post (display only)
+        Object.keys(byPost).forEach(function (k) {
+            var list = byPost[k].map(function (r, n) { return { r: r, n: n, y: year(fval(r, 'term_start')) }; })
+                .sort(function (a, b) { return a.y - b.y || a.n - b.n; });
+            list.forEach(function (it, j) {
+                var nx = list[j + 1], ny = nx ? String(fval(nx.r, 'term_start')).replace(/\D.*$/, '') : '';
+                it.r.dataset.dispEnd = (win.indexOf(it.r) === -1 && fval(it.r, 'term_end') === '' && ny) ? ny : '';
+            });
+        });
+        rep.querySelectorAll(':scope > .cms-rows > [data-row]').forEach(refreshRow);
+        rep.querySelectorAll(':scope > .cms-rows > [data-row]').forEach(function (r) {
+            var b = r.querySelector(':scope > div .cms-badge'); if (!b) return;
+            var h = r.querySelector('input[name$="[_hide]"]');
+            if (h && h.checked) { b.className = 'cms-badge text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap bg-yellow-100 text-yellow-800'; b.textContent = 'Hidden'; return; }
+            var cur = win.indexOf(r) !== -1;
+            b.className = 'cms-badge text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ' + (cur ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600');
+            b.textContent = cur ? 'Current' : 'Past';
+        });
+    }
+    function applyFilter(rep, val) {
+        rep.dataset.filter = val;
+        rep.querySelectorAll(':scope > [data-testid=row-filter] [data-act=filter]').forEach(function (b) {
+            var on = b.dataset.val === val;
+            b.className = 'px-2.5 py-1 rounded-full border ' + (on ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 text-gray-700 bg-white');
+        });
+        rep.querySelectorAll(':scope > .cms-rows > [data-row]').forEach(function (r) {
+            var v = fld(r, rep.dataset.filterBy); v = v ? v.value : (r.dataset.filterVal || '');
+            r.style.display = (val === '' || v === val) ? '' : 'none';
+        });
+    }
+    document.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-act=filter]'); if (!b) return;
+        applyFilter(b.closest('[data-repeater]'), b.dataset.val);
+    });
+    document.querySelectorAll('[data-repeater][data-badge]').forEach(refreshBadges);
+
+    // deep links from other editors: #post=dps filters + scrolls to the repeater, #add=dps adds a pre-selected row
+    (function () {
+        var m = /^#(post|add)=(\w+)$/.exec(location.hash || ''); if (!m) return;
+        var rep = document.querySelector('[data-repeater][data-filter-by]'); if (!rep) return;
+        if (m[1] === 'add') {
+            rep.querySelector(':scope > [data-act=add-row]').click();
+            var rows = rep.querySelectorAll(':scope > .cms-rows > [data-row]');
+            var nr = rows[rows.length - 1], sel = nr && fld(nr, rep.dataset.filterBy);
+            if (sel) { sel.value = m[2]; nr.dataset.filterVal = m[2]; sel.dispatchEvent(new Event('change', { bubbles: true })); }
+            applyFilter(rep, m[2]);
+            if (nr) { nr.scrollIntoView({ block: 'center' }); }
+            try { history.replaceState(null, '', location.pathname + location.search + '#post=' + m[2]); } catch (e) {}
+        } else {
+            applyFilter(rep, m[2]);
+            rep.scrollIntoView();
+        }
+    })();
 
     // dim the section body when toggled off
     document.querySelectorAll('input[type=checkbox][name^="vis["]').forEach(function (cb) {
